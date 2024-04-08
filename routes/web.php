@@ -15,7 +15,15 @@ use App\Http\Controllers\LoginController;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('dashboard', ['title' => 'App Surat | Dashboard', 'active' => 'dashboard']);
+})->middleware('auth');
+
+Route::get('/surat-masuk', function () {
+    return view('suratmasuk', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk']);
+})->middleware('auth');
+
+Route::get('/surat-keluar', function () {
+    return view('suratkeluar', ['title' => 'App Surat | Surat Keluar', 'active' => 'surat keluar']);
 })->middleware('auth');
 
 Route::get('/login', function () {

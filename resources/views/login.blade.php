@@ -7,10 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
   <body>
-    <h1 class="text-center mt-5">Sistem Surat RSI Sultan Agung Banjarbaru</h1>
+    <h1 class="text-center text-success mt-5 fw-bold">Aplikasi Surat</h1>
+    <h1 class="text-center text-success fw-bold">RSI Sultan Agung Banjarbaru</h1>
 
-    <div class="card p-3 mt-5 shadow m-auto" style="width: 400px;">
-        <h3 class="card-title text-center mb-3">Login</h3>
+    <div class="card p-4 mt-5 shadow m-auto" style="width: 400px;">
+        <img src="/img/logorsi.png" class="card-img-top mb-5" alt="Logo RSI">
         <form method="POST" action="/login">
           @csrf
           <div class="mb-3">
