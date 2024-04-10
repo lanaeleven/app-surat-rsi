@@ -11,6 +11,10 @@ class LoginController extends Controller
     /**
      * Handle an authentication attempt.
      */
+    public function create() {
+        return view('login');
+    }
+
     public function authenticate(Request $request): RedirectResponse
     {
         // dd($request);

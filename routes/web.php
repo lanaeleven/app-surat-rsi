@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SuratKeluarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +23,13 @@ Route::get('/surat-masuk', function () {
     return view('suratmasuk', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk']);
 })->middleware('auth');
 
-Route::get('/surat-keluar', function () {
-    return view('suratkeluar', ['title' => 'App Surat | Surat Keluar', 'active' => 'surat keluar']);
-})->middleware('auth');
+Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('auth');
 
-Route::get('/login', function () {
-    return view('login');
-})->middleware('guest')->name('login');
+Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('auth');
+
+Route::post('/surat-keluar/tambah', [SuratKeluarController::class, 'store']);
+
+Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 

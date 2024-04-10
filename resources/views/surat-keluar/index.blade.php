@@ -3,6 +3,11 @@
 @section('container')
 <div class="div">
     <h3 class="fw-bold fs-4 mb-3">Surat Keluar</h3>
+    <div class="d-flex flex-row-reverse my-2">
+      <div>
+        <a href="/surat-keluar/tambah" class="btn btn-primary">Tambah Data</a>
+      </div>
+    </div>
     <div class="div">
         <table class="table table-striped">
             <thead>

@@ -53,7 +53,7 @@
               active-tab
           @endif
            ">
-            <a href="/surat-keluar" class="sidebar-link">
+            <a href="/surat-keluar/index" class="sidebar-link">
               <i class="lni lni-upload"></i>
               <span>Surat Keluar</span>
             </a>
