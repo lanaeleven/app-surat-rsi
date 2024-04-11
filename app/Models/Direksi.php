@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Direksi extends Model
 {
@@ -16,4 +17,8 @@ class Direksi extends Model
     protected $table = 'direksi';
 
     public $timestamps = false;
+
+    public function suratKeluar(): HasMany {
+        return $this->hasMany(SuratKeluar::class, 'idDireksi');
+    }
 }

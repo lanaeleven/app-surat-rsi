@@ -29,10 +29,12 @@ Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->mi
 
 Route::post('/surat-keluar/tambah', [SuratKeluarController::class, 'store']);
 
+Route::get('/surat-keluar/edit/{suratKeluar}', [SuratKeluarController::class, 'edit']);
+
+Route::post('/surat-keluar/save', [SuratKeluarController::class, 'save']);
+
 Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::post('/logout', [LoginController::class, 'logout']);
-
-

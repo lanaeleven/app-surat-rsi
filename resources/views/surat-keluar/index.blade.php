@@ -1,3 +1,4 @@
+{{-- @dd(Storage::url($suratKeluar[0]->filePath)) --}}
 @extends('layouts.main')
 
 @section('container')
@@ -14,7 +15,7 @@
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Tanggal</th>
-                <th scope="col">Kepada</th>
+                <th scope="col">Tujuan</th>
                 <th scope="col">Perihal</th>
                 <th scope="col">Direktorat</th>
                 <th scope="col">Keterangan</th>
@@ -23,22 +24,25 @@
               </tr>
             </thead>
             <tbody>
-                @for ($i = 10 ; $i > 0 ; $i--)
-                    
-                
+              
+              @foreach ($suratKeluar as $sk)
+                  
               <tr>
-                <th scope="row">{{ $i }}</th>
-                <td>01/04/2024</td>
-                <td>Puskesmas Landasan Ulin Barat</td>
-                <td>Penawaran</td>
-                <td>Direktur</td>
-                <td>Penawaran Kerja Sama</td>
-                <td>B-Umum</td>
+                <th scope="row">{{ $sk->id }}</th>
+                <td>{{ $sk->tanggalSurat }}</td>
+                <td>{{ $sk->tujuan }}</td>
+                <td>{{ $sk->perihal }}</td>
+                <td>{{ $sk->direksi->namaDireksi }}</td>
+                <td>{{ $sk->keterangan }}</td>
+                <td>{{ $sk->jenisSurat->kodeJenisSurat . '-' . $sk->jenisSurat->keterangan }}</td>
                 <td>
-                    <button type="button" class="mt-1 btn btn-success"><i class="lni lni-pencil"></i></i></button>
+                  <a href="/surat-keluar/edit/{{ $sk->id }}">Edit</a>
+                    <a href="{{ asset('storage/' . $sk->filePath) }}" class="mt-1 btn btn-success" target="_blank">view</a>
+                    <a href="{{ asset('storage/' . $sk->filePath) }}" class="mt-1 btn btn-primary" download='{{ $sk->fileName }}'>download</a>
                 </td>
               </tr>
-              @endfor
+
+              @endforeach
               
             </tbody>
           </table>
