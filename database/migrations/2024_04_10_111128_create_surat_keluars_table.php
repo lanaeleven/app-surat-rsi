@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('tanggalSurat');
             $table->string('tujuan');
             $table->string('perihal');
-            $table->string('keterangan');
+            $table->string('keterangan')->nullable();
             $table->string('fileName');
             $table->string('filePath');
         });

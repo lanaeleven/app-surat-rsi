@@ -5,6 +5,15 @@
 @section('container')
     
 <div>
+  @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+  @endif
     <h3 class="fw-bold fs-4 mb-3 text-center">Edit Surat Keluar</h3>
     <div class="d-flex justify-content-center">
         <div class="col-6">
@@ -62,15 +71,16 @@
                   <div class="row mb-3">
                     <label for="fileSurat" class="col-sm-3 col-form-label">File Surat</label>
                     <div class="col-sm-9">
-                        <div class="row justify-content-between">
+                        <div class="row justify-content-between align-items-center">
                           <div class="col">
                             {{ $suratKeluar->fileName }} 
                           </div>
                           <div class="col">
-                            <a href="{{ asset('storage/' . $suratKeluar->filePath) }}" class="mt-1 btn btn-success" target="_blank">view</a>
-                            <a href="{{ asset('storage/' . $suratKeluar->filePath) }}" class="mt-1 btn btn-primary" download='{{ $suratKeluar->fileName }}'>download</a>
+                            <a href="{{ asset('storage/' . $suratKeluar->filePath) }}" class="mt-1 btn btn-success btn-sm" target="_blank">view</a>
+                            <a href="{{ asset('storage/' . $suratKeluar->filePath) }}" class="mt-1 btn btn-primary btn-sm" download='{{ $suratKeluar->fileName }}'>download</a>
                           </div>
                         </div>
+                      </div>
                 </div>
 
                 <div class="row mb-3">

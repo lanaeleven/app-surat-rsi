@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        
+
         // SEEDING UNTUK TABEL USER
 
         User::create([
@@ -98,5 +100,7 @@ class DatabaseSeeder extends Seeder
         Direksi::create([
             'namaDireksi' => 'Direktur'
         ]);
+
+        \App\Models\SuratKeluar::factory(50)->create();
     }
 }
