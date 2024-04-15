@@ -43,7 +43,7 @@
               active-tab
           @endif
            ">
-            <a href="/surat-masuk" class="sidebar-link">
+            <a href="/surat-masuk/index" class="sidebar-link">
               <i class="lni lni-inbox"></i>
               <span>Surat Masuk</span>
             </a>

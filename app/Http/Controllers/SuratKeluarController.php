@@ -44,8 +44,6 @@ class SuratKeluarController extends Controller
             $suratKeluar->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        
-
         return view('surat-keluar.index', ['title' => 'App Surat | Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
     }
 
@@ -54,7 +52,7 @@ class SuratKeluarController extends Controller
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
 
-        return view('surat-keluar.edit', ['title' => 'App Surat | Tambah Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar, 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
+        return view('surat-keluar.edit', ['title' => 'App Surat | Edit Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar, 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
     }
 
     public function tambah() {
@@ -66,7 +64,7 @@ class SuratKeluarController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
+        // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
         $request->validate([
             'jenisSurat' => 'required',
             'tanggalSurat' => 'required',
@@ -79,7 +77,7 @@ class SuratKeluarController extends Controller
         // Store the file in storage\app\public folder
         $file = $request->file('fileSurat');
         $fileName = $file->getClientOriginalName();
-        $filePath = $file->store('uploads', 'public');
+        $filePath = $file->store('uploads/surat-keluar', 'public');
 
         // Store file information in the database
         $suratKeluar = new SuratKeluar();
@@ -114,8 +112,7 @@ class SuratKeluarController extends Controller
             // Store the file in storage\app\public folder
             $file = $request->file('fileSurat');
             $fileName = $file->getClientOriginalName();
-            $filePath = $file->store('uploads', 'public');
-            
+            $filePath = $file->store('uploads/surat-keluar', 'public');
         }
 
 

@@ -92,7 +92,6 @@
               </tr>
 
               @endforeach
-
               
             </tbody>
           </table>

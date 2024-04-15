@@ -21,4 +21,8 @@ class Direksi extends Model
     public function suratKeluar(): HasMany {
         return $this->hasMany(SuratKeluar::class, 'idDireksi');
     }
+
+    public function suratMasuk(): HasMany {
+        return $this->hasMany(SuratMasuk::class, 'idDireksi');
+    }
 }

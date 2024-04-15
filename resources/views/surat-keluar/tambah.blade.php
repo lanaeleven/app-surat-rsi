@@ -72,9 +72,14 @@
                     </div>
                 </div>
 
-                  <div class="d-flex justify-content-center">
-                      <button type="submit" class="btn btn-success mt-3">Tambah</button>
+                <div class="d-flex justify-content-center">
+                  <div>
+                    <a href="/surat-keluar/index" class="btn btn-warning mt-3 me-4">Kembali</a>
                   </div>
+                  <div>
+                    <button type="submit" class="btn btn-success mt-3">Tambah</button>
+                  </div>
+                </div>
                   
               </form>
         </div>
