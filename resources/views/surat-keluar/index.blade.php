@@ -86,7 +86,7 @@
                 <td>
                   
                   <a href="/surat-keluar/edit/{{ $sk->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a>
-                    <a href="{{ asset('storage/' . $sk->filePath) }}" class="mt-1 btn btn-sm btn-warning" target="_blank"><i class="lni lni-eye"></i></a>
+                    <a href="{{ asset('storage/' . $sk->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="lni lni-eye"></i></a>
                     <a href="{{ asset('storage/' . $sk->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $sk->fileName }}'><i class="lni lni-download"></i></a>
                 </td>
               </tr>

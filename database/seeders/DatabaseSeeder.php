@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Direksi;
 use App\Models\JenisSurat;
+use App\Models\TujuanDisposisi;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -29,9 +30,60 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'admin',
+            'namaJabatan' => 'Administrator',
             'password' => Hash::make('rahasia'),
             'level' => 'admin'
         ]);
+
+        User::create([
+            'username' => 'direktur',
+            'namaJabatan' => 'Direktur Rumah Sakit',
+            'password' => Hash::make('rahasia'),
+            'level' => 'direktur'
+        ]);
+
+        User::create([
+            'username' => 'kepala umum dakwah',
+            'namaJabatan' => 'Kepala Bagian Umum dan Dakwah',
+            'password' => Hash::make('rahasia'),
+            'level' => 'kepala'
+        ]);
+
+        User::create([
+            'username' => 'kepala sdi keuangan',
+            'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
+            'password' => Hash::make('rahasia'),
+            'level' => 'kepala'
+        ]);
+        
+        User::create([
+            'username' => 'penjab umum',
+            'namaJabatan' => 'Penanggung Jawab Umum dan PKRS',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
+        User::create([
+            'username' => 'penjab dakwah',
+            'namaJabatan' => 'Penanggung Jawab Dakwah dan PKRS',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
+        User::create([
+            'username' => 'penjab sdi',
+            'namaJabatan' => 'Penannggung Jawab SDI dan Administrasi',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
+        User::create([
+            'username' => 'penjab keuangan',
+            'namaJabatan' => 'Penannggung Jawab Keuangan dan Akuntansi',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
 
         // SEEDING UNTUK TABEL JENIS SURAT 
 
@@ -94,6 +146,52 @@ class DatabaseSeeder extends Seeder
             'kodeJenisSurat' => 'SE',
             'keterangan' => 'Surat Edaran'
         ]);
+
+        //SEEDING UNTUK TABEL TUJUAN DISPOSISI
+
+        TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Direktur',
+            'divisiTujuanDisposisi' => 'direktur',
+            'levelTujuanDisposisi' => 'direktur'
+        ]);
+
+        TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Kepala Bagian Umum dan Dakwah',
+            'divisiTujuanDisposisi' => 'umum dan dakwah',
+            'levelTujuanDisposisi' => 'kepala'
+        ]);
+
+        TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Kepala Bagian  SDI dan Keuangan',
+            'divisiTujuanDisposisi' => 'sdi dan keuangan',
+            'levelTujuanDisposisi' => 'kepala'
+        ]);
+
+        TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Penjab Umum dan PKRS',
+            'divisiTujuanDisposisi' => 'umum dan dakwah',
+            'levelTujuanDisposisi' => 'penjab'
+        ]);
+
+        TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Penjab Dakwah dan Kemitraan',
+            'divisiTujuanDisposisi' => 'umum dan dakwah',
+            'levelTujuanDisposisi' => 'penjab'
+        ]);
+
+        TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Penjab SDI dan Administrasi',
+            'divisiTujuanDisposisi' => 'sdi dan keuangan',
+            'levelTujuanDisposisi' => 'penjab'
+        ]);
+
+        TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Penjab Keuangan dan Akuntansi',
+            'divisiTujuanDisposisi' => 'sdi dan keuangan',
+            'levelTujuanDisposisi' => 'penjab'
+        ]);
+
+        
 
         // SEEDING UNTUK TABEL DIREKSI
 

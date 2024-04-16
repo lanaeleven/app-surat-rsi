@@ -57,12 +57,12 @@
               <tr>
                 <th scope="col">Indeks</th>
                 <th scope="col">Direktorat</th>
-                <th scope="col">Tgl Agenda</th>
+                {{-- <th scope="col">Tgl Agenda</th> --}}
                 <th scope="col">Dari</th>
                 <th scope="col">Tgl Surat</th>
                 <th scope="col">No Surat</th>
                 <th scope="col">Perihal</th>
-                <th scope="col">Distribusi Terakhir</th>
+                <th scope="col">Status</th>
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
@@ -72,16 +72,20 @@
               <tr>
                 <th scope="row">{{ $sm->id }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
-                <td>{{ $sm->tanggalAgenda }}</td>
+                {{-- <td>{{ $sm->tanggalAgenda }}</td> --}}
                 <td>{{ $sm->pengirim }}</td>
                 <td>{{ $sm->tanggalSurat }}</td>
                 <td>{{ $sm->nomorSurat }}</td>
                 <td>{{ $sm->perihal }}</td>
-                <td> - </td>
+                <td> {{ $sm->status }} </td>
                 <td>
                   <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a>
-                  <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-warning" target="_blank"><i class="lni lni-eye"></i></a>
+                  <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="lni lni-eye"></i></a>
                     <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $sm->fileName }}'><i class="lni lni-download"></i></a>
+                    
+                    @if ($sm->status === 'Belum Diteruskan')
+                    <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="lni lni-write"></i></a>
+                    @endif
                 </td>
               </tr>
 

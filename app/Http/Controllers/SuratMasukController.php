@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Direksi;
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
+use App\Models\DistribusiSurat;
 use Illuminate\Http\RedirectResponse;
 
 class SuratMasukController extends Controller
@@ -132,6 +133,47 @@ class SuratMasukController extends Controller
             $suratMasuk->filePath = $filePath;
         }
         $suratMasuk->save();
+
+        // Redirect back to the index page with a success message
+        return redirect('/surat-masuk/index')
+            ->with('success', "File uploaded successfully.");
+    }
+
+    public function disposisi(SuratMasuk $suratMasuk) { 
+
+        return view('surat-masuk.disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
+    }
+
+    public function teruskan(Request $request): RedirectResponse
+    {
+        
+        // dd($suratMasuk->status);
+        // dd($request->input());
+        $request->validate([
+            'idTujuanDisposisi' => 'required',
+            'idSuratMasuk' => 'required',
+            'instruksi' => 'required',
+            'statusSuratLanjutan' => 'required'
+        ]);
+
+        // Store file information in the database
+        $distribusiSurat = new DistribusiSurat();
+        $distribusiSurat->idTujuanDisposisi = $request->input('idTujuanDisposisi');
+        $distribusiSurat->idSuratMasuk = $request->input('idSuratMasuk');
+        $distribusiSurat->instruksi = $request->input('instruksi');
+        $distribusiSurat->tanggalDiteruskan = now();
+        $distribusiSurat->save();
+
+        $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
+        $suratMasuk->status = $request->input('statusSuratLanjutan');
+        $suratMasuk->save();
+
+        
+
+        
+
+
+        
 
         // Redirect back to the index page with a success message
         return redirect('/surat-masuk/index')

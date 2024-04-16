@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SuratMasukController;
@@ -16,9 +17,7 @@ use App\Http\Controllers\SuratKeluarController;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard', ['title' => 'App Surat | Dashboard', 'active' => 'dashboard']);
-})->middleware('auth');
+Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
 
 Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('auth');
 
@@ -30,9 +29,14 @@ Route::get('/surat-masuk/edit/{suratMasuk}', [SuratMasukController::class, 'edit
 
 Route::post('/surat-masuk/save', [SuratMasukController::class, 'save']);
 
+Route::get('/surat-masuk/disposisi/{suratMasuk}', [SuratMasukController::class, 'disposisi']);
+
+Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);
 
 
-Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('auth');
+
+
+Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('admin');
 
 Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('auth');
 

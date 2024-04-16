@@ -11,7 +11,7 @@ use Illuminate\Http\RedirectResponse;
 class SuratKeluarController extends Controller
 {
     public function create() {
-        // dd(request('index'));
+
         $suratKeluar = SuratKeluar::orderBy('id', 'desc');
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();

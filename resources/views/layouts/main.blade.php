@@ -16,6 +16,7 @@
   </head>
 
   <body>
+    
     <div class="wrapper">
       <aside id="sidebar">
         <div class="d-flex">
@@ -38,6 +39,11 @@
               <span>Dashboard</span>
             </a>
           </li>
+
+          {{-- NAVBAR ADMIN --}}
+
+          @can('admin')
+              
           <li class="sidebar-item
           @if ($active === "surat masuk")
               active-tab
@@ -185,6 +191,9 @@
               </li>
             </ul>
           </li>
+
+          @endcan
+
         </ul>
         <!-- <div class="sidebar-footer">
           <a href="#" class="sidebar-link">
@@ -195,6 +204,9 @@
       </aside>
       <div class="main">
         <nav class="navbar navbar-expand px-4 py-3">
+          <div>
+            <h2>{{ Auth::user()->namaJabatan }}</h2>
+          </div>
           <form action="#" class="d-none d-sm-inline-block"></form>
           <div class="navbar-collapse collapse">
             <ul class="navbar-nav ms-auto">
