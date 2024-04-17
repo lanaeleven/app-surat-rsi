@@ -26,63 +26,7 @@ class DatabaseSeeder extends Seeder
 
         
 
-        // SEEDING UNTUK TABEL USER
-
-        User::create([
-            'username' => 'admin',
-            'namaJabatan' => 'Administrator',
-            'password' => Hash::make('rahasia'),
-            'level' => 'admin'
-        ]);
-
-        User::create([
-            'username' => 'direktur',
-            'namaJabatan' => 'Direktur Rumah Sakit',
-            'password' => Hash::make('rahasia'),
-            'level' => 'direktur'
-        ]);
-
-        User::create([
-            'username' => 'kepala umum dakwah',
-            'namaJabatan' => 'Kepala Bagian Umum dan Dakwah',
-            'password' => Hash::make('rahasia'),
-            'level' => 'kepala'
-        ]);
-
-        User::create([
-            'username' => 'kepala sdi keuangan',
-            'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
-            'password' => Hash::make('rahasia'),
-            'level' => 'kepala'
-        ]);
         
-        User::create([
-            'username' => 'penjab umum',
-            'namaJabatan' => 'Penanggung Jawab Umum dan PKRS',
-            'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
-        ]);
-
-        User::create([
-            'username' => 'penjab dakwah',
-            'namaJabatan' => 'Penanggung Jawab Dakwah dan PKRS',
-            'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
-        ]);
-
-        User::create([
-            'username' => 'penjab sdi',
-            'namaJabatan' => 'Penannggung Jawab SDI dan Administrasi',
-            'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
-        ]);
-
-        User::create([
-            'username' => 'penjab keuangan',
-            'namaJabatan' => 'Penannggung Jawab Keuangan dan Akuntansi',
-            'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
-        ]);
 
 
         // SEEDING UNTUK TABEL JENIS SURAT 
@@ -147,46 +91,118 @@ class DatabaseSeeder extends Seeder
             'keterangan' => 'Surat Edaran'
         ]);
 
+        // SEEDING UNTUK TABEL USER
+
+        User::create([
+            'username' => 'admin',
+            'namaJabatan' => 'Administrator',
+            'password' => Hash::make('rahasia'),
+            'level' => 'admin'
+        ]);
+
+        User::create([
+            'username' => 'direktur',
+            'namaJabatan' => 'Direktur Rumah Sakit',
+            'password' => Hash::make('rahasia'),
+            'level' => 'direktur'
+        ]);
+
+        User::create([
+            'username' => 'kepala umum dakwah',
+            'namaJabatan' => 'Kepala Bagian Umum dan Dakwah',
+            'password' => Hash::make('rahasia'),
+            'level' => 'kepala'
+        ]);
+
+        User::create([
+            'username' => 'kepala sdi keuangan',
+            'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
+            'password' => Hash::make('rahasia'),
+            'level' => 'kepala'
+        ]);
+        
+        User::create([
+            'username' => 'penjab umum',
+            'namaJabatan' => 'Penanggung Jawab Umum dan PKRS',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
+        User::create([
+            'username' => 'penjab dakwah',
+            'namaJabatan' => 'Penanggung Jawab Dakwah dan PKRS',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
+        User::create([
+            'username' => 'penjab sdi',
+            'namaJabatan' => 'Penannggung Jawab SDI dan Administrasi',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
+        User::create([
+            'username' => 'penjab keuangan',
+            'namaJabatan' => 'Penannggung Jawab Keuangan dan Akuntansi',
+            'password' => Hash::make('rahasia'),
+            'level' => 'penjab'
+        ]);
+
         //SEEDING UNTUK TABEL TUJUAN DISPOSISI
 
         TujuanDisposisi::create([
+            'namaTujuanDisposisi' => 'Administrator',
+            'idUser' => 1,
+            'divisiTujuanDisposisi' => 'admin',
+            'levelTujuanDisposisi' => 'admin'
+        ]);
+
+        TujuanDisposisi::create([
             'namaTujuanDisposisi' => 'Direktur',
+            'idUser' => 2,
             'divisiTujuanDisposisi' => 'direktur',
             'levelTujuanDisposisi' => 'direktur'
         ]);
 
         TujuanDisposisi::create([
             'namaTujuanDisposisi' => 'Kepala Bagian Umum dan Dakwah',
+            'idUser' => 3,
             'divisiTujuanDisposisi' => 'umum dan dakwah',
             'levelTujuanDisposisi' => 'kepala'
         ]);
 
         TujuanDisposisi::create([
             'namaTujuanDisposisi' => 'Kepala Bagian  SDI dan Keuangan',
+            'idUser' => 4,
             'divisiTujuanDisposisi' => 'sdi dan keuangan',
             'levelTujuanDisposisi' => 'kepala'
         ]);
 
         TujuanDisposisi::create([
             'namaTujuanDisposisi' => 'Penjab Umum dan PKRS',
+            'idUser' => 5,
             'divisiTujuanDisposisi' => 'umum dan dakwah',
             'levelTujuanDisposisi' => 'penjab'
         ]);
 
         TujuanDisposisi::create([
             'namaTujuanDisposisi' => 'Penjab Dakwah dan Kemitraan',
+            'idUser' => 6,
             'divisiTujuanDisposisi' => 'umum dan dakwah',
             'levelTujuanDisposisi' => 'penjab'
         ]);
 
         TujuanDisposisi::create([
             'namaTujuanDisposisi' => 'Penjab SDI dan Administrasi',
+            'idUser' => 7,
             'divisiTujuanDisposisi' => 'sdi dan keuangan',
             'levelTujuanDisposisi' => 'penjab'
         ]);
 
         TujuanDisposisi::create([
             'namaTujuanDisposisi' => 'Penjab Keuangan dan Akuntansi',
+            'idUser' => 8,
             'divisiTujuanDisposisi' => 'sdi dan keuangan',
             'levelTujuanDisposisi' => 'penjab'
         ]);

@@ -17,7 +17,10 @@ return new class extends Migration
             $table->foreign('idSuratMasuk')->references('id')->on('surat_masuk');
             $table->unsignedBigInteger('idTujuanDisposisi');
             $table->foreign('idTujuanDisposisi')->references('id')->on('tujuan_disposisi');
+            $table->unsignedBigInteger('idPengirimDisposisi');
+            $table->foreign('idPengirimDisposisi')->references('id')->on('tujuan_disposisi');
             $table->date('tanggalDiteruskan');
+            $table->string('status');
             $table->string('instruksi');
         });
     }

@@ -33,6 +33,14 @@ Route::get('/surat-masuk/disposisi/{suratMasuk}', [SuratMasukController::class, 
 
 Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);
 
+Route::get('/surat-masuk/d/belum-diteruskan', [SuratMasukController::class, 'direkturBelumDiteruskan']);
+
+Route::get('/surat-masuk/d/sudah-diteruskan', [SuratMasukController::class, 'direkturSudahDiteruskan']);
+
+Route::get('/surat-masuk/disposisi/lihat/{suratMasuk}', [SuratMasukController::class, 'lihatSuratDisposisi']);
+
+Route::get('/surat-masuk/kb/belum-diteruskan', [SuratMasukController::class, 'kepalaBagianBelumDiteruskan']);
+
 
 
 

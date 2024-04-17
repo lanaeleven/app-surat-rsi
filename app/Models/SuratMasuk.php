@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,5 +21,9 @@ class SuratMasuk extends Model
 
     public function direksi(): BelongsTo {
         return $this->belongsTo(Direksi::class, 'idDireksi');
+    }
+
+    public function distribusiSurat(): HasMany {
+        return $this->hasMany(DistribusiSurat::class, 'idSuratMasuk');
     }
 }

@@ -1,5 +1,9 @@
 {{-- @dd($jenisSurat[0]->kodeJenisSurat.'-'.$jenisSurat[0]->keterangan) --}}
 {{-- @dd($distribusiSurat) --}}
+@php
+    $distribusiSurat = $distribusiSurat[0];
+@endphp
+
 @extends('layouts.main')
 
 @section('container')
@@ -97,108 +101,27 @@
 
     <div class="row d-flex justify-content-center">
         <div class="col-9">
-            <form action="/surat-masuk/teruskan" method="post">
-            @csrf
-            
+            <form>
 
-            {{-- FORM DISPOSISI ADMIN KE DIREKTUR --}}
-
-            @if ($suratMasuk->status === 'Belum Diteruskan')
-            <input type="hidden" name="idTujuanDisposisi" value="2">
-            <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Direktur">
-            <div class="row mb-3">
-                <label for="tujuan" class="col-sm-3 col-form-label">Teruskan Kepada</label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="text" value="Direktur" aria-label="Disabled input example" disabled readonly>
-                </div>
-            </div>
-            
-            
-            @endif
-
-            {{-- END FORM DISPOSISI ADMIN KE DIREKTUR --}}
-
-
-            {{-- FORM DISPOSISI DIREKTUR KE KEPALA BAGIAN --}}
-
-            @if ($suratMasuk->status === 'Diteruskan ke Direktur')
-
-            <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Kepala Bagian">
-            <div class="row mb-3">
-                <label for="tujuan" class="col-sm-3 col-form-label">Arahan dari Administrator</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label for="idTujuanDisposisi" class="col-sm-3 col-form-label">Teruskan Kepada</label>
-                <div class="col-sm-9">
-                  <select name="idTujuanDisposisi" class="form-select" id="idTujuanDisposisi" required>
-                      <option value="">Pilih Kepala Bagian</option>
-                      @foreach ($terusan as $t)
-                    
-                      <option value="{{ $t->id }}">{{ $t->namaTujuanDisposisi }}</option>
-  
-                      @endforeach
-                    </select>
-                </div>
-              </div>
-                
-            @endif
-
-            {{-- END FORM DISPOSISI DIREKTUR KE KEPALA BAGIAN --}}
-
-            {{-- FORM DISPOSISI KEPALA BAGIAN KE PENANGGUNG JAWAB --}}
-
-            @if ($suratMasuk->status === 'Diteruskan ke Kepala Bagian')
-
-            <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Penanggung Jawab">
-            <div class="row mb-3">
-                <label for="tujuan" class="col-sm-3 col-form-label">Instruksi dari direktur</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <label for="idTujuanDisposisi" class="col-sm-3 col-form-label">Teruskan Kepada</label>
-                <div class="col-sm-9">
-                  <select name="idTujuanDisposisi" class="form-select" id="idTujuanDisposisi" required>
-                      <option value="">Pilih Penanggung Jawab</option>
-                      @foreach ($terusan as $t)
-                    
-                      <option value="{{ $t->id }}">{{ $t->namaTujuanDisposisi }}</option>
-  
-                      @endforeach
-                    </select>
-                </div>
-              </div>
-                
-            @endif
-
-            {{-- END FORM DISPOSISI KEPALA BAGIAN KE PENANGGUNG JAWAB --}}
-
-            <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
             <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+            <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Diteruskan oleh</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" value="{{ $distribusiSurat->pengirimDisposisi->namaTujuanDisposisi }}" aria-label="Disabled input example" disabled readonly>
+                </div>
+            </div>
             <div class="row mb-3">
                 <label for="instruksi" class="col-sm-3 col-form-label">Instruksi</label>
                 <div class="col-sm-9">
-                  <textarea class="form-control" name="instruksi" id="instruksi" rows="3" required></textarea>
+                  <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat->instruksi }}</textarea>
                 </div>
             </div>
-
-            <div class="d-flex justify-content-center mt-3">
-                <div>
-                  <a href="/surat-masuk/index" class="btn btn-warning me-4">Kembali</a>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-success">Teruskan</button>
+            <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Diteruskan kepada</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" value="{{ $distribusiSurat->tujuanDisposisi->namaTujuanDisposisi }}" aria-label="Disabled input example" disabled readonly>
                 </div>
             </div>
-
-            
-
             </form>
         </div>
     </div>

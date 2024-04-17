@@ -6,6 +6,7 @@ use App\Models\Direksi;
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
 use App\Models\DistribusiSurat;
+use App\Models\TujuanDisposisi;
 use Illuminate\Http\RedirectResponse;
 
 class SuratMasukController extends Controller
@@ -140,8 +141,25 @@ class SuratMasukController extends Controller
     }
 
     public function disposisi(SuratMasuk $suratMasuk) { 
+        // dd(auth()->user()->level);
 
-        return view('surat-masuk.disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
+        $terusan = null;
+        $distribusiSurat = null;
+        $tujuanDisposisi = null; 
+
+        if (auth()->user()->level === 'direktur') {
+            $tujuanDisposisi = TujuanDisposisi::where('idUser', '=', auth()->user()->id)->get();
+            $terusan = TujuanDisposisi::where('levelTujuanDisposisi', '=', 'kepala')->get();
+            $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->where('idTujuanDisposisi', '=', $tujuanDisposisi[0]->id)->get();
+        }
+
+        if (auth()->user()->level === 'kepala') {
+            $tujuanDisposisi = TujuanDisposisi::where('idUser', '=', auth()->user()->id)->get();
+            $terusan = TujuanDisposisi::where('levelTujuanDisposisi', '=', 'penjab')->where('divisiTujuanDisposisi', '=', $tujuanDisposisi[0]->divisiTujuanDisposisi)->get();
+            $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->where('idTujuanDisposisi', '=', $tujuanDisposisi[0]->id)->get();
+        }
+
+        return view('surat-masuk.disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
     }
 
     public function teruskan(Request $request): RedirectResponse
@@ -149,34 +167,67 @@ class SuratMasukController extends Controller
         
         // dd($suratMasuk->status);
         // dd($request->input());
+        $redirect = '/surat-masuk/index';
+        if (auth()->user()->level === 'direktur') {
+            $redirect = '/surat-masuk/d/belum-diteruskan';
+        }
+
+        if (auth()->user()->level === 'kepala') {
+            $redirect = '/surat-masuk/kb/belum-diteruskan';
+        }
+        
         $request->validate([
             'idTujuanDisposisi' => 'required',
             'idSuratMasuk' => 'required',
             'instruksi' => 'required',
-            'statusSuratLanjutan' => 'required'
+            'statusSuratLanjutan' => 'required',
+            'idPengirimDisposisi' => 'required'
         ]);
 
         // Store file information in the database
         $distribusiSurat = new DistribusiSurat();
         $distribusiSurat->idTujuanDisposisi = $request->input('idTujuanDisposisi');
+        $distribusiSurat->idPengirimDisposisi = $request->input('idPengirimDisposisi');
         $distribusiSurat->idSuratMasuk = $request->input('idSuratMasuk');
         $distribusiSurat->instruksi = $request->input('instruksi');
         $distribusiSurat->tanggalDiteruskan = now();
+        $distribusiSurat->status = $request->input('statusSuratLanjutan');
         $distribusiSurat->save();
 
         $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
         $suratMasuk->status = $request->input('statusSuratLanjutan');
         $suratMasuk->save();
 
-        
-
-        
-
-
-        
-
         // Redirect back to the index page with a success message
-        return redirect('/surat-masuk/index')
+        return redirect($redirect)
             ->with('success', "File uploaded successfully.");
+    }
+
+    public function direkturBelumDiteruskan() {
+        $suratMasuk = SuratMasuk::where('status', '=', 'Diteruskan ke Direktur')->orderBy('id', 'desc');
+        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(15)]);
+    }
+
+    public function direkturSudahDiteruskan() {
+        $suratMasuk = SuratMasuk::where('status', '=', 'Diteruskan ke Kepala Bagian')->orderBy('id', 'desc');        
+        return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(15)]);
+    }
+
+    public function lihatSuratDisposisi(SuratMasuk $suratMasuk) {
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->where('status', '=', $suratMasuk->status)->get();
+
+        return view('surat-masuk.lihat-disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
+    }
+
+    public function kepalaBagianBelumDiteruskan() {
+        $distribusiSurat = TujuanDisposisi::where('id', '=', auth()->user()->id)->get()[0]->tujuanDisposisi;
+        // dd($distribusiSurat);
+        $suratMasuk = collect([]);
+        foreach ($distribusiSurat as $ds) {
+            if ($ds->suratMasuk->status === 'Diteruskan ke Kepala Bagian') {
+                $suratMasuk->push($ds->suratMasuk);
+            }
+        }
+        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
     }
 }

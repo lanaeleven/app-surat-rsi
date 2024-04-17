@@ -69,7 +69,7 @@
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $belumDiteruskan }} Surat</h2>
                 <p class="card-text fs-3">Surat Masuk yang belum diteruskan</p>
-                <a href="#" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                <a href="/surat-masuk/d/belum-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $sudahDiteruskan }} Surat</h2>
                 <p class="card-text fs-3">Surat Masuk yang sudah diteruskan</p>
-                <a href="#" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                <a href="/surat-masuk/d/sudah-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>
             </div>
           </div>
@@ -97,16 +97,16 @@
           <div class="col-sm-6 mb-3 mb-sm-0">
             <div class="card">
               <div class="card-body">
-                <h2 class="card-title fw-bold">10 Surat</h2>
+                <h2 class="card-title fw-bold">{{ $belumDiteruskan }} Surat</h2>
                 <p class="card-text fs-3">Surat Masuk yang belum diteruskan</p>
-                <a href="#" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                <a href="/surat-masuk/kb/belum-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="card">
               <div class="card-body">
-                <h2 class="card-title fw-bold">15 Surat</h2>
+                <h2 class="card-title fw-bold">{{ $sudahDiteruskan }} Surat</h2>
                 <p class="card-text fs-3">Surat Masuk yang sudah diteruskan</p>
                 <a href="#" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('tujuan_disposisi', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idUser');
+            $table->foreign('idUser')->references('id')->on('users');
             $table->string('namaTujuanDisposisi');
             $table->string('divisiTujuanDisposisi');
             $table->string('levelTujuanDisposisi');

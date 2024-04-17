@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DistribusiSurat extends Model
 {
@@ -16,4 +17,16 @@ class DistribusiSurat extends Model
     protected $table = 'distribusi_surat';
 
     public $timestamps = false;
+
+    public function pengirimDisposisi(): BelongsTo {
+        return $this->belongsTo(TujuanDisposisi::class, 'idPengirimDisposisi');
+    }
+
+    public function tujuanDisposisi(): BelongsTo {
+        return $this->belongsTo(TujuanDisposisi::class, 'idTujuanDisposisi');
+    }
+
+    public function suratMasuk(): BelongsTo {
+        return $this->belongsTo(SuratMasuk::class, 'idSuratMasuk');
+    }
 }
