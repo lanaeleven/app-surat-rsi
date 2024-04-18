@@ -108,7 +108,7 @@
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $sudahDiteruskan }} Surat</h2>
                 <p class="card-text fs-3">Surat Masuk yang sudah diteruskan</p>
-                <a href="#" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                <a href="/surat-masuk/kb/sudah-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>
             </div>
           </div>

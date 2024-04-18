@@ -209,25 +209,34 @@ class SuratMasukController extends Controller
     }
 
     public function direkturSudahDiteruskan() {
-        $suratMasuk = SuratMasuk::where('status', '=', 'Diteruskan ke Kepala Bagian')->orderBy('id', 'desc');        
+        $suratMasuk = SuratMasuk::where('status', '<>', 'Diteruskan ke Direktur')->where('status', '<>', 'Belum Diteruskan')->orderBy('id', 'desc');        
         return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(15)]);
     }
 
     public function lihatSuratDisposisi(SuratMasuk $suratMasuk) {
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->where('status', '=', $suratMasuk->status)->get();
-
         return view('surat-masuk.lihat-disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
     }
 
     public function kepalaBagianBelumDiteruskan() {
         $distribusiSurat = TujuanDisposisi::where('id', '=', auth()->user()->id)->get()[0]->tujuanDisposisi;
-        // dd($distribusiSurat);
         $suratMasuk = collect([]);
         foreach ($distribusiSurat as $ds) {
             if ($ds->suratMasuk->status === 'Diteruskan ke Kepala Bagian') {
                 $suratMasuk->push($ds->suratMasuk);
-            }
+            } 
         }
         return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
+    }
+
+    public function kepalaBagianSudahDiteruskan() {
+        $distribusiSurat = TujuanDisposisi::where('id', '=', auth()->user()->id)->get()[0]->tujuanDisposisi;
+        $suratMasuk = collect([]);
+        foreach ($distribusiSurat as $ds) {
+            if ($ds->suratMasuk->status === 'Diteruskan ke Penanggung Jawab' || $ds->suratMasuk->status === 'Diarsipkan') {
+                $suratMasuk->push($ds->suratMasuk);
+            }
+        }
+        return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
     }
 }

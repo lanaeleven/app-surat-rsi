@@ -41,6 +41,8 @@ Route::get('/surat-masuk/disposisi/lihat/{suratMasuk}', [SuratMasukController::c
 
 Route::get('/surat-masuk/kb/belum-diteruskan', [SuratMasukController::class, 'kepalaBagianBelumDiteruskan']);
 
+Route::get('/surat-masuk/kb/sudah-diteruskan', [SuratMasukController::class, 'kepalaBagianSudahDiteruskan']);
+
 
 
 

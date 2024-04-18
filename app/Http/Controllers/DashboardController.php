@@ -14,7 +14,7 @@ class DashboardController extends Controller
 
         if (auth()->user()->level === 'direktur') {
             $belumDiteruskan = SuratMasuk::where('status', '=', 'Diteruskan ke Direktur')->count();
-            $sudahDiteruskan = SuratMasuk::where('status', '=', 'Diteruskan ke Kepala Bagian')->count();
+            $sudahDiteruskan = SuratMasuk::where('status', '<>', 'Diteruskan ke Direktur')->where('status', '<>', 'Belum Diteruskan')->count();
         }
 
         if (auth()->user()->level === 'kepala') {

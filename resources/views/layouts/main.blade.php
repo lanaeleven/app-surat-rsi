@@ -205,21 +205,26 @@
       <div class="main">
         <nav class="navbar navbar-expand px-4 py-3">
           <div>
-            <h2>{{ Auth::user()->namaJabatan }}</h2>
+            <img src="/img/logorsi.png" width="150" alt="Logo RSI">
           </div>
           <form action="#" class="d-none d-sm-inline-block"></form>
           <div class="navbar-collapse collapse">
             <ul class="navbar-nav ms-auto">
-              <li class="nav-item dropdown">
-                <form action="/logout" method="post">
-                  @csrf
-                    <button type="submit" class="btn btn-white container-fluid">Logout</button>
-                </form>
-                {{-- <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                  <img src="account.png" class="avatar img-fluid" alt="" />
-                </a>
-                <div class="dropdown-menu dropdown-menu-end rounded"></div> --}}
-              </li>
+                  <li>
+                    <div class="me-5">
+                      <h5 class="fw-bold m-auto">{{ Auth::user()->namaJabatan }}</h5>
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <form action="/logout" method="post">
+                      @csrf
+                        <button type="submit" class="btn btn-white container-fluid">Logout</button>
+                    </form>
+                    {{-- <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                      <img src="account.png" class="avatar img-fluid" alt="" />
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end rounded"></div> --}}
+                  </li>
             </ul>
           </div>
         </nav>
