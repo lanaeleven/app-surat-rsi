@@ -178,6 +178,31 @@
             @endif
 
             {{-- END FORM DISPOSISI KEPALA BAGIAN KE PENANGGUNG JAWAB --}}
+              
+            {{-- FORM DISPOSISI PENANGGUNG JAWAB KE PENGARSIPAN --}}
+
+            @if ($suratMasuk->status === 'Diteruskan ke Penanggung Jawab')
+            {{-- @dd($distribusiSurat) --}}
+
+            <input type="hidden" name="statusSuratLanjutan" value="Diarsipkan">
+            <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Instruksi dari Kepala Bagian</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
+                </div>
+            </div>
+
+            <input type="hidden" name="idTujuanDisposisi" value="1">
+            <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Teruskan Kepada</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" value="Administrator" aria-label="Disabled input example" disabled readonly>
+                </div>
+            </div>
+                
+            @endif
+
+            {{-- END FORM DISPOSISI PENANGGUNG JAWAB KE PENGARSIPAN --}}
 
             <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
             <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">

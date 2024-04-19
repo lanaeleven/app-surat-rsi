@@ -12,7 +12,7 @@
       </ul>
   </div>
 @endif  
-    <h3 class="fw-bold fs-4 mb-3">Surat Masuk</h3>
+    <h3 class="fw-bold fs-4 mb-3">{{ $judul }}</h3>
     <div class="d-flex flex-row-reverse my-2">
       <div class="mb-2">
         <a href="/surat-masuk/tambah" class="btn btn-primary">Tambah</a>
@@ -24,9 +24,11 @@
         <div class="col-auto">
           <input name="index" type="number" class="form-control" placeholder="Index" value="{{ request('index') }}">
         </div>
+        @if (is_null($keterangan))
         <div class="col-auto">
           <input name="tahun" type="number" class="form-control" placeholder="Tahun" value="{{ request('tahun') }}">
-        </div>
+        </div>            
+        @endif
         <div class="col-auto">
           <select name="direksi" class="form-select">
             <option value="">Semua Direksi</option>
@@ -80,8 +82,8 @@
                 <td> {{ $sm->status }} </td>
                 <td>
                   <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a>
-                  <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="lni lni-eye"></i></a>
-                    <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $sm->fileName }}'><i class="lni lni-download"></i></a>
+                  <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="lni lni-eye"></i></a>
+                    {{-- <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $sm->fileName }}'><i class="lni lni-download"></i></a> --}}
                     
                     @if ($sm->status === 'Belum Diteruskan')
                     <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="lni lni-write"></i></a>

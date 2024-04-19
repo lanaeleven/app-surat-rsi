@@ -20,8 +20,8 @@ class SuratMasukFactory extends Factory
         return [
             'idDireksi' => 1,
             'nomorSurat' => fake()->word(),
-            'tanggalSurat' => fake()->dateTimeBetween(),
-            'tanggalAgenda' => fake()->dateTimeBetween(),
+            'tanggalSurat' => fake()->dateTimeThisYear(),
+            'tanggalAgenda' => fake()->dateTimeThisYear(),
             'sifatSurat' => fake()->randomElement(['Biasa', 'Rahasia', 'Segera']),
             'pengirim' => fake()->word(),
             'perihal' => fake()->words(2, true),

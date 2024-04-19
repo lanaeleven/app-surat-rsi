@@ -19,6 +19,7 @@ use App\Http\Controllers\SuratKeluarController;
 
 Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
 
+
 Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('auth');
 
 Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah'])->middleware('auth');
@@ -43,6 +44,14 @@ Route::get('/surat-masuk/kb/belum-diteruskan', [SuratMasukController::class, 'ke
 
 Route::get('/surat-masuk/kb/sudah-diteruskan', [SuratMasukController::class, 'kepalaBagianSudahDiteruskan']);
 
+Route::get('/surat-masuk/pj/belum-diteruskan', [SuratMasukController::class, 'penanggungJawabBelumDiteruskan']);
+
+Route::get('/surat-masuk/pj/sudah-diteruskan', [SuratMasukController::class, 'penanggungJawabSudahDiteruskan']);
+
+Route::get('/surat-masuk/lacak-distribusi/{suratMasuk}', [SuratMasukController::class, 'lacakDistribusi']);
+
+Route::get('/surat-masuk/{keterangan}', [SuratMasukController::class, 'create']);
+
 
 
 
@@ -55,6 +64,8 @@ Route::post('/surat-keluar/tambah', [SuratKeluarController::class, 'store']);
 Route::get('/surat-keluar/edit/{suratKeluar}', [SuratKeluarController::class, 'edit']);
 
 Route::post('/surat-keluar/save', [SuratKeluarController::class, 'save']);
+
+Route::get('/surat-keluar/{ket}', [SuratKeluarController::class, 'create']);
 
 
 

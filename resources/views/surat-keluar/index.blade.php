@@ -14,9 +14,11 @@
         <div class="col-auto">
           <input name="index" type="number" class="form-control" placeholder="Index" value="{{ request('index') }}">
         </div>
+        @if (is_null($ket))
         <div class="col-auto">
           <input name="tahun" type="number" class="form-control" placeholder="Tahun" value="{{ request('tahun') }}">
-        </div>
+        </div>            
+        @endif
         <div class="col-auto">
           <select name="jenisSurat" class="form-select" value="{{ request('jenisSurat') }}">
             <option value="">Semua Jenis Surat</option>

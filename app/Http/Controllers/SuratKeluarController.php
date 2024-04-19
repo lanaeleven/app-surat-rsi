@@ -10,11 +10,22 @@ use Illuminate\Http\RedirectResponse;
 
 class SuratKeluarController extends Controller
 {
-    public function create() {
+    public function create(?string $ket = null) {
 
         $suratKeluar = SuratKeluar::orderBy('id', 'desc');
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
+        $judul = "Surat Keluar";
+
+        if ($ket === 'hari-ini') {
+            $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '=', now());
+            $judul = "Surat Keluar Hari Ini";
+        }
+
+        if ($ket === 'bulan-ini') {
+            $suratKeluar = $suratKeluar->whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'));
+            $judul = "Surat Keluar Bulan Ini";
+        }
 
         if (request('index')) {
             $suratKeluar->where('id', '=', request('index'));
@@ -44,7 +55,7 @@ class SuratKeluarController extends Controller
             $suratKeluar->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('surat-keluar.index', ['title' => 'App Surat | Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
+        return view('surat-keluar.index', ['title' => 'App Surat | ' . $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
     }
 
     public function edit(SuratKeluar $suratKeluar) {
