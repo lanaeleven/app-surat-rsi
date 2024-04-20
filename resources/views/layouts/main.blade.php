@@ -163,7 +163,10 @@
               </li>
             </ul>
           </li>
-          <li class="sidebar-item">
+          <li class="sidebar-item @if ($active === "data master")
+          active-tab
+          @endif
+          ">
             <a
               href="#"
               class="sidebar-link collapsed has-dropdown"
@@ -181,10 +184,10 @@
               data-bs-parent="#sidebar"
             >
               <li class="sidebar-item">
-                <a href="#" class="sidebar-link">Direksi</a>
+                <a href="/direksi/index" class="sidebar-link">Direksi</a>
               </li>
               <li class="sidebar-item">
-                <a href="#" class="sidebar-link">Jenis Surat</a>
+                <a href="/jenis-surat/index" class="sidebar-link">Jenis Surat</a>
               </li>
               <li class="sidebar-item">
                 <a href="#" class="sidebar-link">Tujuan Disposisi</a>
