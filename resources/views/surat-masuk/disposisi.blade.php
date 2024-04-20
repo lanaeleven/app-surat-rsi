@@ -95,7 +95,47 @@
         
     </div>
 
+    @if ($distribusiSurat->isNotEmpty())
     <div class="row d-flex justify-content-center">
+        <h5 class="text-center fw-bold">Terusan Sebelumnya</h5>
+    @foreach ($distribusiSurat as $ds)
+            
+    <div class="col-9 my-3">
+        <form>
+        <div class="row mb-3">
+            <label for="tujuan" class="col-sm-3 col-form-label">Oleh</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" value="{{ $ds->pengirimDisposisi->namaJabatan }}" aria-label="Disabled input example" disabled readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="tujuan" class="col-sm-3 col-form-label">Kepada</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" value="{{ $ds->tujuanDisposisi->namaJabatan }}" aria-label="Disabled input example" disabled readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="tujuan" class="col-sm-3 col-form-label">Tanggal Diteruskan</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="date" value="{{ $ds->tanggalDiteruskan }}" aria-label="Disabled input example" disabled readonly>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="instruksi" class="col-sm-3 col-form-label">Instruksi</label>
+            <div class="col-sm-9">
+              <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $ds->instruksi }}</textarea>
+            </div>
+        </div>
+        
+        </form>
+        <hr>
+    </div>
+    @endforeach
+    </div>
+    @endif
+
+    <div class="row d-flex justify-content-center">
+        <h5 class="text-center fw-bold mb-3">Teruskan Surat</h5>
         <div class="col-9">
             <form action="/surat-masuk/teruskan" method="post">
             @csrf
@@ -124,12 +164,12 @@
             @if ($suratMasuk->status === 'Diteruskan ke Direktur')
 
             <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Kepala Bagian">
-            <div class="row mb-3">
+            {{-- <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Arahan dari Administrator</label>
                 <div class="col-sm-9">
                     <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row mb-3">
                 <label for="idTujuanDisposisi" class="col-sm-3 col-form-label">Teruskan Kepada</label>
@@ -138,7 +178,7 @@
                       <option value="">Pilih Kepala Bagian</option>
                       @foreach ($terusan as $t)
                     
-                      <option value="{{ $t->id }}">{{ $t->namaTujuanDisposisi }}</option>
+                      <option value="{{ $t->id }}">{{ $t->namaJabatan }}</option>
   
                       @endforeach
                     </select>
@@ -154,12 +194,12 @@
             @if ($suratMasuk->status === 'Diteruskan ke Kepala Bagian')
 
             <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Penanggung Jawab">
-            <div class="row mb-3">
+            {{-- <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Instruksi dari direktur</label>
                 <div class="col-sm-9">
                     <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row mb-3">
                 <label for="idTujuanDisposisi" class="col-sm-3 col-form-label">Teruskan Kepada</label>
@@ -168,7 +208,7 @@
                       <option value="">Pilih Penanggung Jawab</option>
                       @foreach ($terusan as $t)
                     
-                      <option value="{{ $t->id }}">{{ $t->namaTujuanDisposisi }}</option>
+                      <option value="{{ $t->id }}">{{ $t->namaJabatan }}</option>
   
                       @endforeach
                     </select>
@@ -185,12 +225,12 @@
             {{-- @dd($distribusiSurat) --}}
 
             <input type="hidden" name="statusSuratLanjutan" value="Diarsipkan">
-            <div class="row mb-3">
+            {{-- <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Instruksi dari Kepala Bagian</label>
                 <div class="col-sm-9">
                     <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
                 </div>
-            </div>
+            </div> --}}
 
             <input type="hidden" name="idTujuanDisposisi" value="1">
             <div class="row mb-3">

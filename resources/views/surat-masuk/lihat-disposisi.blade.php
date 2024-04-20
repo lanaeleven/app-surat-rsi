@@ -105,7 +105,7 @@
             <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Diteruskan oleh</label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" value="{{ $distribusiSurat->pengirimDisposisi->namaTujuanDisposisi }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" value="{{ $distribusiSurat->pengirimDisposisi->namaJabatan }}" aria-label="Disabled input example" disabled readonly>
                 </div>
             </div>
             <div class="row mb-3">
@@ -123,7 +123,7 @@
             <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Diteruskan kepada</label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" value="{{ $distribusiSurat->tujuanDisposisi->namaTujuanDisposisi }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" value="{{ $distribusiSurat->tujuanDisposisi->namaJabatan }}" aria-label="Disabled input example" disabled readonly>
                 </div>
             </div>
             </form>

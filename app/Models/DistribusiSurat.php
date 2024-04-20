@@ -19,11 +19,11 @@ class DistribusiSurat extends Model
     public $timestamps = false;
 
     public function pengirimDisposisi(): BelongsTo {
-        return $this->belongsTo(TujuanDisposisi::class, 'idPengirimDisposisi');
+        return $this->belongsTo(User::class, 'idPengirimDisposisi');
     }
 
     public function tujuanDisposisi(): BelongsTo {
-        return $this->belongsTo(TujuanDisposisi::class, 'idTujuanDisposisi');
+        return $this->belongsTo(User::class, 'idTujuanDisposisi');
     }
 
     public function suratMasuk(): BelongsTo {

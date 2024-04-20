@@ -97,56 +97,64 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'namaJabatan' => 'Administrator',
             'password' => Hash::make('rahasia'),
-            'level' => 'admin'
+            'level' => 'admin',
+            'divisi' => 'admin'
         ]);
 
         User::create([
             'username' => 'direktur',
             'namaJabatan' => 'Direktur Rumah Sakit',
             'password' => Hash::make('rahasia'),
-            'level' => 'direktur'
+            'level' => 'direktur',
+            'divisi' => 'direktur'
         ]);
 
         User::create([
             'username' => 'kepala umum dakwah',
             'namaJabatan' => 'Kepala Bagian Umum dan Dakwah',
             'password' => Hash::make('rahasia'),
-            'level' => 'kepala'
+            'level' => 'kepala',
+            'divisi' => 'umum dan dakwah'
         ]);
 
         User::create([
             'username' => 'kepala sdi keuangan',
             'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
             'password' => Hash::make('rahasia'),
-            'level' => 'kepala'
+            'level' => 'kepala',
+            'divisi' => 'sdi dan keuangan'
         ]);
         
         User::create([
             'username' => 'penjab umum',
             'namaJabatan' => 'Penanggung Jawab Umum dan PKRS',
             'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
+            'level' => 'penjab',
+            'divisi' => 'umum dan dakwah'
         ]);
 
         User::create([
             'username' => 'penjab dakwah',
-            'namaJabatan' => 'Penanggung Jawab Dakwah dan PKRS',
+            'namaJabatan' => 'Penanggung Jawab Dakwah dan Kemritraan',
             'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
+            'level' => 'penjab',
+            'divisi' => 'umum dan dakwah'
         ]);
 
         User::create([
             'username' => 'penjab sdi',
             'namaJabatan' => 'Penannggung Jawab SDI dan Administrasi',
             'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
+            'level' => 'penjab',
+            'divisi' => 'sdi dan keuangan'
         ]);
 
         User::create([
             'username' => 'penjab keuangan',
             'namaJabatan' => 'Penannggung Jawab Keuangan dan Akuntansi',
             'password' => Hash::make('rahasia'),
-            'level' => 'penjab'
+            'level' => 'penjab',
+            'divisi' => 'sdi dan keuangan'
         ]);
 
         //SEEDING UNTUK TABEL TUJUAN DISPOSISI

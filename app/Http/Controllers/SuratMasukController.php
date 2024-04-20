@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Direksi;
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
@@ -151,7 +152,7 @@ class SuratMasukController extends Controller
             ->with('success', "File uploaded successfully.");
     }
 
-    public function disposisi(SuratMasuk $suratMasuk) { 
+    public function fungsiLama_disposisi(SuratMasuk $suratMasuk) { 
         // dd(auth()->user()->level);
 
         $terusan = null;
@@ -173,6 +174,23 @@ class SuratMasukController extends Controller
         if (auth()->user()->level === 'penjab') {
             $tujuanDisposisi = TujuanDisposisi::where('idUser', '=', auth()->user()->id)->get();
             $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->where('idTujuanDisposisi', '=', $tujuanDisposisi[0]->id)->get();
+        }
+
+        return view('surat-masuk.disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
+    }
+
+    public function disposisi(SuratMasuk $suratMasuk) { 
+        // dd(auth()->user()->level);
+
+        $terusan = null;
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->get();
+
+        if (auth()->user()->level === 'direktur') {
+            $terusan = User::where('level', '=', 'kepala')->get();
+        }
+
+        if (auth()->user()->level === 'kepala') {
+            $terusan = User::where('level', '=', 'penjab')->where('divisi', '=', auth()->user()->divisi)->get();
         }
 
         return view('surat-masuk.disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
@@ -285,7 +303,6 @@ class SuratMasukController extends Controller
 
     public function lacakDistribusi(SuratMasuk $suratMasuk) {
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->get();
-        // dd($distribusiSurat);
         return view('surat-masuk.lacak-distribusi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
     }
 }

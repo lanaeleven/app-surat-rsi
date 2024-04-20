@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
@@ -31,23 +32,23 @@ class DashboardController extends Controller
         }
 
         if (auth()->user()->level === 'kepala') {
-            $distribusiSuratBelumDiteruskan = TujuanDisposisi::where('id', '=', auth()->user()->id)->get()[0]->tujuanDisposisi;
+            $distribusiSuratBelumDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->menerimaDS;
             foreach ($distribusiSuratBelumDiteruskan as $dsbd) {
                 if ($dsbd->suratMasuk->status === 'Diteruskan ke Kepala Bagian') {
                     $belumDiteruskan++;
                 }
             }
-            $sudahDiteruskan = TujuanDisposisi::where('id', '=', auth()->user()->id)->get()[0]->pengirimDisposisi->count();
+            $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->count();
         }
 
         if (auth()->user()->level === 'penjab') {
-            $distribusiSuratBelumDiteruskan = TujuanDisposisi::where('id', '=', auth()->user()->id)->get()[0]->tujuanDisposisi;
+            $distribusiSuratBelumDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->menerimaDS;
             foreach ($distribusiSuratBelumDiteruskan as $dsbd) {
                 if ($dsbd->suratMasuk->status === 'Diteruskan ke Penanggung Jawab') {
                     $belumDiteruskan++;
                 }
             }
-            $sudahDiteruskan = TujuanDisposisi::where('id', '=', auth()->user()->id)->get()[0]->pengirimDisposisi->count();
+            $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->count();
         }
 
         return view('dashboard', [

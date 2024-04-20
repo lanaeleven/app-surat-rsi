@@ -41,7 +41,7 @@
                 <td>{{ $sm->perihal }}</td>
                 <td> {{ $sm->status }} </td>
                 <td>
-                    <a href="/surat-masuk/disposisi/lihat/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-eye"></i></a>
+                    <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-eye"></i></a>
                 </td>
               </tr>
 

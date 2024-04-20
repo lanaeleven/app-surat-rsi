@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DireksiController;
 use App\Http\Controllers\DashboardController;
@@ -60,3 +61,9 @@ Route::get('/jenis-surat/tambah', [JenisSuratController::class, 'tambah'])->midd
 Route::post('/jenis-surat/tambah', [JenisSuratController::class, 'store']);
 Route::get('/jenis-surat/edit/{jenisSurat}', [JenisSuratController::class, 'edit'])->middleware('admin');
 Route::post('/jenis-surat/save', [JenisSuratController::class, 'save']);
+
+Route::get('/user/index', [UserController::class, 'create'])->middleware('admin');
+Route::get('/user/tambah', [UserController::class, 'tambah'])->middleware('admin');
+Route::post('/user/tambah', [UserController::class, 'store']);
+Route::get('/user/edit/{jenisSurat}', [UserController::class, 'edit'])->middleware('admin');
+Route::post('/user/save', [UserController::class, 'save']);

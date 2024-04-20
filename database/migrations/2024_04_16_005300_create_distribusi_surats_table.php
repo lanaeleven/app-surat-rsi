@@ -16,9 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('idSuratMasuk');
             $table->foreign('idSuratMasuk')->references('id')->on('surat_masuk');
             $table->unsignedBigInteger('idTujuanDisposisi');
-            $table->foreign('idTujuanDisposisi')->references('id')->on('tujuan_disposisi');
+            $table->foreign('idTujuanDisposisi')->references('id')->on('users');
             $table->unsignedBigInteger('idPengirimDisposisi');
-            $table->foreign('idPengirimDisposisi')->references('id')->on('tujuan_disposisi');
+            $table->foreign('idPengirimDisposisi')->references('id')->on('users');
             $table->date('tanggalDiteruskan');
             $table->string('status');
             $table->string('instruksi');

@@ -111,13 +111,13 @@
             <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Oleh</label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" value="{{ $ds->pengirimDisposisi->namaTujuanDisposisi }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" value="{{ $ds->pengirimDisposisi->namaJabatan }}" aria-label="Disabled input example" disabled readonly>
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Kepada</label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" value="{{ $ds->tujuanDisposisi->namaTujuanDisposisi }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" value="{{ $ds->tujuanDisposisi->namaJabatan }}" aria-label="Disabled input example" disabled readonly>
                 </div>
             </div>
             <div class="row mb-3">
@@ -136,9 +136,6 @@
             </form>
             <hr>
         </div>
-
-        
-
         @endforeach
     </div>
 </div>

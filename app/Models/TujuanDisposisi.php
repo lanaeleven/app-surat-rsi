@@ -18,9 +18,9 @@ class TujuanDisposisi extends Model
 
     public $timestamps = false;
 
-    public function pengirimDisposisi(): HasMany {
-        return $this->hasMany(DistribusiSurat::class, 'idPengirimDisposisi');
-    }
+    // public function pengirimDisposisi(): HasMany {
+    //     return $this->hasMany(DistribusiSurat::class, 'idPengirimDisposisi');
+    // }
 
     public function tujuanDisposisi(): HasMany {
         return $this->hasMany(DistribusiSurat::class, 'idTujuanDisposisi');
