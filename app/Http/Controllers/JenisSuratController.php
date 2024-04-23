@@ -21,8 +21,8 @@ class JenisSuratController extends Controller
     {
         // Validate the incoming file. 
         $request->validate([
-            'kodeJenisSurat' => 'unique:jenis_surat,kodeJenisSurat',
-            'keterangan' => 'unique:jenis_surat,keterangan'
+            'kodeJenisSurat' => 'required|unique:jenis_surat,kodeJenisSurat',
+            'keterangan' => 'required|unique:jenis_surat,keterangan'
         ]);
 
         // Store file information in the database

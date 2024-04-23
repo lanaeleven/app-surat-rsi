@@ -236,7 +236,7 @@
             <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Teruskan Kepada</label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="text" value="Administrator" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" value="Sekretariat" aria-label="Disabled input example" disabled readonly>
                 </div>
             </div>
                 

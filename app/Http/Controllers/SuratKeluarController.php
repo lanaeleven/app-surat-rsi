@@ -146,4 +146,34 @@ class SuratKeluarController extends Controller
         return redirect('/surat-keluar/index')
             ->with('success', "File `{$suratKeluar->fileName}` uploaded successfully.");
     }
+
+    public function laporanPerJenisSurat() {
+        $suratKeluar = SuratKeluar::orderBy('idJenisSurat', 'asc');
+        $suratKeluar->select('idJenisSurat', SuratKeluar::raw('COUNT(idJenisSurat) as total_surat'))->groupBy('idJenisSurat');
+
+        if (request('tanggalAwal')) {
+            $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+        }
+
+        if (request('tanggalAkhir')) {
+            $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }        
+
+        return view('surat-keluar.laporan-per-jenis-surat', ['title' => 'App Surat | Surat Keluar Per Jenis Surat', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
+    }
+
+    public function laporanPerDireksi() {
+        $suratKeluar = SuratKeluar::orderBy('idDireksi', 'asc');
+        $suratKeluar->select('idDireksi', SuratKeluar::raw('COUNT(idDireksi) as total_surat'))->groupBy('idDireksi');
+
+        if (request('tanggalAwal')) {
+            $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+        }
+
+        if (request('tanggalAkhir')) {
+            $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }        
+
+        return view('surat-keluar.laporan-per-direksi', ['title' => 'App Surat | Surat Keluar Per Direksi', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
+    }
 }

@@ -97,7 +97,7 @@
                   class="sidebar-dropdown list-unstyled collapse"
                 >
                   <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Per Direksi</a>
+                    <a href="/laporan/surat-masuk/per-direksi" class="sidebar-link">Per Direksi</a>
                   </li>
                 </ul>
               </li>
@@ -117,10 +117,10 @@
                   class="sidebar-dropdown list-unstyled collapse"
                 >
                   <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Per Jenis Surat</a>
+                    <a href="/laporan/surat-keluar/per-jenis-surat" class="sidebar-link">Per Jenis Surat</a>
                   </li>
                   <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">Per Direktorat</a>
+                    <a href="/laporan/surat-keluar/per-direksi" class="sidebar-link">Per Direktorat</a>
                   </li>
                 </ul>
               </li>
@@ -190,7 +190,7 @@
                 <a href="/jenis-surat/index" class="sidebar-link">Jenis Surat</a>
               </li>
               <li class="sidebar-item">
-                <a href="#" class="sidebar-link">Tujuan Disposisi</a>
+                <a href="/user/index" class="sidebar-link">Tujuan Disposisi</a>
               </li>
             </ul>
           </li>

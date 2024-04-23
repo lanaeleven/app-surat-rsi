@@ -19,7 +19,7 @@ class SuratKeluarFactory extends Factory
         return [
             'idJenisSurat' => fake()->numberBetween(1, 12),
             'idDireksi' => 1,
-            'tanggalSurat' => fake()->dateTimeThisYear(),
+            'tanggalSurat' => fake()->dateTimeInInterval('-2 years', '+2 years'),
             'tujuan' => fake()->word(),
             'perihal' => fake()->words(3, true),
             'keterangan' => fake()->words(5, true),

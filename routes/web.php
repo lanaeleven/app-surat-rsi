@@ -38,6 +38,7 @@ Route::get('/surat-masuk/pj/belum-diteruskan', [SuratMasukController::class, 'pe
 Route::get('/surat-masuk/pj/sudah-diteruskan', [SuratMasukController::class, 'penanggungJawabSudahDiteruskan']);
 Route::get('/surat-masuk/lacak-distribusi/{suratMasuk}', [SuratMasukController::class, 'lacakDistribusi']);
 Route::get('/surat-masuk/{keterangan}', [SuratMasukController::class, 'create']);
+Route::get('/laporan/surat-masuk/per-direksi', [SuratMasukController::class, 'laporanPerDireksi'])->middleware('admin');
 
 Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('admin');
 Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('auth');
@@ -45,6 +46,8 @@ Route::post('/surat-keluar/tambah', [SuratKeluarController::class, 'store']);
 Route::get('/surat-keluar/edit/{suratKeluar}', [SuratKeluarController::class, 'edit']);
 Route::post('/surat-keluar/save', [SuratKeluarController::class, 'save']);
 Route::get('/surat-keluar/{ket}', [SuratKeluarController::class, 'create']);
+Route::get('/laporan/surat-keluar/per-jenis-surat', [SuratKeluarController::class, 'laporanPerJenisSurat'])->middleware('admin');
+Route::get('/laporan/surat-keluar/per-direksi', [SuratKeluarController::class, 'laporanPerDireksi'])->middleware('admin');
 
 Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
@@ -65,5 +68,5 @@ Route::post('/jenis-surat/save', [JenisSuratController::class, 'save']);
 Route::get('/user/index', [UserController::class, 'create'])->middleware('admin');
 Route::get('/user/tambah', [UserController::class, 'tambah'])->middleware('admin');
 Route::post('/user/tambah', [UserController::class, 'store']);
-Route::get('/user/edit/{jenisSurat}', [UserController::class, 'edit'])->middleware('admin');
+Route::get('/user/edit/{user}', [UserController::class, 'edit'])->middleware('admin');
 Route::post('/user/save', [UserController::class, 'save']);

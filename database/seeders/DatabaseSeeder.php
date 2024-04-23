@@ -95,7 +95,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'admin',
-            'namaJabatan' => 'Administrator',
+            'namaJabatan' => 'Sekretariat',
             'password' => Hash::make('rahasia'),
             'level' => 'admin',
             'divisi' => 'admin'
@@ -143,7 +143,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'penjab sdi',
-            'namaJabatan' => 'Penannggung Jawab SDI dan Administrasi',
+            'namaJabatan' => 'Penanggung Jawab SDI dan Administrasi',
             'password' => Hash::make('rahasia'),
             'level' => 'penjab',
             'divisi' => 'sdi dan keuangan'
@@ -151,7 +151,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'username' => 'penjab keuangan',
-            'namaJabatan' => 'Penannggung Jawab Keuangan dan Akuntansi',
+            'namaJabatan' => 'Penanggung Jawab Keuangan dan Akuntansi',
             'password' => Hash::make('rahasia'),
             'level' => 'penjab',
             'divisi' => 'sdi dan keuangan'
