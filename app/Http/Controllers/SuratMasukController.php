@@ -8,6 +8,7 @@ use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
 use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 
 class SuratMasukController extends Controller
@@ -183,11 +184,27 @@ class SuratMasukController extends Controller
         return view('surat-masuk.disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
     }
 
-    public function disposisi(SuratMasuk $suratMasuk) { 
-        // dd(auth()->user()->level);
+    public function disposisi(SuratMasuk $suratMasuk) {
 
         $terusan = null;
+        
+        
+        // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
+        if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
+            $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
+            if (! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status === "Diarsipkan") {
+                abort(403);
+            }
+        }
+
+        // PENGECEKAN APAKAH SURAT MASUK YANG BELUM DITERUSKAN DIAKSES OLEH ADMIN ATAU BUKAN, JIKA BUKAN ADMIN MAKA TIDAK DIPERBOLEHKAN
+        if ($suratMasuk->status === "Belum Diteruskan" && auth()->user()->level !== 'admin') {
+            abort(403);
+        }
+
+        // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->get();
+        
 
         if (auth()->user()->level === 'direktur') {
             $terusan = User::where('level', '=', 'kepala')->get();
@@ -205,7 +222,7 @@ class SuratMasukController extends Controller
         
         // dd($suratMasuk->status);
         // dd($request->input());
-
+        
         $redirect = '/surat-masuk/index';
         if (auth()->user()->level === 'direktur') {
             $redirect = '/surat-masuk/d/belum-diteruskan';

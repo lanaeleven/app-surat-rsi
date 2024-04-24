@@ -4,7 +4,7 @@
 
       <div class="mb-3">
 
-        @can('admin')
+        @can('dashboard-admin')
             
         {{-- DASHBOARD ADMIN --}}
 
@@ -59,7 +59,7 @@
     {{-- END DASHBOARD ADMIN --}}
     @endcan
 
-    @can('direktur')
+    @can('dashboard-direktur')
     {{-- DASHBOARD DIREKTUR --}}
 
     <div class="col">
@@ -89,7 +89,7 @@
     {{-- END DASHBOARD DIREKTUR --}}
     @endcan
 
-    @can('kepala')
+    @can('dashboard-kepala')
     {{-- DASHBOARD KEPALA BAGIAN --}}
 
     <div class="col">
@@ -119,7 +119,7 @@
     {{-- END DASHBOARD KEPALA BAGIAN --}}
     @endcan
 
-    @can('penjab')
+    @can('dashboard-penjab')
     {{-- DASHBOARD PENANGGUNG JAWAB --}}
 
     <div class="col">

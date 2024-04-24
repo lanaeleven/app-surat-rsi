@@ -42,7 +42,7 @@
 
           {{-- NAVBAR ADMIN --}}
 
-          @can('admin')
+          @can('dashboard-admin')
               
           <li class="sidebar-item
           @if ($active === "surat masuk")

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -21,6 +23,20 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        
+        // Gate::define('dashboard-admin', function (User $user) {
+        //     return $user->level === 'admin';
+        // });
+
+        // Gate::define('dashboard-direktur', function (User $user) {
+        //     return $user->level === 'direktur';
+        // });
+
+        // Gate::define('dashboard-kepala', function (User $user) {
+        //     return $user->level === 'kepala';
+        // });
+
+        // Gate::define('dashboard-penjab', function (User $user) {
+        //     return $user->level === 'penjab';
+        // });
     }
 }
