@@ -205,7 +205,6 @@ class SuratMasukController extends Controller
         // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->get();
         
-
         if (auth()->user()->level === 'direktur') {
             $terusan = User::where('level', '=', 'kepala')->get();
         }
