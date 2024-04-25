@@ -206,31 +206,85 @@
         </div> -->
       </aside>
       <div class="main">
-        <nav class="navbar navbar-expand px-4 py-3">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="/img/logorsi.png" width="150" alt="Logo RSI"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {{-- <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+                </li> --}}
+                {{-- <li class="nav-item dropdown"> --}}
+                  {{-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul> --}}
+                {{-- </li> --}}
+                <li class="nav-item">
+                  {{-- <a class="nav-link disabled" aria-disabled="true">Disabled</a> --}}
+                </li>
+              </ul>
+              <form action="/logout" method="post">
+                @csrf
+                  <button type="submit" class="btn btn-danger container-fluid">Logout</button>
+              </form>
+            </div>
+          </div>
+        </nav>
+        {{-- <nav class="navbar navbar-expand px-4 py-3">
           <div>
             <img src="/img/logorsi.png" width="150" alt="Logo RSI">
           </div>
           <form action="#" class="d-none d-sm-inline-block"></form>
           <div class="navbar-collapse collapse">
             <ul class="navbar-nav ms-auto">
-                  <li>
+                  <li class="d-none d-lg-block">
                     <div class="me-5">
                       <h5 class="fw-bold m-auto">{{ Auth::user()->namaJabatan }}</h5>
                     </div>
                   </li>
-                  <li class="nav-item dropdown">
+                  <li class="d-none d-lg-block">
                     <form action="/logout" method="post">
                       @csrf
                         <button type="submit" class="btn btn-white container-fluid">Logout</button>
-                    </form>
+                    </form> --}}
                     {{-- <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                       <img src="account.png" class="avatar img-fluid" alt="" />
                     </a>
                     <div class="dropdown-menu dropdown-menu-end rounded"></div> --}}
+                  {{-- </li>
+                  <li> --}}
+                    {{-- <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                      Link with href
+                    </a> --}}
+                    {{-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
                   </li>
-            </ul>
-          </div>
-        </nav>
+                  
+            </ul> --}}
+            {{-- <div class="collapse" id="collapseExample"> --}}
+              
+            {{-- </div> --}}
+          {{-- </div>
+        </nav> --}}
 
         <main class="content px-3 py-4">
           <div class="container-fluid">

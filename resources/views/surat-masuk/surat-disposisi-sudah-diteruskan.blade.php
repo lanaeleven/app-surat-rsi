@@ -12,8 +12,8 @@
       </ul>
   </div>
 @endif  
-    <h3 class="fw-bold fs-4 mb-3">Surat Masuk</h3>
-    <div class="div">
+    <h3 class="fw-bold fs-4 mb-3 text-center text-md-start">Surat Masuk</h3>
+    <div class="d-none d-md-block">
         <table class="table table-striped">
             <thead>
               <tr>
@@ -50,6 +50,47 @@
             </tbody>
           </table>
     </div>
+
+    @foreach ($suratMasuk as $sm)
+    <div class="d-md-none d-lg-none d-xl-none d-xxl-none container mb-5">
+      <div class="card p-3">
+        <table class="table table-bordered">
+          <tr>
+            <th>Indeks</th>
+            <td>{{ $sm->id }}</td>
+          </tr>
+          <tr>
+            <th>Direktorat</th>
+            <td>{{ $sm->direksi->namaDireksi }}</td>
+          </tr>
+          <tr>
+            <th>Dari</th>
+            <td>{{ $sm->pengirim }}</td>
+          </tr>
+          <tr>
+            <th>Tgl Surat</th>
+            <td>{{ $sm->tanggalSurat }}</td>
+          </tr>
+          <tr>
+            <th>No Surat</th>
+            <td>{{ $sm->nomorSurat }}</td>
+          </tr>
+          <tr>
+            <th>Perihal</th>
+            <td>{{ $sm->perihal }}</td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td>{{ $sm->status }}</td>
+          </tr>
+          <tr>
+            <th>Aksi</th>
+            <td><a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary">Lacak Distribusi</a></td>
+          </tr>
+        </table>
+      </div>
+    </div>        
+    @endforeach
 
 </div>
 @endsection
