@@ -94,7 +94,7 @@ class DatabaseSeeder extends Seeder
         // SEEDING UNTUK TABEL USER
 
         User::create([
-            'username' => 'admin',
+            'username' => 'sekre',
             'namaJabatan' => 'Sekretariat',
             'password' => Hash::make('rahasia'),
             'level' => 'admin',

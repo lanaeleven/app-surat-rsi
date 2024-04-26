@@ -284,7 +284,7 @@ class SuratMasukController extends Controller
         foreach ($distribusiSurat as $ds) {
             if ($ds->suratMasuk->status === 'Diteruskan ke Kepala Bagian') {
                 $suratMasuk->push($ds->suratMasuk);
-            } 
+            }  
         }
         return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
     }
