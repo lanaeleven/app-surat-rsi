@@ -27,8 +27,6 @@
                 <th scope="col">ID</th>
                 <th scope="col">Username</th>
                 <th scope="col">Nama Jabatan</th>
-                <th scope="col">Level</th>
-                <th scope="col">Divisi</th>
                 <th scope="col">Aksi</th>
               </tr>
             </thead>

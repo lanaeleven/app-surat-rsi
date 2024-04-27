@@ -26,11 +26,30 @@ class DashboardController extends Controller
             $suratKeluarBulanIni = SuratKeluar::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
         }
 
-        if (auth()->user()->id !== 1) {
-            $belumDiteruskan = SuratMasuk::where('idPosisiDisposisi', '=', auth()->user()->id)->count();
-            $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->unique('idSuratMasuk')->count();
+        if (auth()->user()->level === 'direktur') {
+            $belumDiteruskan = SuratMasuk::where('status', '=', 'Diteruskan ke Direktur')->count();
+            $sudahDiteruskan = SuratMasuk::where('status', '<>', 'Diteruskan ke Direktur')->where('status', '<>', 'Belum Diteruskan')->count();
         }
-        // dd($belumDiteruskan);
+
+        if (auth()->user()->level === 'kepala') {
+            $distribusiSuratBelumDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->menerimaDS;
+            foreach ($distribusiSuratBelumDiteruskan as $dsbd) {
+                if ($dsbd->suratMasuk->status === 'Diteruskan ke Kepala Bagian') {
+                    $belumDiteruskan++;
+                }
+            }
+            $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->count();
+        }
+
+        if (auth()->user()->level === 'penjab') {
+            $distribusiSuratBelumDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->menerimaDS;
+            foreach ($distribusiSuratBelumDiteruskan as $dsbd) {
+                if ($dsbd->suratMasuk->status === 'Diteruskan ke Penanggung Jawab') {
+                    $belumDiteruskan++;
+                }
+            }
+            $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->count();
+        }
 
         return view('dashboard', [
             'title' => 'App Surat | Dashboard', 

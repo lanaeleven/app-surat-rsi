@@ -26,8 +26,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        Gate::define('dashboard-admin', function (User $user) {
-            return $user->level === 'admin';
+        Gate::define('dashboard-sekre', function (User $user) {
+            return $user->id === 1;
+        });
+
+        Gate::define('dashboard-not-sekre', function (User $user) {
+            return $user->id !== 1;
         });
 
         Gate::define('dashboard-direktur', function (User $user) {

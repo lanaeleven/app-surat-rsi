@@ -11,6 +11,9 @@
             <form method="post" action="/surat-masuk/tambah" enctype="multipart/form-data">
               @csrf
 
+              <input type="hidden" name="idPosisiDisposisi" value="1">
+              <input type="hidden" name="status" value="Belum Diteruskan">
+
               <div class="row mb-3">
                 <label for="tanggalAgenda" class="col-sm-3 col-form-label">Tanggal Agenda</label>
                 <div class="col-sm-9">
@@ -54,13 +57,6 @@
                       </select>
                   </div>
                 </div>
-
-                <div class="row mb-3">
-                  <label for="status" class="col-sm-3 col-form-label">Status</label>
-                  <div class="col-sm-9">
-                    <input name="status" type="text" class="form-control" id="status">
-                  </div>
-              </div>
 
               <div class="row mb-3">
                 <label for="pengirim" class="col-sm-3 col-form-label">Pengirim</label>

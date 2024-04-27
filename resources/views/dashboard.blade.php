@@ -4,22 +4,21 @@
 
       <div class="mb-3">
 
-        @can('dashboard-admin')
+        @can('dashboard-sekre')
             
-        {{-- DASHBOARD ADMIN --}}
+        {{-- DASHBOARD SEKRETARIAT --}}
 
-        <h3 class="fw-bold fs-4 mb-3">Dashboard Admin</h3>
+        <h3 class="fw-bold fs-4 my-3">Dashboard Sekretariat</h3>
 
         <div class="col">
 
-        
         <div class="row">
             <div class="col-sm-6 mb-3 mb-sm-0">
               <div class="card">
                 <div class="card-body">
                   <h2 class="card-title fw-bold">{{ $suratMasukHariIni }} Surat</h2>
                   <p class="card-text fs-3">Surat Masuk hari ini</p>
-                  <a href="/surat-masuk/hari-ini" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                  <a href="/surat-masuk/s/hari-ini" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
                 </div>
               </div>
             </div>
@@ -40,7 +39,7 @@
                 <div class="card-body">
                   <h2 class="card-title fw-bold">{{ $suratMasukBulanIni }} Surat</h2>
                   <p class="card-text fs-3">Surat Masuk bulan ini</p>
-                  <a href="/surat-masuk/bulan-ini" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                  <a href="/surat-masuk/s/bulan-ini" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
                 </div>
               </div>
             </div>
@@ -56,21 +55,21 @@
         </div>
 
     </div>
-    {{-- END DASHBOARD ADMIN --}}
+    {{-- END DASHBOARD SEKRETARIAT --}}
     @endcan
 
-    @can('dashboard-direktur')
-    {{-- DASHBOARD DIREKTUR --}}
+    @can('dashboard-not-sekre')
+    {{-- DASHBOARD NON SEKRETARIAT --}}
 
     <div class="col">
-      <h3 class="fw-bold fs-4 mb-3">Dashboard Direktur</h3>
+      <h3 class="fw-bold fs-4 mb-3">Dashboard {{ auth()->user()->namaJabatan }}</h3>
       <div class="row">
           <div class="col-sm-6 mb-3 mb-sm-0">
             <div class="card">
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $belumDiteruskan }} Surat</h2>
                 <p class="card-text fs-3">Surat Masuk yang belum diteruskan</p>
-                <a href="/surat-masuk/d/belum-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                <a href="/surat-masuk/ns/belum-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>
             </div>
           </div>
@@ -79,75 +78,14 @@
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $sudahDiteruskan }} Surat</h2>
                 <p class="card-text fs-3">Surat Masuk yang sudah diteruskan</p>
-                <a href="/surat-masuk/d/sudah-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+                <a href="/surat-masuk/ns/sudah-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>
             </div>
           </div>
       </div>
     </div>
         
-    {{-- END DASHBOARD DIREKTUR --}}
-    @endcan
-
-    @can('dashboard-kepala')
-    {{-- DASHBOARD KEPALA BAGIAN --}}
-
-    <div class="col">
-      <h3 class="fw-bold fs-4 mb-3">Dashboard Kepala Bagian</h3>
-      <div class="row">
-          <div class="col-sm-6 mb-3 mb-sm-0">
-            <div class="card">
-              <div class="card-body">
-                <h2 class="card-title fw-bold">{{ $belumDiteruskan }} Surat</h2>
-                <p class="card-text fs-3">Surat Masuk yang belum diteruskan</p>
-                <a href="/surat-masuk/kb/belum-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h2 class="card-title fw-bold">{{ $sudahDiteruskan }} Surat</h2>
-                <p class="card-text fs-3">Surat Masuk yang sudah diteruskan</p>
-                <a href="/surat-masuk/kb/sudah-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
-        
-    {{-- END DASHBOARD KEPALA BAGIAN --}}
-    @endcan
-
-    @can('dashboard-penjab')
-    {{-- DASHBOARD PENANGGUNG JAWAB --}}
-
-    <div class="col">
-      <h3 class="fw-bold fs-4 mb-3">Dashboard Penanggung Jawab</h3>
-      <div class="row">
-          <div class="col-sm-6 mb-3 mb-sm-0">
-            <div class="card">
-              <div class="card-body">
-                <h2 class="card-title fw-bold">{{ $belumDiteruskan }} Surat</h2>
-                <p class="card-text fs-3">Surat Masuk yang belum diteruskan</p>
-                <a href="/surat-masuk/pj/belum-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <div class="card-body">
-                <h2 class="card-title fw-bold">{{ $sudahDiteruskan }} Surat</h2>
-                <p class="card-text fs-3">Surat Masuk yang sudah diteruskan</p>
-                <a href="/surat-masuk/pj/sudah-diteruskan" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
-        
-    {{-- END DASHBOARD PENANGGUNG JAWAB --}}
-    @endcan
-        
+    {{-- END DASHBOARD NON SEKRETARIAT --}}
+    @endcan        
       </div>
 @endsection

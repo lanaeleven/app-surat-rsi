@@ -15,7 +15,6 @@
     </div>
   @endif
     <h3 class="fw-bold fs-4 mb-3 text-center">Disposisi Surat Masuk</h3>
-      
     <div class="d-flex justify-content-center">
         <div class="col-9">
             <table class="table table-bordered">
@@ -136,20 +135,47 @@
     @endif
 
     <div class="row d-flex justify-content-center">
-        @if ($suratMasuk->statusArsip === 0)
-            
         <h5 class="text-center fw-bold mb-3">Teruskan Surat</h5>
         <div class="col-9">
             <form action="/surat-masuk/teruskan" method="post">
             @csrf
-            <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
-            <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+            
+
+            {{-- FORM DISPOSISI ADMIN KE DIREKTUR --}}
+
+            @if ($suratMasuk->status === 'Belum Diteruskan')
+            <input type="hidden" name="idTujuanDisposisi" value="2">
+            <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Direktur">
+            <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Teruskan Kepada</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" value="Direktur" aria-label="Disabled input example" disabled readonly>
+                </div>
+            </div>
+            
+            
+            @endif
+
+            {{-- END FORM DISPOSISI ADMIN KE DIREKTUR --}}
+
+
+            {{-- FORM DISPOSISI DIREKTUR KE KEPALA BAGIAN --}}
+
+            @if ($suratMasuk->status === 'Diteruskan ke Direktur')
+
+            <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Kepala Bagian">
+            {{-- <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Arahan dari Administrator</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
+                </div>
+            </div> --}}
 
             <div class="row mb-3">
                 <label for="idTujuanDisposisi" class="col-sm-3 col-form-label">Teruskan Kepada</label>
                 <div class="col-sm-9">
                   <select name="idTujuanDisposisi" class="form-select" id="idTujuanDisposisi" required>
-                      <option value="">Pilih Tujuan Disposisi</option>
+                      <option value="">Pilih Kepala Bagian</option>
                       @foreach ($terusan as $t)
                     
                       <option value="{{ $t->id }}">{{ $t->namaJabatan }}</option>
@@ -157,8 +183,69 @@
                       @endforeach
                     </select>
                 </div>
+              </div>
+                
+            @endif
+
+            {{-- END FORM DISPOSISI DIREKTUR KE KEPALA BAGIAN --}}
+
+            {{-- FORM DISPOSISI KEPALA BAGIAN KE PENANGGUNG JAWAB --}}
+
+            @if ($suratMasuk->status === 'Diteruskan ke Kepala Bagian')
+
+            <input type="hidden" name="statusSuratLanjutan" value="Diteruskan ke Penanggung Jawab">
+            {{-- <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Instruksi dari direktur</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
+                </div>
+            </div> --}}
+
+            <div class="row mb-3">
+                <label for="idTujuanDisposisi" class="col-sm-3 col-form-label">Teruskan Kepada</label>
+                <div class="col-sm-9">
+                  <select name="idTujuanDisposisi" class="form-select" id="idTujuanDisposisi" required>
+                      <option value="">Pilih Penanggung Jawab</option>
+                      @foreach ($terusan as $t)
+                    
+                      <option value="{{ $t->id }}">{{ $t->namaJabatan }}</option>
+  
+                      @endforeach
+                    </select>
+                </div>
+              </div>
+                
+            @endif
+
+            {{-- END FORM DISPOSISI KEPALA BAGIAN KE PENANGGUNG JAWAB --}}
+              
+            {{-- FORM DISPOSISI PENANGGUNG JAWAB KE PENGARSIPAN --}}
+
+            @if ($suratMasuk->status === 'Diteruskan ke Penanggung Jawab')
+            {{-- @dd($distribusiSurat) --}}
+
+            <input type="hidden" name="statusSuratLanjutan" value="Diarsipkan">
+            {{-- <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Instruksi dari Kepala Bagian</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $distribusiSurat[0]->instruksi }}</textarea>
+                </div>
+            </div> --}}
+
+            <input type="hidden" name="idTujuanDisposisi" value="1">
+            <div class="row mb-3">
+                <label for="tujuan" class="col-sm-3 col-form-label">Teruskan Kepada</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="text" value="Sekretariat" aria-label="Disabled input example" disabled readonly>
+                </div>
             </div>
-            
+                
+            @endif
+
+            {{-- END FORM DISPOSISI PENANGGUNG JAWAB KE PENGARSIPAN --}}
+
+            <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
+            <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
             <div class="row mb-3">
                 <label for="instruksi" class="col-sm-3 col-form-label">Instruksi</label>
                 <div class="col-sm-9">
@@ -168,57 +255,16 @@
 
             <div class="d-flex justify-content-center mt-3">
                 <div>
-                  <a href="/surat-masuk/index" class="btn btn-warning">Kembali</a>
+                  <a href="/surat-masuk/index" class="btn btn-warning me-4">Kembali</a>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-success mx-3">Teruskan</button>
+                    <button type="submit" class="btn btn-success">Teruskan</button>
                 </div>
-            </form>
-        @endif
-        @if ($suratMasuk->statusArsip === 0)
-            <form action="/surat-masuk/arsipkan" method="post">
-                @csrf
-                <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
-                <div>
-                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalArsipkan">Arsipkan</button>
-                </div>
-            </form>
-            
-            <!-- Modal Tombol Arsipkan -->
-            <div class="modal fade" data-bs-backdrop="static" id="modalArsipkan" tabindex="-1" aria-labelledby="modalArsipkanLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalArsipkanLabel">Arsipkan Surat</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    Surat yang sudah diarsipkan tidak akan bisa diteruskan lagi. Apakah Anda Yakin?
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Arsipkan</button>
-                    </div>
-                </div>
-                </div>
-            </div>
-        @endif
-
-        @if ($suratMasuk->statusArsip === 1 && auth()->user()->id === 1)
-        <form action="/surat-masuk/bukaArsip" method="post">
-            @csrf
-            <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
-            <div class="d-flex justify-content-center mt-3">
-                <div>
-                    <button type="submit" class="btn btn-danger">Buka Arsip</button>
-                </div>
-            </div>
-        </form>
-        @endif
             </div>
 
             
 
+            </form>
         </div>
     </div>
 </div>

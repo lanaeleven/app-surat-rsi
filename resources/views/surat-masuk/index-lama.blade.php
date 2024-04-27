@@ -38,6 +38,16 @@
           </select>
         </div>
         <div class="col-auto">
+          <select name="status" class="form-select">
+            <option value="">Status Distribusi Surat</option>
+            <option value="Belum Diteruskan" {{ request('status') == "Belum Diteruskan" ? 'selected' : '' }}>Belum Diteruskan</option>
+            <option value="Diteruskan ke Direktur" {{ request('status') == "Diteruskan ke Direktur" ? 'selected' : '' }}>Diteruskan ke Direktur</option>
+            <option value="Diteruskan ke Kepala Bagian" {{ request('status') == "Diteruskan ke Kepala Bagian" ? 'selected' : '' }}>Diteruskan ke Kepala Bagian</option>
+            <option value="Diteruskan ke Penanggung Jawab" {{ request('status') == "Diteruskan ke Penanggung Jawab" ? 'selected' : '' }}>Diteruskan ke Penanggung Jawab</option>
+            <option value="Diarsipkan" {{ request('status') == "Diarsipkan" ? 'selected' : '' }}>Diarsipkan</option>
+          </select>
+        </div>
+        <div class="col-auto">
           <input name="pengirim" type="text" class="form-control" placeholder="Pengirim" value="{{ request('pengirim') }}">
         </div>
         <div class="col-auto">
@@ -83,7 +93,11 @@
                 <td>
                   <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a>
                   <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-secondary"><i class="lni lni-eye"></i></a>
-                  <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="lni lni-write"></i></a>
+                    {{-- <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $sm->fileName }}'><i class="lni lni-download"></i></a> --}}
+                    
+                    @if ($sm->status === 'Belum Diteruskan')
+                    <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="lni lni-write"></i></a>
+                    @endif
                 </td>
               </tr>
 

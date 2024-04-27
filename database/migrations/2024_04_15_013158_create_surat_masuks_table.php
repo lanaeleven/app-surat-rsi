@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('idDireksi');
             $table->foreign('idDireksi')->references('id')->on('direksi');
+            $table->unsignedBigInteger('idPosisiDisposisi');
+            $table->foreign('idPosisiDisposisi')->references('id')->on('users');
+            $table->integer('statusArsip');
             $table->string('nomorSurat');
             $table->date('tanggalAgenda');
             $table->date('tanggalSurat');

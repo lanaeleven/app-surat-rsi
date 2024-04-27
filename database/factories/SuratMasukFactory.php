@@ -19,6 +19,8 @@ class SuratMasukFactory extends Factory
     {
         return [
             'idDireksi' => 1,
+            'idPosisiDisposisi' => 1,
+            'statusArsip' => 0,
             'nomorSurat' => fake()->word(),
             'tanggalSurat' => fake()->dateTimeThisYear(),
             'tanggalAgenda' => fake()->dateTimeThisYear(),

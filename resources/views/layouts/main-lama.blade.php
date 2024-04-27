@@ -18,7 +18,6 @@
   <body>
     
     <div class="wrapper">
-      @can('dashboard-sekre')
       <aside id="sidebar">
         <div class="d-flex">
           <button class="toggle-btn" type="button">
@@ -43,7 +42,7 @@
 
           {{-- NAVBAR ADMIN --}}
 
-          
+          @can('dashboard-sekre')
               
           <li class="sidebar-item
           @if ($active === "surat masuk")
@@ -196,7 +195,7 @@
             </ul>
           </li>
 
-          
+          @endcan
 
         </ul>
         <!-- <div class="sidebar-footer">
@@ -206,33 +205,36 @@
           </a>
         </div> -->
       </aside>
-      @endcan
-
       <div class="main">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-          <div class="container-fluid mx-3">
+          <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="/img/logorsi.png" width="150" alt="Logo RSI"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-              @can('dashboard-sekre')
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {{-- <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+                </li> --}}
+                {{-- <li class="nav-item dropdown"> --}}
+                  {{-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul> --}}
+                {{-- </li> --}}
+                <li class="nav-item">
+                  {{-- <a class="nav-link disabled" aria-disabled="true">Disabled</a> --}}
                 </li>
               </ul>
-              @endcan
-
-              @can('dashboard-not-sekre')
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link" href="/">Dashboard</a>
-                </li>
-              </ul>
-              @endcan
-
-              <span class="me-5">{{ auth()->user()->namaJabatan }}</span>
               <form action="/logout" method="post">
                 @csrf
                   <button type="submit" class="btn btn-danger container-fluid">Logout</button>
@@ -240,6 +242,49 @@
             </div>
           </div>
         </nav>
+        {{-- <nav class="navbar navbar-expand px-4 py-3">
+          <div>
+            <img src="/img/logorsi.png" width="150" alt="Logo RSI">
+          </div>
+          <form action="#" class="d-none d-sm-inline-block"></form>
+          <div class="navbar-collapse collapse">
+            <ul class="navbar-nav ms-auto">
+                  <li class="d-none d-lg-block">
+                    <div class="me-5">
+                      <h5 class="fw-bold m-auto">{{ Auth::user()->namaJabatan }}</h5>
+                    </div>
+                  </li>
+                  <li class="d-none d-lg-block">
+                    <form action="/logout" method="post">
+                      @csrf
+                        <button type="submit" class="btn btn-white container-fluid">Logout</button>
+                    </form> --}}
+                    {{-- <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                      <img src="account.png" class="avatar img-fluid" alt="" />
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end rounded"></div> --}}
+                  {{-- </li>
+                  <li> --}}
+                    {{-- <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                      Link with href
+                    </a> --}}
+                    {{-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </li>
+                  
+            </ul> --}}
+            {{-- <div class="collapse" id="collapseExample"> --}}
+              
+            {{-- </div> --}}
+          {{-- </div>
+        </nav> --}}
 
         <main class="content px-3 py-4">
           <div class="container-fluid">
@@ -248,7 +293,33 @@
 
           </div>
         </main>
-        
+
+        {{-- <footer class="footer">
+          <div class="container-fluid">
+            <div class="row text-body-secondary">
+              <div class="col-6 text-start">
+                <a class="text-body-secondary" href=" #">
+                  <strong>CodzSwod</strong>
+                </a>
+              </div>
+              <div class="col-6 text-end text-body-secondary d-none d-md-block">
+                <ul class="list-inline mb-0">
+                  <li class="list-inline-item">
+                    <a class="text-body-secondary" href="#">Contact</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="text-body-secondary" href="#">About Us</a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="text-body-secondary" href="#"
+                      >Terms & Conditions</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer> --}}
       </div>
     </div>
     <script
