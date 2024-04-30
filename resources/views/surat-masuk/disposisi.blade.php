@@ -14,7 +14,22 @@
         </ul>
     </div>
   @endif
-    <h3 class="fw-bold fs-4 mb-3 text-center">Disposisi Surat Masuk</h3>
+  @php
+    $kembali = "/surat-masuk/index";
+      if (auth()->user()->id != 1) {
+        $kembali = "/surat-masuk/ns/belum-diteruskan";
+      }
+  @endphp
+  <div class="d-flex justify-content-between align-items-center my-4">
+    <div>
+    </div>
+    <div>
+      <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Disposisi Surat Masuk</h3>
+    </div>
+    <div>
+      <a href="{{ $kembali }}" class="btn btn-warning">Kembali</a>
+    </div>
+  </div>
       
     <div class="d-flex justify-content-center">
         <div class="col-9">
@@ -168,25 +183,43 @@
 
             <div class="d-flex justify-content-center mt-3">
                 <div>
-                  <a href="/surat-masuk/index" class="btn btn-warning">Kembali</a>
+                    <button type="button" class="btn btn-success mx-3" data-bs-toggle="modal" data-bs-target="#modalTeruskan">Teruskan</button>
                 </div>
-                <div>
-                    <button type="submit" class="btn btn-success mx-3">Teruskan</button>
+
+                <!-- Modal Tombol Teruskan -->
+                <div class="modal fade" data-bs-backdrop="static" id="modalTeruskan" tabindex="-1" aria-labelledby="modalTeruskanLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalTeruskanLabel">Teruskan Surat</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    Pastikan tujuan disposisi dan instruksi sudah benar
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Teruskan</button>
+                    </div>
                 </div>
+                </div>
+            </div>
             </form>
         @endif
         @if ($suratMasuk->statusArsip === 0)
             <form action="/surat-masuk/arsipkan" method="post">
                 @csrf
                 <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                <input type="hidden" name="idTujuanDisposisi" value="1">
+                <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
                 <div>
-                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalArsipkan">Arsipkan</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalArsipkan">Arsipkan</button>
                 </div>
-            </form>
+            
             
             <!-- Modal Tombol Arsipkan -->
             <div class="modal fade" data-bs-backdrop="static" id="modalArsipkan" tabindex="-1" aria-labelledby="modalArsipkanLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalArsipkanLabel">Arsipkan Surat</h1>
@@ -194,23 +227,49 @@
                     </div>
                     <div class="modal-body">
                     Surat yang sudah diarsipkan tidak akan bisa diteruskan lagi. Apakah Anda Yakin?
+                    <div class="row my-3">
+                        <label for="instruksi" class="col-sm-3 col-form-label">Keterangan</label>
+                        <div class="col-sm-9">
+                          <textarea class="form-control" name="instruksi" id="instruksi" rows="3" required></textarea>
+                        </div>
+                    </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Arsipkan</button>
+                    <button type="submit" class="btn btn-primary">Arsipkan</button>
                     </div>
                 </div>
                 </div>
             </div>
+        </form>
         @endif
 
         @if ($suratMasuk->statusArsip === 1 && auth()->user()->id === 1)
-        <form action="/surat-masuk/bukaArsip" method="post">
+        <form action="/surat-masuk/buka-arsip" method="post">
             @csrf
             <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
             <div class="d-flex justify-content-center mt-3">
                 <div>
-                    <button type="submit" class="btn btn-danger">Buka Arsip</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalBukaArsip">Buka Arsip</button>
+                </div>
+            </div>
+
+            <!-- Modal Tombol Buka Arsip -->
+            <div class="modal fade" data-bs-backdrop="static" id="modalBukaArsip" tabindex="-1" aria-labelledby="modalBukaArsipLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalBukaArsipLabel">Buka Arsip</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    Anda Yakin Ingin Membuka Status Arsip?
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Buka Arsip</button>
+                    </div>
+                </div>
                 </div>
             </div>
         </form>

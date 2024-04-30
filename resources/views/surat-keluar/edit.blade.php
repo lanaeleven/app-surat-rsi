@@ -5,16 +5,18 @@
 @section('container')
     
 <div>
-  @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+
+    <div class="d-flex justify-content-between align-items-center my-4">
+      <div>
+      </div>
+      <div>
+        <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Edit Surat Keluar</h3>
+      </div>
+      <div>
+        <a href="/surat-keluar/index" class="btn btn-warning">Kembali</a>
+      </div>
     </div>
-  @endif
-    <h3 class="fw-bold fs-4 mb-3 text-center">Edit Surat Keluar</h3>
+
     <div class="d-flex justify-content-center">
         <div class="col-6">
             <form method="post" action="/surat-keluar/save" enctype="multipart/form-data">

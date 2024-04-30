@@ -19,7 +19,24 @@
         </ul>
     </div>
   @endif
-    <h3 class="fw-bold fs-4 mb-3 text-center">Distribusi Surat</h3>
+  
+  @php
+    $kembali = "/surat-masuk/index";
+      if (auth()->user()->id != 1) {
+        $kembali = "/surat-masuk/ns/sudah-diteruskan";
+      }
+  @endphp
+  <div class="d-flex justify-content-between align-items-center my-4">
+    <div>
+    </div>
+    <div>
+      <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Distribusi Surat</h3>
+    </div>
+    <div>
+      <a href="{{ $kembali }}" class="btn btn-warning">Kembali</a>
+    </div>
+  </div>
+  
     <div class="d-flex justify-content-center">
         <div class="col-9">
             <table class="table table-bordered">

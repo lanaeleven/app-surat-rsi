@@ -104,7 +104,7 @@ class SuratKeluarController extends Controller
 
         // Redirect back to the index page with a success message
         return redirect('/surat-keluar/index')
-            ->with('success', "File `{$suratKeluar->fileName}` uploaded successfully.");
+            ->with('success', 'Berhasil Menambahkan Surat Keluar');
     }
 
     public function save(Request $request): RedirectResponse
@@ -144,7 +144,7 @@ class SuratKeluarController extends Controller
 
         // Redirect back to the index page with a success message
         return redirect('/surat-keluar/index')
-            ->with('success', "File `{$suratKeluar->fileName}` uploaded successfully.");
+            ->with('success', 'Berhasil Mengedit Surat Keluar');
     }
 
     public function laporanPerJenisSurat() {

@@ -20,11 +20,8 @@ class UserController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        // dd($request->input());
         // Validate the incoming file. 
         $request->validate([
-            'divisi' => 'required',
-            'level' => 'required',
             'namaJabatan' => 'required|unique:users,namaJabatan',
             'username' => 'required|unique:users,username',
             'password' => 'required',
@@ -32,15 +29,13 @@ class UserController extends Controller
 
         // Store file information in the database
         $user = new User();
-        $user->divisi = $request->input('divisi');
-        $user->level = $request->input('level');
         $user->namaJabatan = $request->input('namaJabatan');
         $user->username = $request->input('username');
         $user->password = Hash::make($request->input('password'));
         $user->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/user/index');
+        return redirect('/user/index')->with('success', 'Berhasil Menambahkan Tujuan Disposisi');
     }
 
     public function edit(User $user) {
@@ -52,8 +47,6 @@ class UserController extends Controller
         // Validate the incoming file. 
         
         $request->validate([
-            'divisi' => 'required',
-            'level' => 'required',
             'namaJabatan' => 'required',
             'username' => 'required'
         ]);
@@ -73,14 +66,11 @@ class UserController extends Controller
         }
 
         // Store file information in the database
-        
-        $user->divisi = $request->input('divisi');
-        $user->level = $request->input('level');
         $user->namaJabatan = $request->input('namaJabatan');
         $user->username = $request->input('username');
         $user->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/user/index');
+        return redirect('/user/index')->with('success', 'Berhasil Mengedit Tujuan Disposisi');
     }
 }

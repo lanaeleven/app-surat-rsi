@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('idPengirimDisposisi')->references('id')->on('users');
             $table->date('tanggalDiteruskan');
             $table->string('status');
-            $table->string('instruksi');
+            $table->string('instruksi')->nullable();
         });
     }
 

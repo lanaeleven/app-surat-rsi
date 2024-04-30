@@ -3,19 +3,22 @@
 
 @section('container')
 <div>
-  @if ($errors->any())
-  <div class="alert alert-danger">
-      <ul>
-          @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-          @endforeach
-      </ul>
+  @if (session()->has('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 @endif  
-    <h3 class="fw-bold fs-4 mb-3">{{ $judul }}</h3>
-    <div class="d-flex flex-row-reverse my-2">
+    <div class="d-flex justify-content-between my-2">
+      <div>
+        <h3 class="fw-bold fs-4">{{ $judul }}</h3>
+      </div>
       <div class="mb-2">
+        @if (is_null($keterangan))
         <a href="/surat-masuk/tambah" class="btn btn-primary">Tambah</a>
+        @else
+        <a href="/" class="btn btn-warning">Kembali</a>
+        @endif
       </div>
     </div>
 

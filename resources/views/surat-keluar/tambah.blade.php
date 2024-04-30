@@ -3,9 +3,18 @@
 @extends('layouts.main')
 
 @section('container')
-    
+
 <div>
-    <h3 class="fw-bold fs-4 mb-3 text-center">Tambah Surat Keluar</h3>
+    <div class="d-flex justify-content-between align-items-center my-4">
+      <div>
+      </div>
+      <div>
+        <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Tambah Surat Keluar</h3>
+      </div>
+      <div>
+        <a href="/surat-keluar/index" class="btn btn-warning">Kembali</a>
+      </div>
+    </div>
     <div class="d-flex justify-content-center">
         <div class="col-6">
             <form method="post" action="/surat-keluar/tambah" enctype="multipart/form-data">
@@ -17,7 +26,9 @@
                     <select name="jenisSurat" class="form-select" id="jenisSurat" required>
                         <option value="">Pilih Jenis Surat</option>
                         @foreach ($jenisSurat as $js)
-                          <option value="{{ $js->id }}">{{ $js->kodeJenisSurat.'-'.$js->keterangan }}</option>
+                          <option value="{{ $js->id }}" @if ($js->id == old('jenisSurat'))
+                            selected
+                            @endif>{{ $js->kodeJenisSurat.'-'.$js->keterangan }}</option>
                           @endforeach
                       </select>
                   </div>
@@ -26,21 +37,21 @@
                 <div class="row mb-3">
                   <label for="tanggalSurat" class="col-sm-3 col-form-label">Tanggal Surat</label>
                   <div class="col-sm-9">
-                    <input name="tanggalSurat" type="date" class="form-control" id="tanggalSurat" required>
+                    <input name="tanggalSurat" type="date" class="form-control" id="tanggalSurat" value="{{ old('tanggalSurat') }}" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                     <label for="tujuan" class="col-sm-3 col-form-label">Tujuan</label>
                     <div class="col-sm-9">
-                      <input name="tujuan" type="text" class="form-control" id="tujuan" required>
+                      <input name="tujuan" type="text" class="form-control" id="tujuan" value="{{ old('tujuan') }}" required>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <label for="perihal" class="col-sm-3 col-form-label">Perihal</label>
                     <div class="col-sm-9">
-                      <textarea class="form-control" name="perihal" id="perihal" rows="3" required></textarea>
+                      <textarea class="form-control" name="perihal" id="perihal" rows="3" required>{{ old('perihal') }}</textarea>
                     </div>
                 </div>
 
@@ -51,7 +62,9 @@
                           <option value="">Pilih Direksi</option>
                           @foreach ($direksi as $d)
                         
-                          <option value="{{ $d->id }}">{{ $d->namaDireksi }}</option>
+                          <option value="{{ $d->id }}" @if ($d->id == old('direksi'))
+                            selected
+                            @endif>{{ $d->namaDireksi }}</option>
 
                           @endforeach
                         </select>
@@ -61,21 +74,23 @@
                   <div class="row mb-3">
                     <label for="fileSurat" class="col-sm-3 col-form-label">Upload Surat</label>
                     <div class="col-sm-9">
-                        <input name="fileSurat" class="form-control" type="file" id="fileSurat" required>
+                        <input name="fileSurat" class="form-control @error('fileSurat') is-invalid @enderror" type="file" id="fileSurat" required>
+                      @error('fileSurat')
+                      <div id="fileSurat" class="invalid-feedback">
+                        {{ $message }}
+                      </div>
+                      @enderror
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
                     <div class="col-sm-9">
-                      <textarea name="keterangan" class="form-control" name="keterangan" id="keterangan" rows="3"></textarea>
+                      <textarea name="keterangan" class="form-control" name="keterangan" id="keterangan" rows="3">{{ old('keterangan') }}</textarea>
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-center">
-                  <div>
-                    <a href="/surat-keluar/index" class="btn btn-warning mt-3 me-4">Kembali</a>
-                  </div>
                   <div>
                     <button type="submit" class="btn btn-success mt-3">Tambah</button>
                   </div>

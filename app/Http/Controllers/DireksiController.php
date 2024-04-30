@@ -30,7 +30,7 @@ class DireksiController extends Controller
         $direksi->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/direksi/index');
+        return redirect('/direksi/index')->with('success', 'Berhasil Menambahkan Direksi');
     }
 
     public function edit(Direksi $direksi) {
@@ -59,6 +59,6 @@ class DireksiController extends Controller
         $direksi->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/direksi/index');
+        return redirect('/direksi/index')->with('success', 'Berhasil Mengedit Direksi');
     }
 }

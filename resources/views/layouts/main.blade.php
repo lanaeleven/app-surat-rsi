@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/css/style.css" />
   </head>
 
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     
     <div class="wrapper">
       @can('dashboard-sekre')
@@ -41,9 +41,7 @@
             </a>
           </li>
 
-          {{-- NAVBAR ADMIN --}}
-
-          
+          {{-- NAVBAR ADMIN --}}       
               
           <li class="sidebar-item
           @if ($active === "surat masuk")
@@ -66,13 +64,7 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a
-              href="#"
-              class="sidebar-link collapsed has-dropdown"
-              data-bs-toggle="collapse"
-              data-bs-target="#multi"
-              aria-expanded="false"
-              aria-controls="multi"
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi"
             >
             <i class="lni lni-book"></i>
               <span>Laporan</span>
@@ -96,6 +88,7 @@
                 <ul
                   id="suratmasuk"
                   class="sidebar-dropdown list-unstyled collapse"
+                  data-bs-parent="#multi"
                 >
                   <li class="sidebar-item">
                     <a href="/laporan/surat-masuk/per-direksi" class="sidebar-link">Per Direksi</a>
@@ -195,16 +188,7 @@
               </li>
             </ul>
           </li>
-
-          
-
         </ul>
-        <!-- <div class="sidebar-footer">
-          <a href="#" class="sidebar-link">
-            <i class="lni lni-exit"></i>
-            <span>Logout</span>
-          </a>
-        </div> -->
       </aside>
       @endcan
 
@@ -235,7 +219,26 @@
               <span class="me-5">{{ auth()->user()->namaJabatan }}</span>
               <form action="/logout" method="post">
                 @csrf
-                  <button type="submit" class="btn btn-danger container-fluid">Logout</button>
+                  <button type="button" class="btn btn-danger container-fluid" data-bs-toggle="modal" data-bs-target="#modalLogout">Logout</button>
+
+                  <!-- Modal Tombol Logout -->
+                <div class="modal fade" data-bs-backdrop="static" id="modalLogout" tabindex="-1" aria-labelledby="modalLogoutLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalLogoutLabel">Keluar dari aplikasi</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        Anda yakin ingin keluar dari aplikasi?
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                        </div>
+                    </div>
+                  </div>
+              </div>
               </form>
             </div>
           </div>
@@ -248,7 +251,15 @@
 
           </div>
         </main>
-        
+
+        <footer class="bg-body-tertiary text-center text-lg-start mt-auto">
+          <!-- Copyright -->
+          <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2024 Copyright: IT Dept Banjarbaru
+          </div>
+          <!-- Copyright -->
+        </footer>
+
       </div>
     </div>
     <script

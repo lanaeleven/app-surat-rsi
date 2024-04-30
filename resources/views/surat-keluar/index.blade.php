@@ -3,10 +3,24 @@
 
 @section('container')
 <div class="div">
-    <h3 class="fw-bold fs-4 mb-3">Surat Keluar</h3>
-    <div class="d-flex flex-row-reverse my-2">
+  @section('container')
+<div>
+  @if (session()->has('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif  
+    <div class="d-flex justify-content-between my-2">
+      <div>
+        <h3 class="fw-bold fs-4 mb-3">{{ $judul }}</h3>
+      </div>
       <div class="mb-2">
+        @if (is_null($ket))
         <a href="/surat-keluar/tambah" class="btn btn-primary">Tambah</a>
+        @else
+        <a href="/" class="btn btn-warning">Kembali</a>
+        @endif
       </div>
     </div>
     <div>

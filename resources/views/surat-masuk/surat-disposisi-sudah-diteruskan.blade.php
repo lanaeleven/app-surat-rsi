@@ -12,7 +12,16 @@
       </ul>
   </div>
 @endif  
-    <h3 class="fw-bold fs-4 mb-3 text-center text-md-start">Surat Masuk</h3>
+
+    <div class="d-flex justify-content-between align-items-center my-4">
+      <div>
+        <h3 class="fw-bold fs-4 text-center">Surat Masuk yang Sudah Diteruskan</h3>
+      </div>
+      <div>
+        <a href="/" class="btn btn-warning">Kembali</a>
+      </div>
+    </div>
+
     <div class="d-none d-md-block">
         <table class="table table-striped">
             <thead>

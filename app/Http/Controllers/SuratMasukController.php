@@ -91,23 +91,24 @@ class SuratMasukController extends Controller
 
         // Store file information in the database
         $suratMasuk = new SuratMasuk();
-        $suratMasuk->idPosisiDisposisi =$request->input('idPosisiDisposisi');
-        $suratMasuk->tanggalAgenda =$request->input('tanggalAgenda');
-        $suratMasuk->sifatSurat =$request->input('sifatSurat');
-        $suratMasuk->nomorSurat =$request->input('nomorSurat');
-        $suratMasuk->tanggalSurat =$request->input('tanggalSurat');
-        $suratMasuk->lampiran =$request->input('lampiran');
-        $suratMasuk->pengirim =$request->input('pengirim');
-        $suratMasuk->idDireksi =$request->input('direksi');
-        $suratMasuk->perihal =$request->input('perihal');
-        $suratMasuk->status =$request->input('status');
+        $suratMasuk->idPosisiDisposisi = $request->input('idPosisiDisposisi');
+        $suratMasuk->tanggalAgenda = $request->input('tanggalAgenda');
+        $suratMasuk->sifatSurat = $request->input('sifatSurat');
+        $suratMasuk->nomorSurat = $request->input('nomorSurat');
+        $suratMasuk->tanggalSurat = $request->input('tanggalSurat');
+        $suratMasuk->lampiran = $request->input('lampiran');
+        $suratMasuk->pengirim = $request->input('pengirim');
+        $suratMasuk->idDireksi = $request->input('direksi');
+        $suratMasuk->perihal = $request->input('perihal');
+        $suratMasuk->status = $request->input('status');
+        $suratMasuk->statusArsip = 0;
         $suratMasuk->fileName = $fileName;
         $suratMasuk->filePath = $filePath;
         $suratMasuk->save();
 
         // Redirect back to the index page with a success message
         return redirect('/surat-masuk/index')
-            ->with('success', "File uploaded successfully.");
+            ->with('success', "Berhasil Menambahkan Surat Masuk");
     }
 
     public function edit(SuratMasuk $suratMasuk) {
@@ -158,21 +159,23 @@ class SuratMasukController extends Controller
 
         // Redirect back to the index page with a success message
         return redirect('/surat-masuk/index')
-            ->with('success', "File uploaded successfully.");
+            ->with('success', "Berhasil Mengedit Surat Masuk");
     }
 
     public function disposisi(SuratMasuk $suratMasuk) {
         $terusan = User::where('id', '<>', auth()->user()->id)->get();
         // dd($terusan);
         
+        // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
         // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
         if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
             $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
-            if (! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status === "Diarsipkan") {
+            if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status === "Diarsipkan") && auth()->user()->id !== 1) {
                 abort(403);
             }
         }
 
+        // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG BELUM DITERUSKAN
         // PENGECEKAN APAKAH SURAT MASUK YANG BELUM DITERUSKAN DIAKSES OLEH ADMIN ATAU BUKAN, JIKA BUKAN ADMIN MAKA TIDAK DIPERBOLEHKAN
         if ($suratMasuk->status === "Belum Diteruskan" && auth()->user()->id !== 1) {
             abort(403);
@@ -189,7 +192,7 @@ class SuratMasukController extends Controller
         if (auth()->user()->id === 1) {
             $redirect = '/surat-masuk/index';
         } else {
-            $redirect = '/surat-masuk/ns/belum-diteruskan';
+            $redirect = '/';
         }        
         
         $request->validate([
@@ -220,7 +223,7 @@ class SuratMasukController extends Controller
 
         // Redirect back to the index page with a success message
         return redirect($redirect)
-            ->with('success', "File uploaded successfully.");
+            ->with('success', "Berhasil Meneruskan Pesan");
     }
 
     public function lihatSuratDisposisi(SuratMasuk $suratMasuk) {
@@ -230,21 +233,25 @@ class SuratMasukController extends Controller
 
     public function lacakDistribusi(SuratMasuk $suratMasuk) {
         $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->get();
+        $daftarPengirim = [];
+        foreach ($distribusiSurat as $ds) {
+            array_push($daftarPengirim, $ds->idPengirimDisposisi);
+        }
+        if (! in_array(auth()->user()->id, $daftarPengirim) && auth()->user()->id != 1) {
+            abort(403);
+        }
         return view('surat-masuk.lacak-distribusi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
     }
 
     public function laporanPerDireksi() {
         $suratMasuk = SuratMasuk::orderBy('idDireksi', 'asc');
         $suratMasuk->select('idDireksi', SuratMasuk::raw('COUNT(idDireksi) as total_surat'))->groupBy('idDireksi');
-
         if (request('tanggalAwal')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
         }
-
         if (request('tanggalAkhir')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
         }        
-
         return view('surat-masuk.laporan-per-direksi', ['title' => 'App Surat | Surat Masuk Per Direksi', 'active' => 'laporan', 'suratMasuk' => $suratMasuk->get()]);
     }
 
@@ -264,9 +271,41 @@ class SuratMasukController extends Controller
     }
 
     public function arsipkan(Request $request) {
+        $request->validate([
+            'idTujuanDisposisi' => 'required',
+            'idSuratMasuk' => 'required',
+            'instruksi' => 'required',
+            'idPengirimDisposisi' => 'required'
+        ]);
+
+        $redirect = "/";
+        if (auth()->user()->id === 1) {
+            $redirect = "/surat-masuk/index";
+        }
+
         $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
         $suratMasuk->statusArsip = 1;
+        $suratMasuk->idPosisiDisposisi = 1;
+        $suratMasuk->status = "Diarsipkan";
         $suratMasuk->save();
-        return redirect('/surat-masuk/index');
+
+        $distribusiSurat = new DistribusiSurat();
+        $distribusiSurat->idTujuanDisposisi = $request->input('idTujuanDisposisi');
+        $distribusiSurat->idPengirimDisposisi = $request->input('idPengirimDisposisi');
+        $distribusiSurat->idSuratMasuk = $request->input('idSuratMasuk');
+        $distribusiSurat->instruksi = $request->input('instruksi');
+        $distribusiSurat->tanggalDiteruskan = now();
+        $distribusiSurat->status = "Diarsipkan";
+        $distribusiSurat->save();
+        return redirect($redirect)->with('success', 'Berhasil Mengarsipkan Surat');
+    }
+
+    public function bukaArsip(Request $request) {
+        $distribusiSurat = DistribusiSurat::where("idSuratMasuk", $request->input('idSuratMasuk'))->get();
+        // dd($distribusiSurat);
+        $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
+        $suratMasuk->statusArsip = 0;
+        $suratMasuk->save();
+        return redirect('/surat-masuk/disposisi/' . $request->input('idSuratMasuk'));
     }
 }

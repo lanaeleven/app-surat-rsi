@@ -22,26 +22,27 @@ use App\Http\Controllers\SuratKeluarController;
 
 Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
 
-Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('admin');
-Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('admin');
-Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah']);
-Route::get('/surat-masuk/edit/{suratMasuk}', [SuratMasukController::class, 'edit'])->middleware('admin');
-Route::get('/laporan/surat-masuk/per-direksi', [SuratMasukController::class, 'laporanPerDireksi'])->middleware('admin');
-Route::get('/surat-masuk/disposisi/{suratMasuk}', [SuratMasukController::class, 'disposisi']);
-Route::get('/surat-masuk/ns/belum-diteruskan', [SuratMasukController::class, 'nonSekreBelumDiteruskan']);
-Route::get('/surat-masuk/ns/sudah-diteruskan', [SuratMasukController::class, 'nonSekreSudahDiteruskan']);
-Route::get('/surat-masuk/lacak-distribusi/{suratMasuk}', [SuratMasukController::class, 'lacakDistribusi']);
+Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('sekre');
+Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('sekre');
+Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah'])->middleware('sekre');
+Route::get('/surat-masuk/edit/{suratMasuk}', [SuratMasukController::class, 'edit'])->middleware('sekre');
+Route::get('/laporan/surat-masuk/per-direksi', [SuratMasukController::class, 'laporanPerDireksi'])->middleware('sekre');
+Route::get('/surat-masuk/disposisi/{suratMasuk}', [SuratMasukController::class, 'disposisi'])->middleware('auth');
+Route::get('/surat-masuk/lacak-distribusi/{suratMasuk}', [SuratMasukController::class, 'lacakDistribusi'])->middleware('auth');
+Route::get('/surat-masuk/ns/belum-diteruskan', [SuratMasukController::class, 'nonSekreBelumDiteruskan'])->middleware('notSekre');
+Route::get('/surat-masuk/ns/sudah-diteruskan', [SuratMasukController::class, 'nonSekreSudahDiteruskan'])->middleware('notSekre');
 Route::post('/surat-masuk/tambah', [SuratMasukController::class, 'store']);
 Route::post('/surat-masuk/save', [SuratMasukController::class, 'save']);
 Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);
 Route::post('/surat-masuk/arsipkan', [SuratMasukController::class, 'arsipkan']);
+Route::post('/surat-masuk/buka-arsip', [SuratMasukController::class, 'bukaArsip']);
 
-Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('admin');
-Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('admin');
-Route::get('/surat-keluar/edit/{suratKeluar}', [SuratKeluarController::class, 'edit'])->middleware('admin');
-Route::get('/surat-keluar/{ket}', [SuratKeluarController::class, 'create'])->middleware('admin');
-Route::get('/laporan/surat-keluar/per-jenis-surat', [SuratKeluarController::class, 'laporanPerJenisSurat'])->middleware('admin');
-Route::get('/laporan/surat-keluar/per-direksi', [SuratKeluarController::class, 'laporanPerDireksi'])->middleware('admin');
+Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('sekre');
+Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('sekre');
+Route::get('/surat-keluar/edit/{suratKeluar}', [SuratKeluarController::class, 'edit'])->middleware('sekre');
+Route::get('/surat-keluar/{ket}', [SuratKeluarController::class, 'create'])->middleware('sekre');
+Route::get('/laporan/surat-keluar/per-jenis-surat', [SuratKeluarController::class, 'laporanPerJenisSurat'])->middleware('sekre');
+Route::get('/laporan/surat-keluar/per-direksi', [SuratKeluarController::class, 'laporanPerDireksi'])->middleware('sekre');
 Route::post('/surat-keluar/tambah', [SuratKeluarController::class, 'store']);
 Route::post('/surat-keluar/save', [SuratKeluarController::class, 'save']);
 
@@ -49,20 +50,20 @@ Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->n
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/direksi/index', [DireksiController::class, 'create'])->middleware('admin');
-Route::get('/direksi/tambah', [DireksiController::class, 'tambah'])->middleware('admin');
-Route::get('/direksi/edit/{direksi}', [DireksiController::class, 'edit'])->middleware('admin');
+Route::get('/direksi/index', [DireksiController::class, 'create'])->middleware('sekre');
+Route::get('/direksi/tambah', [DireksiController::class, 'tambah'])->middleware('sekre');
+Route::get('/direksi/edit/{direksi}', [DireksiController::class, 'edit'])->middleware('sekre');
 Route::post('/direksi/tambah', [DireksiController::class, 'store']);
 Route::post('/direksi/save', [DireksiController::class, 'save']);
 
-Route::get('/jenis-surat/index', [JenisSuratController::class, 'create'])->middleware('admin');
-Route::get('/jenis-surat/tambah', [JenisSuratController::class, 'tambah'])->middleware('admin');
-Route::get('/jenis-surat/edit/{jenisSurat}', [JenisSuratController::class, 'edit'])->middleware('admin');
+Route::get('/jenis-surat/index', [JenisSuratController::class, 'create'])->middleware('sekre');
+Route::get('/jenis-surat/tambah', [JenisSuratController::class, 'tambah'])->middleware('sekre');
+Route::get('/jenis-surat/edit/{jenisSurat}', [JenisSuratController::class, 'edit'])->middleware('sekre');
 Route::post('/jenis-surat/tambah', [JenisSuratController::class, 'store']);
 Route::post('/jenis-surat/save', [JenisSuratController::class, 'save']);
 
-Route::get('/user/index', [UserController::class, 'create'])->middleware('admin');
-Route::get('/user/tambah', [UserController::class, 'tambah'])->middleware('admin');
-Route::get('/user/edit/{user}', [UserController::class, 'edit'])->middleware('admin');
+Route::get('/user/index', [UserController::class, 'create'])->middleware('sekre');
+Route::get('/user/tambah', [UserController::class, 'tambah'])->middleware('sekre');
+Route::get('/user/edit/{user}', [UserController::class, 'edit'])->middleware('sekre');
 Route::post('/user/tambah', [UserController::class, 'store']);
 Route::post('/user/save', [UserController::class, 'save']);

@@ -32,7 +32,7 @@ class JenisSuratController extends Controller
         $jenisSurat->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/jenis-surat/index');
+        return redirect('/jenis-surat/index')->with('success', 'Berhasil Menambah Jenis Surat');
     }
 
     public function edit(JenisSurat $jenisSurat) {
@@ -69,6 +69,6 @@ class JenisSuratController extends Controller
         $jenisSurat->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/jenis-surat/index');
+        return redirect('/jenis-surat/index')->with('success', 'Berhasil Mengedit Jenis Surat');
     }
 }

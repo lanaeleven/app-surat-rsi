@@ -4,7 +4,18 @@
 @section('container')
     
 <div>
-    <h3 class="fw-bold fs-4 mb-3 text-center">Edit Direksi</h3>
+    
+  <div class="d-flex justify-content-between align-items-center my-4">
+    <div>
+    </div>
+    <div>
+      <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Edit Direksi</h3>
+    </div>
+    <div>
+      <a href="/direksi/index" class="btn btn-warning">Kembali</a>
+    </div>
+  </div>
+
     <div class="d-flex justify-content-center">
         <div class="col-6">
             <form method="post" action="/direksi/save">
@@ -23,9 +34,6 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                  <div>
-                    <a href="/direksi/index" class="btn btn-warning mt-3 me-4">Kembali</a>
-                  </div>
                   <div>
                     <button type="submit" class="btn btn-success mt-3">Simpan</button>
                   </div>

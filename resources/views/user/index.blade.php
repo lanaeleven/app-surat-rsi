@@ -3,22 +3,20 @@
 
 @section('container')
 <div class="div">
-  @if ($errors->any())
-  <div class="alert alert-danger">
-      <ul>
-          @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-          @endforeach
-      </ul>
+  @if (session()->has('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ session('success') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endif  
+  <div class="d-flex justify-content-between my-2">
+    <div>
+      <h3 class="fw-bold fs-4 mb-3">Daftar User</h3>
+    </div>
+    <div>
+      <a href="/user/tambah" class="btn btn-primary">Tambah User</a>
+    </div>
   </div>
-@endif  
-    <h3 class="fw-bold fs-4 mb-3">Daftar User</h3>
-
-    <div class="d-flex flex-row-reverse my-2">
-        <div class="mb-2">
-          <a href="/user/tambah" class="btn btn-primary">Tambah User</a>
-        </div>
-      </div>   
 
     <div class="div">
         <table class="table table-striped">
