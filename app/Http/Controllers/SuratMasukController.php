@@ -308,4 +308,94 @@ class SuratMasukController extends Controller
         $suratMasuk->save();
         return redirect('/surat-masuk/disposisi/' . $request->input('idSuratMasuk'));
     }
+
+    public function laporanDistribusiSurat(?string $keterangan = null) {
+        // dd(SuratMasuk::where('statusArsip', '=', 0)->get());
+        // dd(gettype((int)request('statusArsip')));
+        $suratMasuk = SuratMasuk::orderBy('id', 'desc');
+        $direksi = Direksi::all();
+        $judul = "Laporan Surat Masuk";
+        $terusan = User::where('id', '<>', 1)->get();
+
+        if ($keterangan == "posisi-terakhir") {
+            $suratMasuk->where('statusArsip', '=', 0);
+            $judul = "Laporan Distribusi Surat Berdasarkan Tujuan Disposisi Terakhir";
+        }
+
+        if ($keterangan == "sudah-selesai") {
+            $judul = "Laporan Distribusi Surat yang Sudah Selesai";
+        }
+
+        if ($keterangan == "pernah-distribusi") {
+            $judul = "Laporan Distribusi Surat yang Pernah Didistribusikan";
+        }
+
+        if (request('disposisiTerakhir')) {
+            if (request('disposisiTerakhir') == "Belum Diteruskan") {
+                $suratMasuk->where('status', '=', 'Belum Diteruskan');
+            } else {
+                $suratMasuk->where('idPosisiDisposisi', '=', request('disposisiTerakhir'));
+            }
+        }
+
+        if (request('statusArsip')) {
+            if (request('statusArsip') == "Belum") {
+                $suratMasuk = $suratMasuk->where('statusArsip', '=', 0);
+            }elseif (request('statusArsip') == "Arsip") {
+                $suratMasuk = $suratMasuk->where('statusArsip', '=', 1);
+            }
+        }
+
+        if (request('tujuanDisposisi')) {
+            $distribusiSurat = User::where('id', '=', request('tujuanDisposisi'))->get()[0]->menerimaDS;
+            // dd($distribusiSurat);
+            $idSM = collect([]);
+            foreach ($distribusiSurat as $ds) {
+                $idSM->push($ds->suratMasuk->id);
+            }
+            // dd($idSM);
+            $idSM = $idSM->unique();
+            // dd($idSM);
+            $suratMasuk = $suratMasuk->whereIn('id', $idSM);
+            // dd($suratMasuk->get());
+        }
+
+        if (request('tanggalAwal')) {
+            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+        }
+
+        if (request('tanggalAkhir')) {
+            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }     
+
+        if (request('index')) {
+            $suratMasuk->where('id', '=', request('index'));
+        }
+
+        if (request('tahun')) {
+            $suratMasuk->whereYear('tanggalSurat', request('tahun'));
+        }
+
+        if (request('direksi')) {
+            $suratMasuk->where('idDireksi', request('direksi'));
+        }
+
+        if (request('status')) {
+            $suratMasuk->where('status', request('status'));
+        }
+
+        if (request('pengirim')) {
+            $suratMasuk->where('pengirim', 'like', '%' . request('pengirim') . '%');
+        }
+
+        if (request('nomorSurat')) {
+            $suratMasuk->where('nomorSurat', 'like', '%' . request('nomorSurat') . '%');
+        }
+
+        if (request('perihal')) {
+            $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
+        }
+
+        return view('surat-masuk.laporan-distribusi-surat', ['title' => 'App Surat | ' . $judul, 'active' => 'laporan', 'suratMasuk' => $suratMasuk->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul, 'terusan' => $terusan]);
+    }
 }

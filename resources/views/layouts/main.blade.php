@@ -6,13 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $title }}</title>
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
-    <link
+    {{-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
-    />
+    /> --}}
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> --}}
+    {{-- <link rel="stylesheet" href="/css/bootstrap.css" /> --}}
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    
   </head>
 
   <body class="d-flex flex-column min-vh-100">
@@ -25,7 +29,7 @@
             <i class="lni lni-grid-alt"></i>
           </button>
           <div class="sidebar-logo">
-            <a href="/">Aplikasi Surat</a>
+            <a href="/" style="text-decoration: none;">Aplikasi Surat</a>
           </div>
         </div>
         <ul class="sidebar-nav">
@@ -63,7 +67,10 @@
               <span>Surat Keluar</span>
             </a>
           </li>
-          <li class="sidebar-item">
+          <li class="sidebar-item
+          @if ($active === "laporan")
+              active-tab
+          @endif">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi"
             >
             <i class="lni lni-book"></i>
@@ -134,7 +141,7 @@
                   class="sidebar-dropdown list-unstyled collapse"
                 >
                   <li class="sidebar-item">
-                    <a href="#" class="sidebar-link"
+                    <a href="/laporan/distribusi-surat/posisi-terakhir" class="sidebar-link"
                       >Posisi Distribusi Terakhir</a
                     >
                   </li>
@@ -144,12 +151,12 @@
                     >
                   </li>
                   <li class="sidebar-item">
-                    <a href="#" class="sidebar-link"
+                    <a href="/laporan/distribusi-surat/sudah-selesai" class="sidebar-link"
                       >Distribusi Surat Sudah Selesai</a
                     >
                   </li>
                   <li class="sidebar-item">
-                    <a href="#" class="sidebar-link"
+                    <a href="/laporan/distribusi-surat/pernah-distribusi" class="sidebar-link"
                       >Yang Pernah Didistribusikan</a
                     >
                   </li>
@@ -262,11 +269,12 @@
 
       </div>
     </div>
-    <script
+    {{-- <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
-    ></script>
+    ></script> --}}
+    <script src="/js/bootstrap.js"></script>
     <script src="/js/script.js"></script>
   </body>
 </html>

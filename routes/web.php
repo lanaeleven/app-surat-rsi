@@ -24,6 +24,7 @@ Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
 
 Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('sekre');
 Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('sekre');
+Route::get('/laporan/distribusi-surat/{keterangan}', [SuratMasukController::class, 'laporanDistribusiSurat'])->middleware('sekre');
 Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah'])->middleware('sekre');
 Route::get('/surat-masuk/edit/{suratMasuk}', [SuratMasukController::class, 'edit'])->middleware('sekre');
 Route::get('/laporan/surat-masuk/per-direksi', [SuratMasukController::class, 'laporanPerDireksi'])->middleware('sekre');
