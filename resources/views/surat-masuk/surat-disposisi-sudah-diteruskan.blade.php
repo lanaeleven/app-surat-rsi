@@ -1,26 +1,23 @@
-{{-- @dd($suratMasuk[0]->direksi->namaDireksi) --}}
+{{-- @dd($suratMasuk->isEmpty()) --}}
 @extends('layouts.main')
 
 @section('container')
 <div class="div">
-  @if ($errors->any())
-  <div class="alert alert-danger">
-      <ul>
-          @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-          @endforeach
-      </ul>
-  </div>
-@endif  
 
-    <div class="d-flex justify-content-between align-items-center my-4">
+    <div class="d-flex justify-content-between align-items-center my-2">
       <div>
         <h3 class="fw-bold fs-4 text-center">Surat Masuk yang Sudah Diteruskan</h3>
       </div>
-      <div>
+      <div class="d-none d-md-block">
         <a href="/" class="btn btn-warning">Kembali</a>
       </div>
     </div>
+
+    @if ($suratMasuk->isEmpty())
+
+        <p class="text-center fs-6 my-5">Anda Tidak Memiliki Surat Masuk yang Sudah Diteruskan</p>
+
+    @else
 
     <div class="d-none d-md-block">
         <table class="table table-striped">
@@ -61,45 +58,46 @@
     </div>
 
     @foreach ($suratMasuk as $sm)
-    <div class="d-md-none d-lg-none d-xl-none d-xxl-none container mb-5">
-      <div class="card p-3">
+    <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mb-5">
+      <div class="card shadow">
         <table class="table table-bordered">
           <tr>
-            <th>Indeks</th>
+            <td>Indeks</td>
             <td>{{ $sm->id }}</td>
           </tr>
           <tr>
-            <th>Direktorat</th>
+            <td>Direktorat</td>
             <td>{{ $sm->direksi->namaDireksi }}</td>
           </tr>
           <tr>
-            <th>Dari</th>
+            <td>Dari</td>
             <td>{{ $sm->pengirim }}</td>
           </tr>
           <tr>
-            <th>Tgl Surat</th>
+            <td>Tgl Surat</td>
             <td>{{ $sm->tanggalSurat }}</td>
           </tr>
           <tr>
-            <th>No Surat</th>
+            <td>No Surat</td>
             <td>{{ $sm->nomorSurat }}</td>
           </tr>
           <tr>
-            <th>Perihal</th>
+            <td>Perihal</td>
             <td>{{ $sm->perihal }}</td>
           </tr>
           <tr>
-            <th>Status</th>
+            <td>Status</td>
             <td>{{ $sm->status }}</td>
           </tr>
           <tr>
-            <th>Aksi</th>
-            <td><a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary">Lacak Distribusi</a></td>
+            <td colspan="2" class="text-center"><a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary">Lacak Distribusi</a></td>
           </tr>
         </table>
       </div>
     </div>        
     @endforeach
+    
+    @endif
 
 </div>
 @endsection

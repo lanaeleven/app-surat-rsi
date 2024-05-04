@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Models\Direksi;
 use App\Models\SuratMasuk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 
@@ -257,7 +259,7 @@ class SuratMasukController extends Controller
 
     public function nonSekreBelumDiteruskan() {
         $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->orderBy('id', 'desc')->get();
-        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
+        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk]);
     }
 
     public function nonSekreSudahDiteruskan() {
@@ -267,7 +269,7 @@ class SuratMasukController extends Controller
                 $suratMasuk->push($ds->suratMasuk);
         }
         $suratMasuk = $suratMasuk->unique('id');
-        return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk]);
+        return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'App Surat | Surat Masuk', 'active' => 'sudah diteruskan', 'suratMasuk' => $suratMasuk]);
     }
 
     public function arsipkan(Request $request) {
@@ -397,5 +399,81 @@ class SuratMasukController extends Controller
         }
 
         return view('surat-masuk.laporan-distribusi-surat', ['title' => 'App Surat | ' . $judul, 'active' => 'laporan', 'suratMasuk' => $suratMasuk->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul, 'terusan' => $terusan]);
+    }
+
+    public function laporanPerTujuan_LAMA() {
+
+        $user = User::where('id', '<>', 1)->get();
+        // dd($user[0]->namaJabatan);
+        $coba = collect([]);
+        foreach ($user as $u) {
+            $coba->push($u->menerimaDS);
+        }
+        dd($coba);
+        dd($coba[0][0]->suratMasuk->get());
+        $rekap = $user->map(function ($item) {
+            return 
+                (object) [
+                    'namaJabatan' => $item->namaJabatan,
+                    'surat' => $item->menerimaDS->unique('idSuratMasuk')
+                ];
+        });
+        if (request('tanggalAwal')) {
+            // dd($rekap[0]->surat[0]->whereDate('tanggalSurat', '>=', now()));
+            // $rekap = $rekap->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+            $idSebelum = [];
+            // dd($rekap[0]->surat);
+            foreach ($rekap as $r) {
+                foreach ($r->surat as $s) {
+                    array_push($idSebelum, $s->idSuratMasuk);
+                }
+            }
+
+            $suratMasuk = SuratMasuk::whereIn('id', $idSebelum)->get();
+            dd($suratMasuk);
+
+
+            // $rekap->transform(function ($item) {
+            //     return $item;
+            // });
+        }
+        if (request('tanggalAkhir')) {
+            // $rekap = $rekap->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+            // $rekap->transform(function ($item) {
+            //     return [
+            //         'namaJabatan' => $item['namaJabatan'],
+            //         'surat' => $item['surat']->whereDate('tanggalSurat', '<=', request('tanggalAkhir'))
+            //     ];
+            // });
+            $rekap->transform(function ($item) {
+                return $item;
+            });
+        }        
+        return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Direksi', 'active' => 'laporan', 'rekap' => $rekap]);
+    }
+
+    public function laporanPerTujuan() {
+
+        $user = User::where('id', '<>', 1)->get();
+        $rekap = $user->map(function ($item) {
+            return 
+                (object) [
+                    'namaJabatan' => $item->namaJabatan,
+                    'surat' => $item->menerimaDS->unique('idSuratMasuk')
+                ];
+        });
+        dd($rekap);
+        // if (request('tanggalAwal')) {
+
+        //     $rekap->transform(function ($item) {
+        //         return $item;
+        //     });
+        // }
+        // if (request('tanggalAkhir')) {
+        //     $rekap->transform(function ($item) {
+        //         return $item;
+        //     });
+        // }        
+        return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Direksi', 'active' => 'laporan', 'rekap' => $rekap]);
     }
 }

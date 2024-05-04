@@ -3,24 +3,21 @@
 {{-- @dd($suratMasuk) --}}
 @section('container')
 <div class="div">
-  @if ($errors->any())
-  <div class="alert alert-danger">
-      <ul>
-          @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-          @endforeach
-      </ul>
-  </div>
-@endif  
 
-    <div class="d-flex justify-content-between align-items-center my-4">
+    <div class="d-flex justify-content-between align-items-center my-2">
       <div>
         <h3 class="fw-bold fs-4 text-center">Surat Masuk yang Belum Diteruskan</h3>
       </div>
-      <div>
+      <div class="d-none d-md-block">
         <a href="/" class="btn btn-warning">Kembali</a>
       </div>
     </div>
+
+    @if ($suratMasuk->isEmpty())
+
+        <p class="text-center fs-6 my-5">Anda Tidak Memiliki Surat Masuk yang Belum Diteruskan</p>
+
+    @else
 
     <div class="d-none d-md-block">
         <table class="table table-striped">
@@ -59,8 +56,8 @@
           </table>
     </div>
     @foreach ($suratMasuk as $sm)
-    <div class="d-md-none d-lg-none d-xl-none d-xxl-none container mb-5">
-      <div class="card p-3">
+    <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mb-5">
+      <div class="card shadow">
         <table class="table table-bordered">
           <tr>
             <th>Indeks</th>
@@ -91,12 +88,12 @@
             <td>{{ $sm->status }}</td>
           </tr>
           <tr>
-            <th>Aksi</th>
-            <td><a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning">Teruskan Surat</a></td>
+            <td colspan="2" class="text-center"><a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning">Teruskan Surat</a></td>
           </tr>
         </table>
       </div>
     </div>        
     @endforeach
+    @endif
 </div>
 @endsection

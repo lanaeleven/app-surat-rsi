@@ -5,34 +5,25 @@
 @section('container')
     
 <div>
-  @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-  @endif
   @php
     $kembali = "/surat-masuk/index";
       if (auth()->user()->id != 1) {
         $kembali = "/surat-masuk/ns/belum-diteruskan";
       }
   @endphp
-  <div class="d-flex justify-content-between align-items-center my-4">
-    <div>
+  <div class="d-flex justify-content-between align-items-center my-2">
+    <div class="d-none d-md-block">
     </div>
     <div>
-      <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Disposisi Surat Masuk</h3>
+      <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Distribusi Surat</h3>
     </div>
-    <div>
+    <div class="d-none d-md-block">
       <a href="{{ $kembali }}" class="btn btn-warning">Kembali</a>
     </div>
   </div>
       
     <div class="d-flex justify-content-center">
-        <div class="col-9">
+        <div class="col-9 d-none d-md-block">
             <table class="table table-bordered">
                 <tbody>
                     <tr>
@@ -108,6 +99,49 @@
             </table>
             
         </div>
+
+        {{-- Detail Surat untuk mobile device --}}
+        <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mb-5">
+            <div class="card shadow">
+              <table class="table table-bordered">
+                <tr>
+                    <th>Status</th>
+                    <td>{{ $suratMasuk->status }}</td>
+                  </tr>
+                <tr>
+                  <th>Indeks</th>
+                  <td>{{ $suratMasuk->id }}</td>
+                </tr>
+                <tr>
+                  <th>Nomor Surat</th>
+                  <td>{{ $suratMasuk->nomorSurat }}</td>
+                </tr>
+                <tr>
+                  <th>Tanggal Surat</th>
+                  <td>{{ $suratMasuk->tanggalSurat }}</td>
+                </tr>
+                <tr>
+                  <th>Tanggal Agenda</th>
+                  <td>{{ $suratMasuk->tanggalAgenda }}</td>
+                </tr>
+                <tr>
+                  <th>Sifat Surat</th>
+                  <td>{{ $suratMasuk->sifatSurat }}</td>
+                </tr>
+                <tr>
+                  <th>Direksi</th>
+                  <td>{{ $suratMasuk->direksi->namaDireksi }}</td>
+                </tr>
+                <tr>
+                  <th>Perihal</th>
+                  <td>{{ $suratMasuk->perihal }}</td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-center"><a href="{{ asset('storage/' . $suratMasuk->filePath) }}" class="mt-1 btn btn-primary btn-sm" download='{{ $suratMasuk->fileName }}'>Download Surat</a></td>
+                </tr>
+              </table>
+            </div>
+          </div>    
         
     </div>
 
@@ -116,7 +150,7 @@
         <h5 class="text-center fw-bold">Terusan Sebelumnya</h5>
     @foreach ($distribusiSurat as $ds)
             
-    <div class="col-9 my-3">
+    <div class="col-9 my-3 d-none d-md-block">
         <form>
         <div class="row mb-3">
             <label for="tujuan" class="col-sm-3 col-form-label">Oleh</label>
@@ -146,6 +180,25 @@
         </form>
         <hr>
     </div>
+
+    {{-- Terusan surat untuk mobile device --}}
+    <div class="d-md-none d-lg-none d-xl-none d-xxl-none container my-2">
+        <div class="card">
+          <div class="card-header fw-bold">
+            Oleh: {{ $ds->pengirimDisposisi->namaJabatan }}
+          </div>
+          <div class="card-header fw-bold">
+            Kepada: {{ $ds->tujuanDisposisi->namaJabatan }}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Tanggal Diteruskan: {{ $ds->tanggalDiteruskan }}</li>
+          </ul>
+          <div class="card-footer">
+            Instruksi: {{ $ds->instruksi }}
+          </div>
+        </div>
+        <hr>
+      </div>
     @endforeach
     </div>
     @endif
@@ -154,7 +207,7 @@
         @if ($suratMasuk->statusArsip === 0)
             
         <h5 class="text-center fw-bold mb-3">Teruskan Surat</h5>
-        <div class="col-9">
+        <div class="col-12 col-md-9">
             <form action="/surat-masuk/teruskan" method="post">
             @csrf
             <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">

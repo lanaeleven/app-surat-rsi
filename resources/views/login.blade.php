@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
   </head>
   <body>
-    <h1 class="text-center text-success mt-5 fw-bold">Aplikasi Surat 2</h1>
-    <h1 class="text-center text-success fw-bold">RSI Sultan Agung Banjarbaru</h1>
+    <h2 class="text-center text-success mt-5 fw-bold">Aplikasi Surat</h2>
+    <h2 class="text-center text-success fw-bold">RSI Sultan Agung Banjarbaru</h2>
 
-    <div class="card p-4 mt-5 shadow m-auto" style="width: 400px;">
+    <div class="card p-4 mt-5 m-auto shadow col-10 col-md-3">
         <img src="/img/logorsi.png" class="card-img-top mb-5" alt="Logo RSI">
         <form method="POST" action="/login">
           @csrf
           <div class="mb-3">
-            <input type="text" class="form-control form-control-lg @error('username')
+            <input type="text" class="form-control form-control @error('username')
             {{ 'is-invalid' }}
             @enderror " id="username" name="username" placeholder="Username" required>
           </div>
           <div class="mb-3">
-            <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Password" required>
+            <input type="password" class="form-control form-control" id="password" name="password" placeholder="Password" required>
           </div>
           <button type="submit" class="btn btn-success container-fluid py-2 fs-5">Login</button>
         </form>

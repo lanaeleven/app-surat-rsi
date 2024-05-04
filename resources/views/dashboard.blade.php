@@ -70,7 +70,7 @@
     {{-- DASHBOARD NON SEKRETARIAT --}}
 
     <div class="col">
-      <h3 class="fw-bold fs-4 mb-3">Dashboard {{ auth()->user()->namaJabatan }}</h3>
+      <h3 class="fw-bold fs-4 mb-3 text-center text-md-start">Dashboard {{ auth()->user()->namaJabatan }}</h3>
       <div class="row">
           <div class="col-sm-6 mb-3 mb-sm-0">
             <div class="card">

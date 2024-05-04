@@ -146,7 +146,7 @@
                     >
                   </li>
                   <li class="sidebar-item">
-                    <a href="#" class="sidebar-link"
+                    <a href="/laporan/distribusi-surat/rekap/per-tujuan" class="sidebar-link"
                       >Rekap Posisi Distribusi Terakhir</a
                     >
                   </li>
@@ -218,15 +218,34 @@
               @can('dashboard-not-sekre')
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link" href="/">Dashboard</a>
+                  <a class="nav-link text-center fs-6
+                  @if ($active === "dashboard")
+                      fw-bold
+                  @endif
+                   " href="/">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
+                  @if ($active === "belum diteruskan")
+                      fw-bold
+                  @endif
+                   " href="/surat-masuk/ns/belum-diteruskan">Belum Diteruskan</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
+                  @if ($active === "sudah diteruskan")
+                      fw-bold
+                  @endif
+                   " href="/surat-masuk/ns/sudah-diteruskan">Sudah Diteruskan</a>
                 </li>
               </ul>
               @endcan
-
-              <span class="me-5">{{ auth()->user()->namaJabatan }}</span>
+              
+              <span class="me-5 d-none d-md-block">{{ auth()->user()->namaJabatan }}</span>
+              
               <form action="/logout" method="post">
                 @csrf
-                  <button type="button" class="btn btn-danger container-fluid" data-bs-toggle="modal" data-bs-target="#modalLogout">Logout</button>
+                  <button type="button" class="btn btn-danger container-fluid btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogout">Logout</button>
 
                   <!-- Modal Tombol Logout -->
                 <div class="modal fade" data-bs-backdrop="static" id="modalLogout" tabindex="-1" aria-labelledby="modalLogoutLabel" aria-hidden="true">
@@ -253,7 +272,7 @@
 
         <main class="content px-3 py-4">
           <div class="container-fluid">
-
+            {{-- @dd($active) --}}
         @yield('container')
 
           </div>
