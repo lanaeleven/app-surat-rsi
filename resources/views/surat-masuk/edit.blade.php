@@ -16,16 +16,17 @@
   @endif
     <div class="d-flex justify-content-between align-items-center my-4">
       <div>
+        {{-- <a href="/surat-masuk/index" class="btn btn-warning btn-sm d-none d-md-block d-lg-block d-xl-block d-xxl-block">Kembali</a> --}}
+        <a href="/surat-masuk/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
       </div>
       <div>
-        <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Edit Surat Masuk</h3>
+        <h3 class="fw-bold fs-4 text-center">Edit Surat Masuk</h3>
       </div>
       <div>
-        <a href="/surat-masuk/index" class="btn btn-warning">Kembali</a>
       </div>
     </div>
     <div class="d-flex justify-content-center">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             <form method="post" action="/surat-masuk/save" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="id" value="{{ $suratMasuk->id }}">

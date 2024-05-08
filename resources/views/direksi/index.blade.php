@@ -35,7 +35,7 @@
                   <tr>
                     <td>{{ $d->id }}</td>
                     <td>{{ $d->namaDireksi }}</td>
-                    <td><a href="/direksi/edit/{{ $d->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a></td>
+                    <td><a href="/direksi/edit/{{ $d->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
                   </tr>
               @endforeach
             </tbody>

@@ -31,9 +31,17 @@ class SuratKeluarController extends Controller
             $suratKeluar->where('id', '=', request('index'));
         }
 
-        if (request('tahun')) {
-            $suratKeluar->whereYear('tanggalSurat', request('tahun'));
+        // if (request('tahun')) {
+        //     $suratKeluar->whereYear('tanggalSurat', request('tahun'));
+        // }
+
+        if (request('tanggalAwal')) {
+            $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
         }
+
+        if (request('tanggalAkhir')) {
+            $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }        
 
         if (request('jenisSurat')) {
             $suratKeluar->where('idJenisSurat', request('jenisSurat'));
@@ -55,7 +63,7 @@ class SuratKeluarController extends Controller
             $suratKeluar->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('surat-keluar.index', ['title' => 'App Surat | ' . $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
+        return view('surat-keluar.index', ['title' => 'App Surat | ' . $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with(['jenisSurat', 'direksi'])->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
     }
 
     public function edit(SuratKeluar $suratKeluar) {

@@ -18,13 +18,15 @@
       }
   @endphp
   <div class="d-flex justify-content-between align-items-center my-2">
-    <div class="d-none d-md-block">
+    <div>
+      {{-- <a href="{{ $kembali }}" class="btn btn-warning btn-sm d-none d-md-block d-lg-block d-xl-block d-xxl-block">Kembali</a> --}}
+      <a href="{{ $kembali }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
     </div>
     <div>
-      <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Distribusi Surat</h3>
+      <h3 class="fw-bold fs-4 text-center">Distribusi Surat</h3>
     </div>
-    <div class="d-none d-md-block">
-      <a href="{{ $kembali }}" class="btn btn-warning">Kembali</a>
+    <div>
+      {{-- <a href="{{ $kembali }}" class="btn btn-warning">Kembali</a> --}}
     </div>
   </div>
   

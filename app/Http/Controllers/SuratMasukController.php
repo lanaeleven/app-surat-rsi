@@ -35,9 +35,17 @@ class SuratMasukController extends Controller
             $suratMasuk->where('id', '=', request('index'));
         }
 
-        if (request('tahun')) {
-            $suratMasuk->whereYear('tanggalSurat', request('tahun'));
+        // if (request('tahun')) {
+        //     $suratMasuk->whereYear('tanggalSurat', request('tahun'));
+        // }
+
+        if (request('tanggalAwal')) {
+            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
         }
+
+        if (request('tanggalAkhir')) {
+            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }        
 
         if (request('direksi')) {
             $suratMasuk->where('idDireksi', request('direksi'));
@@ -59,13 +67,12 @@ class SuratMasukController extends Controller
             $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
         }
 
-        return view('surat-masuk.index', ['title' => 'App Surat | ' . $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul]);
+        return view('surat-masuk.index', ['title' => 'App Surat | ' . $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with('direksi')->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul]);
     }
 
     public function tambah() {
         $direksi = Direksi::all();
         
-
         return view('surat-masuk.tambah', ['title' => 'App Surat | Tambah Surat Masuk', 'active' => 'surat masuk', 'direksi' => $direksi]);
     }
 
@@ -184,7 +191,7 @@ class SuratMasukController extends Controller
         }
 
         // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
-        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->get();
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
 
         return view('surat-masuk.disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
     }
@@ -228,13 +235,13 @@ class SuratMasukController extends Controller
             ->with('success', "Berhasil Meneruskan Pesan");
     }
 
-    public function lihatSuratDisposisi(SuratMasuk $suratMasuk) {
-        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->where('status', '=', $suratMasuk->status)->get();
-        return view('surat-masuk.lihat-disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
-    }
+    // public function lihatSuratDisposisi(SuratMasuk $suratMasuk) {
+    //     $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->where('status', '=', $suratMasuk->status)->get();
+    //     return view('surat-masuk.lihat-disposisi', ['title' => 'App Surat | Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
+    // }
 
     public function lacakDistribusi(SuratMasuk $suratMasuk) {
-        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->get();
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
         $daftarPengirim = [];
         foreach ($distribusiSurat as $ds) {
             array_push($daftarPengirim, $ds->idPengirimDisposisi);

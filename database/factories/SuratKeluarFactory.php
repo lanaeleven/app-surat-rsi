@@ -17,7 +17,7 @@ class SuratKeluarFactory extends Factory
     public function definition(): array
     {
         return [
-            'idJenisSurat' => fake()->numberBetween(1, 12),
+            'idJenisSurat' => fake()->numberBetween(1, 11),
             'idDireksi' => 1,
             'tanggalSurat' => fake()->dateTimeInInterval('-2 years', '+2 years'),
             'tujuan' => fake()->word(),

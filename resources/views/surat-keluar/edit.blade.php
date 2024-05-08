@@ -8,17 +8,18 @@
 
     <div class="d-flex justify-content-between align-items-center my-4">
       <div>
+        <a href="/surat-keluar/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
       </div>
       <div>
-        <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Edit Surat Keluar</h3>
+        <h3 class="fw-bold fs-4 text-center">Edit Surat Keluar</h3>
       </div>
       <div>
-        <a href="/surat-keluar/index" class="btn btn-warning">Kembali</a>
+        {{-- <a href="/surat-keluar/index" class="btn btn-warning">Kembali</a> --}}
       </div>
     </div>
 
     <div class="d-flex justify-content-center">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             <form method="post" action="/surat-keluar/save" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="id" value="{{ $suratKeluar->id }}">

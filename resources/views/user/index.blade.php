@@ -34,9 +34,7 @@
                     <td>{{ $u->id }}</td>
                     <td>{{ $u->username }}</td>
                     <td>{{ $u->namaJabatan }}</td>
-                    <td>{{ $u->level }}</td>
-                    <td>{{ $u->divisi }}</td>
-                    <td><a href="/user/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a></td>
+                    <td><a href="/user/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary text-center"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
                   </tr>
               @endforeach
             </tbody>

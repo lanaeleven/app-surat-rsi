@@ -34,7 +34,7 @@
                     <td>{{ $js->id }}</td>
                     <td>{{ $js->kodeJenisSurat }}</td>
                     <td>{{ $js->keterangan }}</td>
-                    <td><a href="/jenis-surat/edit/{{ $js->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a></td>
+                    <td><a href="/jenis-surat/edit/{{ $js->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
                   </tr>
               @endforeach
             </tbody>

@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $title }}</title>
-    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    {{-- <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" /> --}}
+    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.min.css') }}">
     {{-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -23,10 +24,11 @@
     
     <div class="wrapper">
       @can('dashboard-sekre')
-      <aside id="sidebar">
+      <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
         <div class="d-flex">
           <button class="toggle-btn" type="button">
-            <i class="lni lni-grid-alt"></i>
+            {{-- <i class="lni lni-grid-alt"></i> --}}
+            <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
           </button>
           <div class="sidebar-logo">
             <a href="/" style="text-decoration: none;">Aplikasi Surat</a>
@@ -40,7 +42,8 @@
           @endif
            ">
             <a href="/" class="sidebar-link">
-              <i class="lni lni-dashboard"></i>
+              {{-- <i class="lni lni-dashboard"></i> --}}
+              <i class="fa-solid fa-house" style="color: #ffffff;"></i>
               <span>Dashboard</span>
             </a>
           </li>
@@ -53,7 +56,8 @@
           @endif
            ">
             <a href="/surat-masuk/index" class="sidebar-link">
-              <i class="lni lni-inbox"></i>
+              {{-- <i class="lni lni-inbox"></i> --}}
+              <i class="fa-solid fa-folder-closed" style="color: #ffffff;"></i>
               <span>Surat Masuk</span>
             </a>
           </li>
@@ -63,8 +67,20 @@
           @endif
            ">
             <a href="/surat-keluar/index" class="sidebar-link">
-              <i class="lni lni-upload"></i>
+              {{-- <i class="lni lni-upload"></i> --}}
+              <i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>
               <span>Surat Keluar</span>
+            </a>
+          </li>
+          <li class="sidebar-item
+          @if ($active === "spo")
+              active-tab
+          @endif
+           ">
+            <a href="/spo/index" class="sidebar-link">
+              {{-- <i class="lni lni-upload"></i> --}}
+              <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i>
+              <span>SPO</span>
             </a>
           </li>
           <li class="sidebar-item
@@ -73,7 +89,8 @@
           @endif">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi"
             >
-            <i class="lni lni-book"></i>
+            {{-- <i class="lni lni-book"></i> --}}
+            <i class="fa-solid fa-file-lines" style="color: #ffffff;"></i>
               <span>Laporan</span>
             </a>
             <ul
@@ -176,7 +193,8 @@
               aria-expanded="false"
               aria-controls="auth"
             >
-            <i class="lni lni-database"></i>
+            {{-- <i class="lni lni-database"></i> --}}
+            <i class="fa-solid fa-database" style="color: #ffffff;"></i>
               <span>Data Master</span>
             </a>
             <ul
@@ -209,7 +227,31 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
               @can('dashboard-sekre')
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-md-none d-lg-none d-xl-none d-xxl-none">
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
+                  @if ($active === "dashboard")
+                      fw-bold
+                  @endif
+                   " href="/">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
+                  @if ($active === "surat masuk")
+                      fw-bold
+                  @endif
+                   " href="/surat-masuk/index">Surat Masuk</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
+                  @if ($active === "surat keluar")
+                      fw-bold
+                  @endif
+                   " href="/surat-keluar/index">Surat Keluar</a>
+                </li>
+              </ul>
+
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-none d-md-block d-lg-block d-xl-block d-xxl-block">
                 <li class="nav-item">
                 </li>
               </ul>

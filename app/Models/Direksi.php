@@ -25,4 +25,8 @@ class Direksi extends Model
     public function suratMasuk(): HasMany {
         return $this->hasMany(SuratMasuk::class, 'idDireksi');
     }
+
+    public function spo(): HasMany {
+        return $this->hasMany(Spo::class, 'idDireksi');
+    }
 }

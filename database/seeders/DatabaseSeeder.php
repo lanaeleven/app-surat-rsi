@@ -76,10 +76,10 @@ class DatabaseSeeder extends Seeder
             'keterangan' => 'Kebijakan'
         ]);
 
-        JenisSurat::create([
-            'kodeJenisSurat' => 'SPO',
-            'keterangan' => 'Prosedur'
-        ]);
+        // JenisSurat::create([
+        //     'kodeJenisSurat' => 'SPO',
+        //     'keterangan' => 'Prosedur'
+        // ]);
 
         JenisSurat::create([
             'kodeJenisSurat' => 'TAG',
@@ -457,8 +457,10 @@ class DatabaseSeeder extends Seeder
             'namaDireksi' => 'Direktur'
         ]);
 
-        \App\Models\SuratKeluar::factory(50)->create();
+        \App\Models\SuratKeluar::factory(20000)->create();
 
-        \App\Models\SuratMasuk::factory(50)->create();
+        \App\Models\SuratMasuk::factory(20000)->create();
+
+        \App\Models\Spo::factory(20000)->create();
     }
 }
