@@ -160,7 +160,7 @@
 
         <div class="d-flex justify-content-center">
           <div>
-            {{ $spo->links() }}
+            {{ $spo->appends(request()->input())->links() }}
           </div>
         </div>
 

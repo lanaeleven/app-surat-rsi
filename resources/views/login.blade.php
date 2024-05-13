@@ -16,17 +16,31 @@
         <form method="POST" action="/login">
           @csrf
           <div class="mb-3">
-            <input type="text" class="form-control form-control @error('username')
+            <input type="text" class="form-control @error('username')
             {{ 'is-invalid' }}
             @enderror " id="username" name="username" placeholder="Username" required>
           </div>
           <div class="mb-3">
-            <input type="password" class="form-control form-control" id="password" name="password" placeholder="Password" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="passwordToggle" onclick="myFunction()">
+            <label class="form-check-label" for="passwordToggle" >Show Password</label>
           </div>
           <button type="submit" class="btn btn-success container-fluid py-2 fs-5">Login</button>
         </form>
     </div>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> --}}
     <script src="/js/script.js"></script>
+    <script>
+      function myFunction() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
+    </script>
   </body>
 </html>

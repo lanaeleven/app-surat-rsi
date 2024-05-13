@@ -69,7 +69,6 @@
           </div>
           
           <div class="col-auto">
-            {{-- <button type="submit" class="btn btn-secondary btn-sm mb-3 d-none d-md-block d-lg-block d-xl-block d-xxl-block">Cari</button> --}}
             <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
           </div>
         </div>
@@ -163,7 +162,7 @@
     </div>
     <div class="d-flex justify-content-center">
       <div>
-        {{ $suratMasuk->links() }}
+        {{ $suratMasuk->appends(request()->input())->links() }}
       </div>
     </div>
 

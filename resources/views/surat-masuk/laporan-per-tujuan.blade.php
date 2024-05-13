@@ -6,7 +6,7 @@
     <h3 class="fw-bold fs-4 mb-3">Rekapitulasi Surat Masuk Berdasarkan Tujuan Disposisi</h3>
 
     <div>
-        {{-- <form action="" class="row g-3">
+        <form action="" class="row g-3">
 
             <div class="col-auto">
                 <label for="tanggalAwal" class="col-form-label">Tanggal Awal :</label>
@@ -23,9 +23,9 @@
             </div> 
 
             <div class="col-auto">
-                <button type="submit" class="btn btn-secondary mb-3">Cari</button>
+              <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
               </div>
-        </form> --}}
+        </form>
     </div>
 
     <div class="div">

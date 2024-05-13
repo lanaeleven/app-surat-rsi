@@ -280,6 +280,13 @@
                   @endif
                    " href="/surat-masuk/ns/sudah-diteruskan">Sudah Diteruskan</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
+                  @if ($active === "akun")
+                      fw-bold
+                  @endif
+                   " href="/user/akun-ns">Akun</a>
+                </li>
               </ul>
               @endcan
               

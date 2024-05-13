@@ -73,4 +73,77 @@ class UserController extends Controller
         // Redirect back to the index page with a success message
         return redirect('/user/index')->with('success', 'Berhasil Mengedit Tujuan Disposisi');
     }
+
+    public function akunNs() {
+        return view('user.akun-ns', ['title' => 'App Surat | Akun User', 'active' => 'akun']);
+    }
+
+    public function updateInfoProfil(Request $request): RedirectResponse
+    {
+        // Validate the incoming file. 
+        
+        $request->validate([
+            // 'namaJabatan' => 'required',
+            'username' => 'required'
+        ]);
+
+        $user = User::find($request->input('id'));
+
+        // if ($user->namaJabatan !== $request->input('namaJabatan')) {
+        //     $request->validate([
+        //         'namaJabatan' => 'unique:users,namaJabatan',
+        //     ]);
+        // }
+
+        if ($user->username !== $request->input('username')) {
+            $request->validate([
+                'username' => 'unique:users,username',
+            ]);
+        }
+
+        // Store file information in the database
+        // $user->namaJabatan = $request->input('namaJabatan');
+        $user->username = $request->input('username');
+        $user->save();
+
+        // Redirect back to the index page with a success message
+        return redirect('/user/akun-ns')->with('success', 'Berhasil Mengedit Informasi Profil');
+    }
+
+    public function updatePasswordNs(Request $request): RedirectResponse
+    {
+        // Validate the incoming file. 
+        
+        $request->validate([
+            'passwordSaatIni' => 'required|current_password',
+            'passwordBaru' => 'required'
+        ]);
+
+        $user = User::find($request->input('id'));
+
+        // Store file information in the database
+        $user->password = Hash::make($request->input('passwordBaru'));
+        $user->save();
+
+        // Redirect back to the index page with a success message
+        return redirect('/user/akun-ns')->with('success', 'Berhasil Mengubah Password');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        // Validate the incoming file. 
+        
+        $request->validate([
+            'passwordBaru' => 'required'
+        ]);
+
+        $user = User::find($request->input('id'));
+
+        // Store file information in the database
+        $user->password = Hash::make($request->input('passwordBaru'));
+        $user->save();
+
+        // Redirect back to the index page with a success message
+        return redirect('/user/index')->with('success', 'Berhasil Mengubah Password');
+    }
 }

@@ -54,6 +54,10 @@
                       {{ $message }}
                     </div>
                     @enderror
+                    <div class="mb-3 mt-2 form-check">
+                      <input type="checkbox" class="form-check-input" id="passwordToggle" onclick="myFunction()">
+                      <label class="form-check-label" for="passwordToggle" >Show Password</label>
+                    </div>
                 </div>
              </div>
 
@@ -67,5 +71,16 @@
         </div>
     </div>
 </div>
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+</script>
 
 @endsection

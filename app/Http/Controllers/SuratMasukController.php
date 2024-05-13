@@ -417,7 +417,7 @@ class SuratMasukController extends Controller
             $coba->push($u->menerimaDS);
         }
         dd($coba);
-        dd($coba[0][0]->suratMasuk->get());
+        // dd($coba[0][0]->suratMasuk->get());
         $rekap = $user->map(function ($item) {
             return 
                 (object) [
@@ -437,7 +437,7 @@ class SuratMasukController extends Controller
             }
 
             $suratMasuk = SuratMasuk::whereIn('id', $idSebelum)->get();
-            dd($suratMasuk);
+            // dd($suratMasuk);
 
 
             // $rekap->transform(function ($item) {
@@ -456,7 +456,7 @@ class SuratMasukController extends Controller
                 return $item;
             });
         }        
-        return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Direksi', 'active' => 'laporan', 'rekap' => $rekap]);
+        return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap]);
     }
 
     public function laporanPerTujuan() {
@@ -469,18 +469,7 @@ class SuratMasukController extends Controller
                     'surat' => $item->menerimaDS->unique('idSuratMasuk')
                 ];
         });
-        dd($rekap);
-        // if (request('tanggalAwal')) {
 
-        //     $rekap->transform(function ($item) {
-        //         return $item;
-        //     });
-        // }
-        // if (request('tanggalAkhir')) {
-        //     $rekap->transform(function ($item) {
-        //         return $item;
-        //     });
-        // }        
         return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Direksi', 'active' => 'laporan', 'rekap' => $rekap]);
     }
 }

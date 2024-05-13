@@ -184,7 +184,7 @@
 
         <div class="d-flex justify-content-center">
           <div>
-            {{ $suratKeluar->links() }}
+            {{ $suratKeluar->appends(request()->input())->links() }}
           </div>
         </div>
 

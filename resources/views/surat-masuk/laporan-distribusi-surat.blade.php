@@ -13,13 +13,13 @@
       <div>
         <h3 class="fw-bold fs-4">{{ $judul }}</h3>
       </div>
-      <div class="mb-2">
+      {{-- <div class="mb-2">
         @if (is_null($keterangan))
         <a href="/surat-masuk/tambah" class="btn btn-primary">Tambah</a>
         @else
         <a href="/" class="btn btn-warning">Kembali</a>
         @endif
-      </div>
+      </div> --}}
     </div>
 
     <div>
@@ -122,7 +122,7 @@
         </div>
         
         <div class="col-auto">
-          <button type="submit" class="btn btn-secondary mb-3">Cari</button>
+          <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
         </div>
       </form>
     </div>
@@ -155,9 +155,9 @@
                 <td>{{ $sm->perihal }}</td>
                 <td> {{ $sm->status }} </td>
                 <td>
-                  <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-pencil"></i></a>
-                  <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-secondary"><i class="lni lni-eye"></i></a>
-                  <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="lni lni-write"></i></a>
+                  <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
+                  <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-secondary"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
+                  <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="fa-solid fa-share" style="color: #000000;"></i></a>
                 </td>
               </tr>
 
