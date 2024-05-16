@@ -107,7 +107,6 @@
                   
                   <a href="/spo/edit/{{ $s->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
                   <a href="{{ asset('storage/' . $s->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
-                  <a href="{{ asset('storage/' . $s->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $s->fileName }}'><i class="fa-solid fa-download" style="color: #ffffff;"></i></a>
                 </td>
               </tr>
 

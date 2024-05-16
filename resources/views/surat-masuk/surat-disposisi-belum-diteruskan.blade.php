@@ -49,7 +49,7 @@
                 <td>{{ $sm->perihal }}</td>
                 <td> {{ $sm->status }} </td>
                 <td>
-                    <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="lni lni-write"></i></a>
+                    <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="fa-solid fa-share" style="color: #000000;"></i></a>
                 </td>
               </tr>
 

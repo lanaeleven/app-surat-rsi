@@ -50,7 +50,7 @@
                 <td>{{ $sm->perihal }}</td>
                 <td> {{ $sm->status }} </td>
                 <td>
-                    <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="lni lni-eye"></i></a>
+                    <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-shoe-prints fa-rotate-270" style="color: #000000;"></i></a>
                 </td>
               </tr>
 

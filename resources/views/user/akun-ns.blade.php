@@ -25,7 +25,7 @@
               <input type="hidden" name="id" value="{{ auth()->user()->id }}">
 
                 <div class="row mb-3">
-                    <label for="namaJabatan" class="col-sm-3 col-form-label">Nama Jabatan</label>
+                    <label for="namaJabatan" class="col-sm-3 col-form-label">Jabatan</label>
                     <div class="col-sm-9">
                       <input name="namaJabatan" type="text" class="form-control @error('namaJabatan') is-invalid @enderror" id="namaJabatan" value="{{ auth()->user()->namaJabatan }}" disabled readonly>
                       @error('namaJabatan')
@@ -36,7 +36,19 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mb-3">
+                  <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                  <div class="col-sm-9">
+                    <input name="nama" type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" value="{{ auth()->user()->nama }}" required>
+                    @error('nama')
+                      <div id="nama" class="invalid-feedback">
+                        {{ $message }}
+                      </div>
+                      @enderror
+                  </div>
+               </div>
+
+                <div class="row mb-3">
                   <label for="username" class="col-sm-3 col-form-label">Username</label>
                   <div class="col-sm-9">
                     <input name="username" type="text" class="form-control @error('username') is-invalid @enderror" id="username" value="{{ auth()->user()->username }}" required>
@@ -47,6 +59,18 @@
                       @enderror
                   </div>
                </div>
+
+               <div class="row mb-3">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                  <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ auth()->user()->email }}" required>
+                  @error('email')
+                    <div id="email" class="invalid-feedback">
+                      {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+             </div>
 
                <div class="row mb-3">
                 <label for="passwordKonfirmasi" class="col-sm-3 col-form-label"></label>

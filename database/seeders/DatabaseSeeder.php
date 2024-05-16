@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
+        // 'email' => 'test@example.com',
         // ]);
 
         
@@ -93,300 +93,314 @@ class DatabaseSeeder extends Seeder
 
         // SEEDING UNTUK TABEL USER
 
-        // User::create([
-        //     'username' => 'admin',
-        //     'namaJabatan' => 'Sekretariat',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'admin',
-        //     'divisi' => 'admin'
-        // ]);
-
-        // User::create([
-        //     'username' => 'direktur',
-        //     'namaJabatan' => 'Direktur Rumah Sakit',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'direktur',
-        //     'divisi' => 'direktur'
-        // ]);
-
-        // User::create([
-        //     'username' => 'kepala umum dakwah',
-        //     'namaJabatan' => 'Kepala Bagian Umum dan Dakwah',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'kepala',
-        //     'divisi' => 'umum dan dakwah'
-        // ]);
-
-        // User::create([
-        //     'username' => 'kepala sdi keuangan',
-        //     'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'kepala',
-        //     'divisi' => 'sdi dan keuangan'
-        // ]);
-        
-        // User::create([
-        //     'username' => 'penjab umum',
-        //     'namaJabatan' => 'Penanggung Jawab Umum dan PKRS',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'penjab',
-        //     'divisi' => 'umum dan dakwah'
-        // ]);
-
-        // User::create([
-        //     'username' => 'penjab dakwah',
-        //     'namaJabatan' => 'Penanggung Jawab Dakwah dan Kemritraan',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'penjab',
-        //     'divisi' => 'umum dan dakwah'
-        // ]);
-
-        // User::create([
-        //     'username' => 'penjab sdi',
-        //     'namaJabatan' => 'Penanggung Jawab SDI dan Administrasi',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'penjab',
-        //     'divisi' => 'sdi dan keuangan'
-        // ]);
-
-        // User::create([
-        //     'username' => 'penjab keuangan',
-        //     'namaJabatan' => 'Penanggung Jawab Keuangan dan Akuntansi',
-        //     'password' => Hash::make('rahasia'),
-        //     'level' => 'penjab',
-        //     'divisi' => 'sdi dan keuangan'
-        // ]);
-
         User::create([
             'username' => 'sekre',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Sekretariat',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'direktur',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Direktur Rumah Sakit',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kabid pelayanan dan penunjang medik',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bidang Pelayanan dan Penunjang Medik',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kasi pelayanan medik',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Pelayanan Medik',
             'password' => Hash::make('rahasia')
         ]);
         
         User::create([
             'username' => 'kasi penunjang medik',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Penunjang Medik dan Diklitbang',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kabid perawatan',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bidang Perawatan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kasi keperawatan',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Keperawatan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kabag sdi dan keuangan',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kabag sdi dan keuangan',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kasubag sdi dan administrasi',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian SDI dan Administrasi',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kasubag akuntansi dan keuangan',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Akuntansi dan Keuangan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kepala umum dakwah dan kemitraan',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian Umum, Dakwah, dan Kemitraan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kasubag dakwah',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Dakwah',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kasubag kemitraan dan pkrs',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Kemitraan dan PKRS',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab umum',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Umum',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains farmasi',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Farmasi',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab farmasi',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Farmasi',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains psrs',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi PSRS',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab psrs',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab PSRS',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains rekam medis dan pendaftaran',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Rekam Medis dan Pendaftaran',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab pendaftaran dan rekam medis',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Pendaftaran dan Rekam Medis',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains gizi',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Gizi',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab gizi',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Gizi',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains ranap dan rajal',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Rawat Inap dan Rawat Jalan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab rajal',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Rawat Jalan',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab ranap',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Rawat Inap',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains igd',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Gawat Darurat',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'karu igd',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Instalasi Gawat Darurat',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains icu',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Intensive Care Unit',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'karu icu',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Intensive Care Unit',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains radiologi',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Radiologi',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab radiologi',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Radiologi',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains ibs',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Bedah Sentral',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'karu ibs',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Instalasi Bedah Sentral',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains lab',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Laboratorium',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab lab',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Instalasi Laboratorium',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains dialis',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Dialis',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'penjab dialis',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Dialis',
             'password' => Hash::make('rahasia')
         ]);
 
         User::create([
             'username' => 'kains mcu',
+            'nama' => 'Mr. X',
+            'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi MCU',
             'password' => Hash::make('rahasia')
         ]);
@@ -457,10 +471,10 @@ class DatabaseSeeder extends Seeder
             'namaDireksi' => 'Direktur'
         ]);
 
-        \App\Models\SuratKeluar::factory(20000)->create();
+        \App\Models\SuratKeluar::factory(1000)->create();
 
-        \App\Models\SuratMasuk::factory(20000)->create();
+        \App\Models\SuratMasuk::factory(1000)->create();
 
-        \App\Models\Spo::factory(20000)->create();
+        \App\Models\Spo::factory(1000)->create();
     }
 }

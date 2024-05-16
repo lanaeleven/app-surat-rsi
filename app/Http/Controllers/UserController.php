@@ -23,6 +23,8 @@ class UserController extends Controller
         // Validate the incoming file. 
         $request->validate([
             'namaJabatan' => 'required|unique:users,namaJabatan',
+            'nama' => 'required',
+            'email' => 'required|email:rfc,dns',
             'username' => 'required|unique:users,username',
             'password' => 'required',
         ]);
@@ -30,6 +32,8 @@ class UserController extends Controller
         // Store file information in the database
         $user = new User();
         $user->namaJabatan = $request->input('namaJabatan');
+        $user->nama = $request->input('nama');
+        $user->email = $request->input('email');
         $user->username = $request->input('username');
         $user->password = Hash::make($request->input('password'));
         $user->save();
@@ -48,6 +52,8 @@ class UserController extends Controller
         
         $request->validate([
             'namaJabatan' => 'required',
+            'nama' => 'required',
+            'email' => 'required|email:rfc,dns',
             'username' => 'required'
         ]);
 
@@ -67,7 +73,9 @@ class UserController extends Controller
 
         // Store file information in the database
         $user->namaJabatan = $request->input('namaJabatan');
+        $user->nama = $request->input('nama');
         $user->username = $request->input('username');
+        $user->email = $request->input('email');
         $user->save();
 
         // Redirect back to the index page with a success message
@@ -84,7 +92,9 @@ class UserController extends Controller
         
         $request->validate([
             // 'namaJabatan' => 'required',
-            'username' => 'required'
+            'username' => 'required',
+            'nama' => 'required',
+            'email' => 'required|email:rfc,dns'
         ]);
 
         $user = User::find($request->input('id'));
@@ -104,6 +114,8 @@ class UserController extends Controller
         // Store file information in the database
         // $user->namaJabatan = $request->input('namaJabatan');
         $user->username = $request->input('username');
+        $user->nama = $request->input('nama');
+        $user->email = $request->input('email');
         $user->save();
 
         // Redirect back to the index page with a success message

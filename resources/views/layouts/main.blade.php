@@ -101,13 +101,13 @@
               <li class="sidebar-item">
                 <a
                   href="#"
-                  class="sidebar-link collapsed"
+                  class="sidebar-link collapsed "
                   data-bs-toggle="collapse"
                   data-bs-target="#suratmasuk"
                   aria-expanded="false"
                   aria-controls="suratmasuk"
                 >
-                  Surat Masuk
+                  Laporan Surat Masuk
                 </a>
                 <ul
                   id="suratmasuk"
@@ -128,11 +128,12 @@
                   aria-expanded="false"
                   aria-controls="suratkeluar"
                 >
-                  Surat Keluar
+                  Laporan Surat Keluar
                 </a>
                 <ul
                   id="suratkeluar"
                   class="sidebar-dropdown list-unstyled collapse"
+                  data-bs-parent="#multi"
                 >
                   <li class="sidebar-item">
                     <a href="/laporan/surat-keluar/per-jenis-surat" class="sidebar-link">Per Jenis Surat</a>
@@ -151,11 +152,12 @@
                   aria-expanded="false"
                   aria-controls="distribusisurat"
                 >
-                  Distribusi Surat
+                  Laporan Distribusi Surat
                 </a>
                 <ul
                   id="distribusisurat"
                   class="sidebar-dropdown list-unstyled collapse"
+                  data-bs-parent="#multi"
                 >
                   <li class="sidebar-item">
                     <a href="/laporan/distribusi-surat/posisi-terakhir" class="sidebar-link"

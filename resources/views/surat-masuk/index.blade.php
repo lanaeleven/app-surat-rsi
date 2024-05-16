@@ -104,7 +104,8 @@
                 <td> {{ $sm->status }} </td>
                 <td>
                   <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-                  <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-secondary"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
+                  <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
+                  <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-info"><i class="fa-solid fa-shoe-prints fa-rotate-270" style="color: #000000;"></i></a>
                   <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="fa-solid fa-share" style="color: #000000;"></i></a>
                 </td>
               </tr>

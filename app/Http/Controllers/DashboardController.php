@@ -43,4 +43,8 @@ class DashboardController extends Controller
             'suratKeluarBulanIni' => $suratKeluarBulanIni
         ]);
     } 
+
+    public function dashboardLaporan() {
+        
+    }
 }

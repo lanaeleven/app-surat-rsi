@@ -23,8 +23,10 @@
             <thead>
               <tr>
                 <th scope="col">ID</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Jabatan</th>
                 <th scope="col">Username</th>
-                <th scope="col">Nama Jabatan</th>
+                <th scope="col">Email</th>
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
@@ -32,8 +34,10 @@
               @foreach ($user as $u)
                   <tr>
                     <td>{{ $u->id }}</td>
-                    <td>{{ $u->username }}</td>
+                    <td>{{ $u->nama }}</td>
                     <td>{{ $u->namaJabatan }}</td>
+                    <td>{{ $u->username }}</td>
+                    <td>{{ $u->email }}</td>
                     <td><a href="/user/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary text-center"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
                   </tr>
               @endforeach

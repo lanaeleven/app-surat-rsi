@@ -22,7 +22,7 @@
               @csrf
 
                 <div class="row mb-3">
-                    <label for="namaJabatan" class="col-sm-3 col-form-label">Nama Jabatan</label>
+                    <label for="namaJabatan" class="col-sm-3 col-form-label">Jabatan</label>
                     <div class="col-sm-9">
                       <input name="namaJabatan" type="text" class="form-control @error('namaJabatan') is-invalid @enderror" id="namaJabatan" value="{{ old('namaJabatan') }}" required>
                       @error('namaJabatan')
@@ -32,6 +32,30 @@
                       @enderror
                     </div>
                 </div>
+
+                <div class="row mb-3">
+                  <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                  <div class="col-sm-9">
+                    <input name="nama" type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" value="{{ old('nama') }}" required>
+                    @error('nama')
+                    <div id="nama" class="invalid-feedback">
+                      {{ $message }}
+                    </div>
+                    @enderror
+                  </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                  <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" id="email" value="{{ old('email') }}" required>
+                  @error('email')
+                  <div id="email" class="invalid-feedback">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+            </div>
 
                 <div class="row mb-3">
                   <label for="username" class="col-sm-3 col-form-label">Username</label>

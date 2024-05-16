@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
+use App\Mail\EmailNotifDisposisi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 
 class SuratMasukController extends Controller
@@ -198,6 +200,7 @@ class SuratMasukController extends Controller
 
     public function teruskan(Request $request): RedirectResponse
     {
+        // dd(auth()->user()->namaJabatan);
         if (auth()->user()->id === 1) {
             $redirect = '/surat-masuk/index';
         } else {
@@ -229,6 +232,10 @@ class SuratMasukController extends Controller
         $suratMasuk->idPosisiDisposisi = $request->input('idTujuanDisposisi');
         $suratMasuk->status = $status;
         $suratMasuk->save();
+
+        $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
+
+        Mail::to($penerima->email)->send(new EmailNotifDisposisi(auth()->user()->namaJabatan, $penerima->namaJabatan, $penerima->nama, \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), $distribusiSurat->instruksi));
 
         // Redirect back to the index page with a success message
         return redirect($redirect)

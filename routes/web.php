@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SpoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DireksiController;
 use App\Http\Controllers\DashboardController;
@@ -22,6 +23,8 @@ use App\Http\Controllers\SuratKeluarController;
 */
 
 Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
+
+Route::get('/email', [EmailController::class, 'index']);
 
 Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('sekre');
 Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('sekre');
@@ -80,3 +83,5 @@ Route::post('/user/save', [UserController::class, 'save']);
 Route::post('/user/updateInfoProfil', [UserController::class, 'updateInfoProfil']);
 Route::post('/user/updatePasswordNs', [UserController::class, 'updatePasswordNs']);
 Route::post('/user/updatePassword', [UserController::class, 'updatePassword']);
+
+// Route::get('/dashboard-laporan/akun-ns', [DashboardController::class, 'dashboardLaporan'])->middleware('notSekre');
