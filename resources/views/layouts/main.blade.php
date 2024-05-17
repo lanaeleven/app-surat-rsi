@@ -26,7 +26,7 @@
       @can('dashboard-sekre')
       <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
         <div class="d-flex">
-          <button class="toggle-btn" type="button">
+          <button class="toggle-btn" type="button" id="toggle-btnnn">
             {{-- <i class="lni lni-grid-alt"></i> --}}
             <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
           </button>
@@ -87,7 +87,7 @@
           @if ($active === "laporan")
               active-tab
           @endif">
-            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi"
+            <a href="#"  class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi"
             >
             {{-- <i class="lni lni-book"></i> --}}
             <i class="fa-solid fa-file-lines" style="color: #ffffff;"></i>
@@ -101,7 +101,8 @@
               <li class="sidebar-item">
                 <a
                   href="#"
-                  class="sidebar-link collapsed "
+                  id="toggle-btnnn"
+                  class="sidebar-link collapsed"
                   data-bs-toggle="collapse"
                   data-bs-target="#suratmasuk"
                   aria-expanded="false"

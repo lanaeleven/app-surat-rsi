@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('spo', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idDireksi');
+            $table->unsignedInteger('idDireksi');
             $table->foreign('idDireksi')->references('id')->on('direksi');
             $table->date('tanggalSurat');
             $table->string('tujuan');

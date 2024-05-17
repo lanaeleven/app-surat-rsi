@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('surat_masuk', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idDireksi');
+            $table->unsignedInteger('idDireksi');
             $table->foreign('idDireksi')->references('id')->on('direksi');
-            $table->unsignedBigInteger('idPosisiDisposisi');
+            $table->unsignedInteger('idPosisiDisposisi');
             $table->foreign('idPosisiDisposisi')->references('id')->on('users');
             $table->integer('statusArsip');
             $table->string('nomorSurat');

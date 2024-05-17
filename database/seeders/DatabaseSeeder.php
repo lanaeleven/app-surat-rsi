@@ -405,65 +405,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('rahasia')
         ]);
 
-        //SEEDING UNTUK TABEL TUJUAN DISPOSISI
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Administrator',
-            'idUser' => 1,
-            'divisiTujuanDisposisi' => 'admin',
-            'levelTujuanDisposisi' => 'admin'
-        ]);
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Direktur',
-            'idUser' => 2,
-            'divisiTujuanDisposisi' => 'direktur',
-            'levelTujuanDisposisi' => 'direktur'
-        ]);
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Kepala Bagian Umum dan Dakwah',
-            'idUser' => 3,
-            'divisiTujuanDisposisi' => 'umum dan dakwah',
-            'levelTujuanDisposisi' => 'kepala'
-        ]);
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Kepala Bagian  SDI dan Keuangan',
-            'idUser' => 4,
-            'divisiTujuanDisposisi' => 'sdi dan keuangan',
-            'levelTujuanDisposisi' => 'kepala'
-        ]);
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Penjab Umum dan PKRS',
-            'idUser' => 5,
-            'divisiTujuanDisposisi' => 'umum dan dakwah',
-            'levelTujuanDisposisi' => 'penjab'
-        ]);
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Penjab Dakwah dan Kemitraan',
-            'idUser' => 6,
-            'divisiTujuanDisposisi' => 'umum dan dakwah',
-            'levelTujuanDisposisi' => 'penjab'
-        ]);
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Penjab SDI dan Administrasi',
-            'idUser' => 7,
-            'divisiTujuanDisposisi' => 'sdi dan keuangan',
-            'levelTujuanDisposisi' => 'penjab'
-        ]);
-
-        TujuanDisposisi::create([
-            'namaTujuanDisposisi' => 'Penjab Keuangan dan Akuntansi',
-            'idUser' => 8,
-            'divisiTujuanDisposisi' => 'sdi dan keuangan',
-            'levelTujuanDisposisi' => 'penjab'
-        ]);
-
-        
 
         // SEEDING UNTUK TABEL DIREKSI
 
