@@ -22,6 +22,10 @@ class DistribusiSurat extends Model
         return $this->belongsTo(User::class, 'idPengirimDisposisi');
     }
 
+    public function tujuanDisposisi(): BelongsTo {
+        return $this->belongsTo(User::class, 'idTujuanDisposisi');
+    }
+
     public function suratMasuk(): BelongsTo {
         return $this->belongsTo(SuratMasuk::class, 'idSuratMasuk');
     }

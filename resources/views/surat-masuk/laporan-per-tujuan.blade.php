@@ -46,17 +46,17 @@
                   <tr>
                     <td>{{ $no }}</td>
                     <td>{{ $r->namaJabatan }}</td>
-                    <td>{{ $r->surat->count() }}</td>
+                    <td>{{ $r->jumlah_surat_masuk }}</td>
                   </tr>
                   @php
                     $no++;
-                    $total += $r->surat->count();
+                    // $total += $r->surat->count();
                   @endphp
               @endforeach
-              <tr>
+              {{-- <tr>
                 <th colspan="2">Total</th>
                 <th>{{ $total }}</th>
-              </tr>
+              </tr> --}}
             </tbody>
           </table>
     </div>

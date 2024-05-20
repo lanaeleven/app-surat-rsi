@@ -415,68 +415,27 @@ class SuratMasukController extends Controller
         return view('surat-masuk.laporan-distribusi-surat', ['title' => 'App Surat | ' . $judul, 'active' => 'laporan', 'suratMasuk' => $suratMasuk->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul, 'terusan' => $terusan]);
     }
 
-    public function laporanPerTujuan_LAMA() {
-
-        $user = User::where('id', '<>', 1)->get();
-        // dd($user[0]->namaJabatan);
-        $coba = collect([]);
-        foreach ($user as $u) {
-            $coba->push($u->menerimaDS);
-        }
-        dd($coba);
-        // dd($coba[0][0]->suratMasuk->get());
-        $rekap = $user->map(function ($item) {
-            return 
-                (object) [
-                    'namaJabatan' => $item->namaJabatan,
-                    'surat' => $item->menerimaDS->unique('idSuratMasuk')
-                ];
-        });
-        if (request('tanggalAwal')) {
-            // dd($rekap[0]->surat[0]->whereDate('tanggalSurat', '>=', now()));
-            // $rekap = $rekap->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
-            $idSebelum = [];
-            // dd($rekap[0]->surat);
-            foreach ($rekap as $r) {
-                foreach ($r->surat as $s) {
-                    array_push($idSebelum, $s->idSuratMasuk);
-                }
-            }
-
-            $suratMasuk = SuratMasuk::whereIn('id', $idSebelum)->get();
-            // dd($suratMasuk);
-
-
-            // $rekap->transform(function ($item) {
-            //     return $item;
-            // });
-        }
-        if (request('tanggalAkhir')) {
-            // $rekap = $rekap->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-            // $rekap->transform(function ($item) {
-            //     return [
-            //         'namaJabatan' => $item['namaJabatan'],
-            //         'surat' => $item['surat']->whereDate('tanggalSurat', '<=', request('tanggalAkhir'))
-            //     ];
-            // });
-            $rekap->transform(function ($item) {
-                return $item;
-            });
-        }        
-        return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap]);
-    }
-
     public function laporanPerTujuan() {
 
-        $user = User::where('id', '<>', 1)->get();
-        $rekap = $user->map(function ($item) {
-            return 
-                (object) [
-                    'namaJabatan' => $item->namaJabatan,
-                    'surat' => $item->menerimaDS->unique('idSuratMasuk')
-                ];
-        });
+        // Mendapatkan jumlah surat masuk yang diteruskan ke masing-masing user
+        $rekap = DB::table('surat_masuk')
+        ->join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
+        ->join('users', 'distribusi_surat.idTujuanDisposisi', '=', 'users.id')
+        ->select('users.namaJabatan', DB::raw('COUNT(DISTINCT surat_masuk.id) as jumlah_surat_masuk'))
+        ->where('users.id', '<>', 1)
+        ->groupBy('users.namaJabatan')
+        ->orderBy('users.id', 'asc');
 
-        return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Direksi', 'active' => 'laporan', 'rekap' => $rekap]);
+        if (request('tanggalAwal')) {
+            $rekap = $rekap->whereDate('surat_masuk.tanggalSurat', '>=', request('tanggalAwal'));
+        }
+
+        if (request('tanggalAkhir')) {
+            $rekap = $rekap->whereDate('surat_masuk.tanggalSurat', '<=', request('tanggalAkhir'));
+        }
+
+        
+        // dd($ds);
+        return view('surat-masuk.laporan-per-tujuan', ['title' => 'App Surat | Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap->get()]);
     }
 }

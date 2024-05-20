@@ -32,7 +32,7 @@ Route::get('/laporan/distribusi-surat/{keterangan}', [SuratMasukController::clas
 Route::get('/surat-masuk/tambah', [SuratMasukController::class, 'tambah'])->middleware('sekre');
 Route::get('/surat-masuk/edit/{suratMasuk}', [SuratMasukController::class, 'edit'])->middleware('sekre');
 Route::get('/laporan/surat-masuk/per-direksi', [SuratMasukController::class, 'laporanPerDireksi'])->middleware('sekre');
-Route::get('/laporan/distribusi-surat/rekap/per-tujuan', [SuratMasukController::class, 'laporanPerTujuan_LAMA'])->middleware('sekre');
+Route::get('/laporan/distribusi-surat/rekap/per-tujuan', [SuratMasukController::class, 'laporanPerTujuan'])->middleware('sekre');
 Route::get('/surat-masuk/disposisi/{suratMasuk}', [SuratMasukController::class, 'disposisi'])->middleware('auth');
 Route::get('/surat-masuk/lacak-distribusi/{suratMasuk}', [SuratMasukController::class, 'lacakDistribusi'])->middleware('auth');
 Route::get('/surat-masuk/ns/belum-diteruskan', [SuratMasukController::class, 'nonSekreBelumDiteruskan'])->middleware('notSekre');
