@@ -15,7 +15,7 @@ class IsPenjab
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->level !== 'penjab') {
+        if (!auth()->check() || auth()->user()->level != 'penjab') {
             abort(403);
         }
         return $next($request);

@@ -3,6 +3,7 @@
 @extends('layouts.main')
 
 @section('container')
+@dd($suratMasuk->statusArsip)
     
 <div>
   @php
@@ -206,7 +207,7 @@
     @endif
 
     <div class="row d-flex justify-content-center">
-        @if ($suratMasuk->statusArsip === 0)
+        @if ($suratMasuk->statusArsip == 0)
             
         <h5 class="text-center fw-bold mb-3">Teruskan Surat</h5>
         <div class="col-12 col-md-9">
@@ -261,7 +262,7 @@
             </div>
             </form>
         @endif
-        @if ($suratMasuk->statusArsip === 0)
+        @if ($suratMasuk->statusArsip == 0)
             <form action="/surat-masuk/arsipkan" method="post">
                 @csrf
                 <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">

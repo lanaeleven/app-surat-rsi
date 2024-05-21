@@ -15,7 +15,7 @@ class IsDirektur
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->level !== 'direktur') {
+        if (!auth()->check() || auth()->user()->level != 'direktur') {
             abort(403);
         }
         return $next($request);

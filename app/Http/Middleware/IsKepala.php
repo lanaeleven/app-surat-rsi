@@ -15,7 +15,7 @@ class IsKepala
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->level !== 'kepala') {
+        if (!auth()->check() || auth()->user()->level != 'kepala') {
             abort(403);
         }
         return $next($request);

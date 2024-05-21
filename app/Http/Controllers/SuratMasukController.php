@@ -23,12 +23,12 @@ class SuratMasukController extends Controller
         $direksi = Direksi::all();
         $judul = "Surat Masuk";
 
-        if ($keterangan === 'hari-ini') {
+        if ($keterangan == 'hari-ini') {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '=', now());
             $judul = "Surat Masuk Hari Ini";
         }
 
-        if ($keterangan === 'bulan-ini') {
+        if ($keterangan == 'bulan-ini') {
             $suratMasuk = $suratMasuk->whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'));
             $judul = "Surat Masuk Bulan Ini";
         }
@@ -181,14 +181,14 @@ class SuratMasukController extends Controller
         // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
         if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
             $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
-            if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status === "Diarsipkan") && auth()->user()->id !== 1) {
+            if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && auth()->user()->id != 1) {
                 abort(403);
             }
         }
 
         // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG BELUM DITERUSKAN
         // PENGECEKAN APAKAH SURAT MASUK YANG BELUM DITERUSKAN DIAKSES OLEH ADMIN ATAU BUKAN, JIKA BUKAN ADMIN MAKA TIDAK DIPERBOLEHKAN
-        if ($suratMasuk->status === "Belum Diteruskan" && auth()->user()->id !== 1) {
+        if ($suratMasuk->status == "Belum Diteruskan" && auth()->user()->id != 1) {
             abort(403);
         }
 
@@ -201,7 +201,7 @@ class SuratMasukController extends Controller
     public function teruskan(Request $request): RedirectResponse
     {
         // dd(auth()->user()->namaJabatan);
-        if (auth()->user()->id === 1) {
+        if (auth()->user()->id == 1) {
             $redirect = '/surat-masuk/index';
         } else {
             $redirect = '/';
@@ -295,7 +295,7 @@ class SuratMasukController extends Controller
         ]);
 
         $redirect = "/";
-        if (auth()->user()->id === 1) {
+        if (auth()->user()->id == 1) {
             $redirect = "/surat-masuk/index";
         }
 

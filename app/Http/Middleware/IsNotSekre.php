@@ -15,7 +15,7 @@ class IsNotSekre
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->id === 1) {
+        if (!auth()->check() || auth()->user()->id == 1) {
             abort(403);
         }
         return $next($request);
