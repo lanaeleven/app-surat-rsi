@@ -68,6 +68,12 @@
         </div>
       </form>
     </div>
+
+    @if ($spo->isEmpty())
+
+        <p class="text-center fs-6 my-5">Anda Tidak Memiliki {{ $judul }}</p>
+
+    @else
     
     <div>
         <table class="table table-striped  d-none d-md-table d-lg-table d-xl-table d-xxl-table">
@@ -162,6 +168,6 @@
             {{ $spo->appends(request()->input())->links() }}
           </div>
         </div>
-
+@endif
 </div>
 @endsection
