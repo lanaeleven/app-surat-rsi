@@ -14,7 +14,7 @@
       <a href="{{ $kembali }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
     </div>
     <div>
-      <h3 class="fw-bold fs-4 text-center">Distribusi Surat</h3>
+      <h3 class="fw-bold fs-4 text-center">Disposisi Surat</h3>
     </div>
     <div>
     </div>

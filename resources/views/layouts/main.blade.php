@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.min.css') }}">
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="icon" type="image/ico" sizes="32x32" href="/favicon.ico">
+    {{-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> --}}
     
   </head>
 

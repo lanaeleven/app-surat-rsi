@@ -29,7 +29,6 @@ class SuratMasukFactory extends Factory
             'perihal' => fake()->words(2, true),
             'lampiran' => fake()->randomElement(['Ada', 'Tidak Ada']),
             'status' => 'Belum Diteruskan',
-            // 'status' => fake()->randomElement(['Belum Diteruskan', 'Diteruskan ke Direktur', 'Diteruskan ke Kepala Bagian', 'Diteruskan ke Penanggung Jawab', 'Diarsipkan']),
             'fileName' => 'sertifprogram.pdf',
             'filePath' => 'uploads/sertifprogram.pdf'
         ];
