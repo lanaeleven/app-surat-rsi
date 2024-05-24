@@ -412,10 +412,10 @@ class DatabaseSeeder extends Seeder
             'namaDireksi' => 'Direktur'
         ]);
 
-        \App\Models\SuratKeluar::factory(1000)->create();
+        // \App\Models\SuratKeluar::factory(1000)->create();
 
-        \App\Models\SuratMasuk::factory(1000)->create();
+        // \App\Models\SuratMasuk::factory(1000)->create();
 
-        \App\Models\Spo::factory(1000)->create();
+        // \App\Models\Spo::factory(1000)->create();
     }
 }

@@ -69,7 +69,7 @@ class SpoController extends Controller
         // Store the file in storage\app\public folder
         $file = $request->file('fileSurat');
         $fileName = $file->getClientOriginalName();
-        $filePath = $file->store('uploads/surat-keluar', 'public');
+        $filePath = $file->store('uploads/spo', 'public');
 
         // Store file information in the database
         $suratKeluar = new Spo();
@@ -109,7 +109,7 @@ class SpoController extends Controller
             // Store the file in storage\app\public folder
             $file = $request->file('fileSurat');
             $fileName = $file->getClientOriginalName();
-            $filePath = $file->store('uploads/surat-keluar', 'public');
+            $filePath = $file->store('uploads/spo', 'public');
         }
 
 
