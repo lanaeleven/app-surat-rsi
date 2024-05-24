@@ -4,15 +4,15 @@
 @section('container')
     
 <div>
-    
-  <div class="d-flex justify-content-between align-items-center my-4">
+
+  <div class="d-flex justify-content-between align-items-center my-2">
     <div>
+      <a href="/direksi/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
     </div>
     <div>
-      <h3 class="fw-bold fs-4 text-center" style="margin-left: 90px;">Tambah Direksi</h3>
+      <h3 class="fw-bold fs-4 text-center">Distribusi Surat</h3>
     </div>
     <div>
-      <a href="/direksi/index" class="btn btn-warning">Kembali</a>
     </div>
   </div>
 

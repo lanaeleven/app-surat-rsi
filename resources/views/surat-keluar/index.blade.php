@@ -37,11 +37,11 @@
           <div class="col-auto">
             <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
           </div>
-          <div class="col-auto">
+          <div class="col-auto me-3">
               <input name="tanggalAwal" type="date" id="tanggalAwal" class="form-control form-control-sm" value="{{ request('tanggalAwal') }}">
           </div> 
 
-          <div class="col-auto ms-3">
+          <div class="col-auto">
               <label for="tanggalAkhir" class="col-form-label"><small>Tanggal Akhir :</small></label>
             </div>
           <div class="col-auto">

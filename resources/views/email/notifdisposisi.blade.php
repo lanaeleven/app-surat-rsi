@@ -39,10 +39,10 @@
     </style>
 </head>
 <body>
-    <p>Halo {{ $nama }}</p>
+    <p>Assalamualaikum Wr Wb, {{ $nama }}</p>
     <p>Anda Memiliki Disposisi baru yang harus ditindaklanjuti.</p>
     <p>Silakan masuk ke Web Surat RSI Sultan Agung Banjarbaru untuk menindaklanjuti disposisi</p>
-    <p><a href="http://127.0.0.1:8000/" class="button">Masuk Aplikasi Surat RSI</a></p>
+    <p><a href="https://surat.rsisabanjarbaru.com/" class="button">Masuk Aplikasi Surat RSI</a></p>
     <p>Berikut detail disposisinya:</p>
     <p>Oleh: {{ $pengirim }}</p>
     <p>Kepada: {{ $penerima }}</p>
