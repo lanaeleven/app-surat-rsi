@@ -1,4 +1,4 @@
-{{-- @dd(Storage::url($suratKeluar[0]->filePath)) --}}
+
 @extends('layouts.main')
 
 @section('container')
@@ -115,7 +115,7 @@
             </tbody>
           </table>
 
-          {{-- Tampilan Daftar Surat Masuk pada mobile device --}}
+          {{-- Tampilan SPO pada mobile device --}}
           @foreach ($spo as $s)
     <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mt-3 mb-5">
       <div class="card shadow">

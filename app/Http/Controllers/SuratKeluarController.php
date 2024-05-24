@@ -13,16 +13,16 @@ class SuratKeluarController extends Controller
     public function create(?string $ket = null) {
 
         $suratKeluar = SuratKeluar::orderBy('id', 'desc');
-        $jenisSurat = JenisSurat::all();
+        $jenisSurat = JenisSurat::all();  
         $direksi = Direksi::all();
         $judul = "Surat Keluar";
 
-        if ($ket === 'hari-ini') {
+        if ($ket == 'hari-ini') {
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '=', now());
             $judul = "Surat Keluar Hari Ini";
         }
 
-        if ($ket === 'bulan-ini') {
+        if ($ket == 'bulan-ini') {
             $suratKeluar = $suratKeluar->whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'));
             $judul = "Surat Keluar Bulan Ini";
         }
@@ -30,10 +30,6 @@ class SuratKeluarController extends Controller
         if (request('index')) {
             $suratKeluar->where('id', '=', request('index'));
         }
-
-        // if (request('tahun')) {
-        //     $suratKeluar->whereYear('tanggalSurat', request('tahun'));
-        // }
 
         if (request('tanggalAwal')) {
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
@@ -63,22 +59,21 @@ class SuratKeluarController extends Controller
             $suratKeluar->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('surat-keluar.index', ['title' => 'App Surat | ' . $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with(['jenisSurat', 'direksi'])->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
+        return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with(['jenisSurat', 'direksi'])->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
     }
 
     public function edit(SuratKeluar $suratKeluar) {
-        // dd($suratKeluar);
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
 
-        return view('surat-keluar.edit', ['title' => 'App Surat | Edit Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar, 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
+        return view('surat-keluar.edit', ['title' => 'Edit Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar, 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
     }
 
     public function tambah() {
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
 
-        return view('surat-keluar.tambah', ['title' => 'App Surat | Tambah Surat Keluar', 'active' => 'surat keluar', 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
+        return view('surat-keluar.tambah', ['title' => 'Tambah Surat Keluar', 'active' => 'surat keluar', 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -117,7 +112,7 @@ class SuratKeluarController extends Controller
 
     public function save(Request $request): RedirectResponse
     {
-        // Validate the incoming file. Refuses anything bigger than 2048 kilobyes (=2MB)
+        // Validate the incoming file. Refuses anything bigger than 5 Mb
         $request->validate([
             'jenisSurat' => 'required',
             'tanggalSurat' => 'required',
@@ -167,7 +162,7 @@ class SuratKeluarController extends Controller
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
         }        
 
-        return view('surat-keluar.laporan-per-jenis-surat', ['title' => 'App Surat | Surat Keluar Per Jenis Surat', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
+        return view('surat-keluar.laporan-per-jenis-surat', ['title' => 'Surat Keluar Per Jenis Surat', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
     }
 
     public function laporanPerDireksi() {
@@ -182,6 +177,6 @@ class SuratKeluarController extends Controller
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
         }        
 
-        return view('surat-keluar.laporan-per-direksi', ['title' => 'App Surat | Surat Keluar Per Direksi', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
+        return view('surat-keluar.laporan-per-direksi', ['title' => 'Surat Keluar Per Direksi', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
     }
 }

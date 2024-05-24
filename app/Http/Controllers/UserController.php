@@ -11,11 +11,11 @@ class UserController extends Controller
 {
     public function create() {
         $user = User::all();
-        return view('user.index', ['title' => 'App Surat | User', 'active' => 'data master', 'user' => $user]);
+        return view('user.index', ['title' => 'User', 'active' => 'data master', 'user' => $user]);
     }
 
     public function tambah() {
-        return view('user.tambah', ['title' => 'App Surat | Tambah User', 'active' => 'data master']);
+        return view('user.tambah', ['title' => 'Tambah User', 'active' => 'data master']);
     }
 
     public function store(Request $request): RedirectResponse
@@ -43,7 +43,7 @@ class UserController extends Controller
     }
 
     public function edit(User $user) {
-        return view('user.edit', ['title' => 'App Surat | Edit User', 'active' => 'data master', 'user' => $user]);
+        return view('user.edit', ['title' => 'Edit User', 'active' => 'data master', 'user' => $user]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -59,13 +59,13 @@ class UserController extends Controller
 
         $user = User::find($request->input('id'));
 
-        if ($user->namaJabatan !== $request->input('namaJabatan')) {
+        if ($user->namaJabatan != $request->input('namaJabatan')) {
             $request->validate([
                 'namaJabatan' => 'unique:users,namaJabatan',
             ]);
         }
 
-        if ($user->username !== $request->input('username')) {
+        if ($user->username != $request->input('username')) {
             $request->validate([
                 'username' => 'unique:users,username',
             ]);
@@ -83,7 +83,7 @@ class UserController extends Controller
     }
 
     public function akunNs() {
-        return view('user.akun-ns', ['title' => 'App Surat | Akun User', 'active' => 'akun']);
+        return view('user.akun-ns', ['title' => 'Akun User', 'active' => 'akun']);
     }
 
     public function updateInfoProfil(Request $request): RedirectResponse
@@ -91,7 +91,6 @@ class UserController extends Controller
         // Validate the incoming file. 
         
         $request->validate([
-            // 'namaJabatan' => 'required',
             'username' => 'required',
             'nama' => 'required',
             'email' => 'required|email:rfc,dns'
@@ -99,20 +98,13 @@ class UserController extends Controller
 
         $user = User::find($request->input('id'));
 
-        // if ($user->namaJabatan !== $request->input('namaJabatan')) {
-        //     $request->validate([
-        //         'namaJabatan' => 'unique:users,namaJabatan',
-        //     ]);
-        // }
-
-        if ($user->username !== $request->input('username')) {
+        if ($user->username != $request->input('username')) {
             $request->validate([
                 'username' => 'unique:users,username',
             ]);
         }
 
         // Store file information in the database
-        // $user->namaJabatan = $request->input('namaJabatan');
         $user->username = $request->input('username');
         $user->nama = $request->input('nama');
         $user->email = $request->input('email');

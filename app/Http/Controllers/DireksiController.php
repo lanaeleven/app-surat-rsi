@@ -10,11 +10,11 @@ class DireksiController extends Controller
 {
     public function create() {
         $direksi = Direksi::all();
-        return view('direksi.index', ['title' => 'App Surat | Direksi', 'active' => 'data master', 'direksi' => $direksi]);
+        return view('direksi.index', ['title' => 'Direksi', 'active' => 'data master', 'direksi' => $direksi]);
     }
 
     public function tambah() {
-        return view('direksi.tambah', ['title' => 'App Surat | Tambah Direksi', 'active' => 'data master']);
+        return view('direksi.tambah', ['title' => 'Tambah Direksi', 'active' => 'data master']);
     }
 
     public function store(Request $request): RedirectResponse
@@ -34,7 +34,7 @@ class DireksiController extends Controller
     }
 
     public function edit(Direksi $direksi) {
-        return view('direksi.edit', ['title' => 'App Surat | Edit Direksi', 'active' => 'data master', 'direksi' => $direksi]);
+        return view('direksi.edit', ['title' => 'Edit Direksi', 'active' => 'data master', 'direksi' => $direksi]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -47,7 +47,7 @@ class DireksiController extends Controller
 
         $direksi = Direksi::find($request->input('id'));
 
-        if ($direksi->namaDireksi !== $request->input('namaDireksi')) {
+        if ($direksi->namaDireksi != $request->input('namaDireksi')) {
             $request->validate([
                 'namaDireksi' => 'unique:direksi,namaDireksi',
             ]);

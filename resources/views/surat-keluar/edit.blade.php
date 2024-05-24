@@ -1,5 +1,4 @@
-{{-- @dd($jenisSurat[0]->kodeJenisSurat.'-'.$jenisSurat[0]->keterangan) --}}
-{{-- @dd($direksi) --}}
+
 @extends('layouts.main')
 
 @section('container')
@@ -14,7 +13,6 @@
         <h3 class="fw-bold fs-4 text-center">Edit Surat Keluar</h3>
       </div>
       <div>
-        {{-- <a href="/surat-keluar/index" class="btn btn-warning">Kembali</a> --}}
       </div>
     </div>
 

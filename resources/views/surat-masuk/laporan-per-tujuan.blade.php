@@ -1,6 +1,5 @@
 
 @extends('layouts.main')
-{{-- @dd($rekap[0]['namaJabatan']); --}}
 @section('container')
 <div class="div">
     <h3 class="fw-bold fs-4 mb-3">Rekapitulasi Surat Masuk Berdasarkan Tujuan Disposisi</h3>
@@ -50,13 +49,8 @@
                   </tr>
                   @php
                     $no++;
-                    // $total += $r->surat->count();
                   @endphp
               @endforeach
-              {{-- <tr>
-                <th colspan="2">Total</th>
-                <th>{{ $total }}</th>
-              </tr> --}}
             </tbody>
           </table>
     </div>

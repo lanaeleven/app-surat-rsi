@@ -1,6 +1,4 @@
-{{-- @dd($suratMasuk[0]->direksi->namaDireksi) --}}
 @extends('layouts.main')
-{{-- @dd($suratMasuk) --}}
 @section('container')
 <div class="div">
 
@@ -12,7 +10,6 @@
         <h3 class="fw-bold fs-4 text-center">Surat Masuk yang Belum Diteruskan</h3>
       </div>
       <div>
-        {{-- <a href="/" class="btn btn-warning">Kembali</a> --}}
       </div>
     </div>
 
@@ -28,7 +25,6 @@
               <tr>
                 <th scope="col">Indeks</th>
                 <th scope="col">Direktorat</th>
-                {{-- <th scope="col">Tgl Agenda</th> --}}
                 <th scope="col">Dari</th>
                 <th scope="col">Tgl Surat</th>
                 <th scope="col">No Surat</th>
@@ -42,7 +38,6 @@
               <tr>
                 <th scope="row">{{ $sm->id }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
-                {{-- <td>{{ $sm->tanggalAgenda }}</td> --}}
                 <td>{{ $sm->pengirim }}</td>
                 <td>{{ $sm->tanggalSurat }}</td>
                 <td>{{ $sm->nomorSurat }}</td>

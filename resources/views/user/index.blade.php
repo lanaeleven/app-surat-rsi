@@ -44,11 +44,6 @@
             </tbody>
           </table>
     </div>
-    {{-- <div class="d-flex justify-content-center">
-      <div>
-        {{ $suratMasuk->links() }}
-      </div>
-    </div> --}}
 
 </div>
 @endsection

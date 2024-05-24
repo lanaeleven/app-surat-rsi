@@ -10,11 +10,11 @@ class JenisSuratController extends Controller
 {
     public function create() {
         $jenisSurat = JenisSurat::all();
-        return view('jenis-surat.index', ['title' => 'App Surat | Jenis Surat', 'active' => 'data master', 'jenisSurat' => $jenisSurat]);
+        return view('jenis-surat.index', ['title' => 'Jenis Surat', 'active' => 'data master', 'jenisSurat' => $jenisSurat]);
     }
 
     public function tambah() {
-        return view('jenis-surat.tambah', ['title' => 'App Surat | Tambah Jenis Surat', 'active' => 'data master']);
+        return view('jenis-surat.tambah', ['title' => 'Tambah Jenis Surat', 'active' => 'data master']);
     }
 
     public function store(Request $request): RedirectResponse
@@ -36,7 +36,7 @@ class JenisSuratController extends Controller
     }
 
     public function edit(JenisSurat $jenisSurat) {
-        return view('jenis-surat.edit', ['title' => 'App Surat | Edit Direksi', 'active' => 'data master', 'jenisSurat' => $jenisSurat]);
+        return view('jenis-surat.edit', ['title' => 'Edit Direksi', 'active' => 'data master', 'jenisSurat' => $jenisSurat]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -50,13 +50,13 @@ class JenisSuratController extends Controller
 
         $jenisSurat = JenisSurat::find($request->input('id'));
 
-        if ($jenisSurat->kodeJenisSurat !== $request->input('kodeJenisSurat')) {
+        if ($jenisSurat->kodeJenisSurat != $request->input('kodeJenisSurat')) {
             $request->validate([
                 'kodeJenisSurat' => 'unique:jenis_surat,kodeJenisSurat',
             ]);
         }
 
-        if ($jenisSurat->keterangan !== $request->input('keterangan')) {
+        if ($jenisSurat->keterangan != $request->input('keterangan')) {
             $request->validate([
                 'keterangan' => 'unique:jenis_surat,keterangan',
             ]);

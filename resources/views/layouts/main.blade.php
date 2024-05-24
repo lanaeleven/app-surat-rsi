@@ -5,16 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $title }}</title>
-    {{-- <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" /> --}}
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.min.css') }}">
-    {{-- <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    /> --}}
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> --}}
-    {{-- <link rel="stylesheet" href="/css/bootstrap.css" /> --}}
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/bootstrap.css">
     
@@ -27,7 +18,6 @@
       <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
         <div class="d-flex">
           <button class="toggle-btn" type="button" id="toggle-btnnn">
-            {{-- <i class="lni lni-grid-alt"></i> --}}
             <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
           </button>
           <div class="sidebar-logo">
@@ -42,7 +32,6 @@
           @endif
            ">
             <a href="/" class="sidebar-link">
-              {{-- <i class="lni lni-dashboard"></i> --}}
               <i class="fa-solid fa-house" style="color: #ffffff;"></i>
               <span>Dashboard</span>
             </a>
@@ -56,7 +45,6 @@
           @endif
            ">
             <a href="/surat-masuk/index" class="sidebar-link">
-              {{-- <i class="lni lni-inbox"></i> --}}
               <i class="fa-solid fa-folder-closed" style="color: #ffffff;"></i>
               <span>Surat Masuk</span>
             </a>
@@ -67,7 +55,6 @@
           @endif
            ">
             <a href="/surat-keluar/index" class="sidebar-link">
-              {{-- <i class="lni lni-upload"></i> --}}
               <i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>
               <span>Surat Keluar</span>
             </a>
@@ -78,7 +65,6 @@
           @endif
            ">
             <a href="/spo/index" class="sidebar-link">
-              {{-- <i class="lni lni-upload"></i> --}}
               <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i>
               <span>SPO</span>
             </a>
@@ -89,7 +75,6 @@
           @endif">
             <a href="#"  class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi"
             >
-            {{-- <i class="lni lni-book"></i> --}}
             <i class="fa-solid fa-file-lines" style="color: #ffffff;"></i>
               <span>Laporan</span>
             </a>
@@ -196,7 +181,6 @@
               aria-expanded="false"
               aria-controls="auth"
             >
-            {{-- <i class="lni lni-database"></i> --}}
             <i class="fa-solid fa-database" style="color: #ffffff;"></i>
               <span>Data Master</span>
             </a>
@@ -324,7 +308,6 @@
 
         <main class="content px-3 py-4">
           <div class="container-fluid">
-            {{-- @dd($active) --}}
         @yield('container')
 
           </div>
@@ -340,11 +323,6 @@
 
       </div>
     </div>
-    {{-- <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script> --}}
     <script src="/js/bootstrap.js"></script>
     <script src="/js/script.js"></script>
   </body>

@@ -1,10 +1,3 @@
-{{-- @dd($jenisSurat[0]->kodeJenisSurat.'-'.$jenisSurat[0]->keterangan) --}}
-
-@php
-    // $distribusiSurat = $distribusiSurat[0];
-@endphp
-{{-- @dd($distribusiSurat) --}}
-
 @extends('layouts.main')
 
 @section('container')
@@ -19,14 +12,12 @@
   @endphp
   <div class="d-flex justify-content-between align-items-center my-2">
     <div>
-      {{-- <a href="{{ $kembali }}" class="btn btn-warning btn-sm d-none d-md-block d-lg-block d-xl-block d-xxl-block">Kembali</a> --}}
       <a href="{{ $kembali }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
     </div>
     <div>
       <h3 class="fw-bold fs-4 text-center">Distribusi Surat</h3>
     </div>
     <div>
-      {{-- <a href="{{ $kembali }}" class="btn btn-warning">Kembali</a> --}}
     </div>
   </div>
   

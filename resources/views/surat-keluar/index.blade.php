@@ -1,4 +1,4 @@
-{{-- @dd(Storage::url($suratKeluar[0]->filePath)) --}}
+
 @extends('layouts.main')
 
 @section('container')
@@ -31,9 +31,6 @@
       <form class="row g-3" action="">
         @if (is_null($ket))
         <div class="row g-3">
-          {{-- <div class="col-auto">
-            <input name="tahun" type="number" class="form-control form-control-sm" placeholder="Tahun" value="{{ request('tahun') }}">
-          </div>     --}}
           <div class="col-auto">
             <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
           </div>
@@ -80,12 +77,17 @@
             <input name="keterangan" type="text" class="form-control form-control-sm" placeholder="Keterangan" value="{{ request('keterangan') }}">
           </div>
           <div class="col-auto">
-            {{-- <button type="submit" class="btn btn-secondary btn-sm mb-3">Cari</button> --}}
             <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
           </div>
         </div>
       </form>
     </div>
+
+    @if ($suratKeluar->isEmpty())
+
+        <p class="text-center fs-6 my-5">Anda Tidak Memiliki {{ $judul }}</p>
+
+    @else
     
     <div>
         <table class="table table-striped  d-none d-md-table d-lg-table d-xl-table d-xxl-table">
@@ -135,7 +137,7 @@
             </tbody>
           </table>
 
-          {{-- Tampilan Daftar Surat Masuk pada mobile device --}}
+          {{-- Tampilan Daftar Surat Keluar pada mobile device --}}
           @foreach ($suratKeluar as $sk)
     <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mt-3 mb-5">
       <div class="card shadow">
@@ -186,6 +188,6 @@
             {{ $suratKeluar->appends(request()->input())->links() }}
           </div>
         </div>
-
+@endif
 </div>
 @endsection

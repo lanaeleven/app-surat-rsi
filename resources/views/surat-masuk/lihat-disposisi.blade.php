@@ -1,5 +1,3 @@
-{{-- @dd($jenisSurat[0]->kodeJenisSurat.'-'.$jenisSurat[0]->keterangan) --}}
-{{-- @dd($distribusiSurat) --}}
 @php
     $distribusiSurat = $distribusiSurat[0];
 @endphp

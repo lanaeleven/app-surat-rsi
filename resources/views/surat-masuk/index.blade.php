@@ -1,4 +1,4 @@
-{{-- @dd($suratMasuk[0]->direksi->namaDireksi) --}}
+
 @extends('layouts.main')
 
 @section('container')
@@ -12,7 +12,6 @@
     <div class="d-flex justify-content-between my-2">
       <div class="mb-2">
       @if (!is_null($keterangan))
-      {{-- <a href="/" class="btn btn-warning btn-sm d-none d-md-block d-lg-block d-xl-block d-xxl-block">Kembali</a> --}}
       <a href="/" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
       @endif
       </div>
@@ -75,13 +74,18 @@
       </form>
     </div>
 
+    @if ($suratMasuk->isEmpty())
+
+        <p class="text-center fs-6 my-5">Anda Tidak Memiliki {{ $judul }}</p>
+
+    @else
+
     <div class="div">
         <table class="table table-striped d-none d-md-table d-lg-table d-xl-table d-xxl-table">
             <thead>
               <tr>
                 <th scope="col">Indeks</th>
                 <th scope="col">Direktorat</th>
-                {{-- <th scope="col">Tgl Agenda</th> --}}
                 <th scope="col">Dari</th>
                 <th scope="col">Tgl Surat</th>
                 <th scope="col">No Surat</th>
@@ -96,7 +100,6 @@
               <tr>
                 <th scope="row">{{ $sm->id }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
-                {{-- <td>{{ $sm->tanggalAgenda }}</td> --}}
                 <td>{{ $sm->pengirim }}</td>
                 <td>{{ $sm->tanggalSurat }}</td>
                 <td>{{ $sm->nomorSurat }}</td>
@@ -159,13 +162,12 @@
       </div>
     </div>        
     @endforeach
-
     </div>
     <div class="d-flex justify-content-center">
       <div>
         {{ $suratMasuk->appends(request()->input())->links() }}
       </div>
     </div>
-
+    @endif
 </div>
 @endsection

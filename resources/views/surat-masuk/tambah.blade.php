@@ -1,5 +1,3 @@
-{{-- @dd($jenisSurat[0]->kodeJenisSurat.'-'.$jenisSurat[0]->keterangan) --}}
-{{-- @dd($direksi) --}}
 @extends('layouts.main')
 
 @section('container')
@@ -7,14 +5,12 @@
 <div>
     <div class="d-flex justify-content-between align-items-center my-4">
       <div>
-        {{-- <a href="/surat-masuk/index" class="btn btn-warning btn-sm d-none d-md-block d-lg-block d-xl-block d-xxl-block">Kembali</a> --}}
         <a href="/surat-masuk/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
       </div>
       <div>
         <h3 class="fw-bold fs-4 text-center">Tambah Surat Masuk</h3>
       </div>
       <div>
-        {{-- <a href="/surat-masuk/index" class="btn btn-warning">Kembali</a> --}}
         
       </div>
     </div>
@@ -121,13 +117,6 @@
                       @enderror
                   </div>
               </div>
-
-                  {{-- <div class="row mb-3">
-                    <label for="fileSurat" class="col-sm-3 col-form-label">Upload Surat</label>
-                    <div class="col-sm-9">
-                        <input name="fileSurat" class="form-control" type="file" id="fileSurat" required>
-                    </div>
-                </div> --}}
 
                   <div class="d-flex justify-content-center">
                     <div>

@@ -1,5 +1,4 @@
-{{-- @dd($jenisSurat[0]->kodeJenisSurat.'-'.$jenisSurat[0]->keterangan) --}}
-{{-- @dd($suratMasuk) --}}
+
 @extends('layouts.main')
 
 @section('container')

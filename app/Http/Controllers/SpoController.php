@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 
 class SpoController extends Controller
 {
-    public function create(?string $ket = null) {
+    public function create() {
 
         $spo = Spo::orderBy('id', 'desc');
         $direksi = Direksi::all();
@@ -46,13 +46,13 @@ class SpoController extends Controller
             $spo->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('spo.index', ['title' => 'App Surat | ' . $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('spo.index', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 
     public function tambah() {
         $direksi = Direksi::all();
 
-        return view('spo.tambah', ['title' => 'App Surat | Tambah Surat Prosedur Operasional', 'active' => 'spo', 'direksi' => $direksi]);
+        return view('spo.tambah', ['title' => 'Tambah Surat Prosedur Operasional', 'active' => 'spo', 'direksi' => $direksi]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -91,7 +91,7 @@ class SpoController extends Controller
         // dd($suratKeluar);
         $direksi = Direksi::all();
 
-        return view('spo.edit', ['title' => 'App Surat | Edit Standar Prosedur Operasional', 'active' => 'spo', 'spo' => $spo, 'direksi' => $direksi]);
+        return view('spo.edit', ['title' => 'Edit Standar Prosedur Operasional', 'active' => 'spo', 'spo' => $spo, 'direksi' => $direksi]);
     }
 
     public function save(Request $request): RedirectResponse
