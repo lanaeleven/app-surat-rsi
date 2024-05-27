@@ -317,8 +317,8 @@
                     Anda Yakin Ingin Membuka Status Arsip?
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-danger">Buka Arsip</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Buka Arsip</button>
                     </div>
                 </div>
                 </div>
