@@ -21,6 +21,8 @@
             <form method="post" action="/surat-keluar/save" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="id" value="{{ $suratKeluar->id }}">
+              <input type="hidden" name="index" value="{{ $suratKeluar->index }}">
+              <input type="hidden" name="tahun" value="{{ $suratKeluar->tahun }}">
                 <div class="row mb-3">
                   <label for="jenisSurat" class="col-sm-3 col-form-label">Jenis Surat</label>
                   <div class="col-sm-9">

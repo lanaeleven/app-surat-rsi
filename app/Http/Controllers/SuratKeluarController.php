@@ -6,13 +6,14 @@ use App\Models\Direksi;
 use App\Models\JenisSurat;
 use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\RedirectResponse;
 
 class SuratKeluarController extends Controller
 {
     public function create(?string $ket = null) {
 
-        $suratKeluar = SuratKeluar::orderBy('id', 'desc');
+        $suratKeluar = SuratKeluar::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $jenisSurat = JenisSurat::all();  
         $direksi = Direksi::all();
         $judul = "Surat Keluar";
@@ -28,7 +29,7 @@ class SuratKeluarController extends Controller
         }
 
         if (request('index')) {
-            $suratKeluar->where('id', '=', request('index'));
+            $suratKeluar->where('index', '=', request('index'));
         }
 
         if (request('tanggalAwal')) {
@@ -93,8 +94,16 @@ class SuratKeluarController extends Controller
         $fileName = $file->getClientOriginalName();
         $filePath = $file->store('uploads/surat-keluar', 'public');
 
+        $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        // Get the maximum id for the given year
+        $maxIndex = SuratKeluar::where('tahun', $tahun)->max('index');
+        // Determine the new id for the given year
+        $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
         // Store file information in the database
         $suratKeluar = new SuratKeluar();
+        $suratKeluar->index = $newIndex;
+        $suratKeluar->tahun = $tahun;
         $suratKeluar->idJenisSurat = $request->input('jenisSurat');
         $suratKeluar->idDireksi = $request->input('direksi');
         $suratKeluar->tanggalSurat = $request->input('tanggalSurat');
@@ -142,6 +151,16 @@ class SuratKeluarController extends Controller
         if ($request->file('fileSurat')) {
             $suratKeluar->fileName = $fileName;
             $suratKeluar->filePath = $filePath;
+        }
+        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        if ($tahunInput != $request->input('tahun')) {
+            // Get the maximum id for the given year
+            $maxIndex = SuratKeluar::where('tahun', $tahunInput)->max('index');
+            // Determine the new id for the given year
+            $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+            $suratKeluar->tahun = $tahunInput;
+            $suratKeluar->index = $newIndex;         
         }
         $suratKeluar->save();
 

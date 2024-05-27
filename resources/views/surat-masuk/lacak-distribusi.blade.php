@@ -38,7 +38,7 @@
                                     
                                     <tr>
                                         <td>Indeks</td>
-                                        <td>{{ $suratMasuk->id }}</td>
+                                        <td>{{ $suratMasuk->index }}</td>
                                     </tr>
                                     <tr>
                                         <td>Tanggal Surat</td>
@@ -110,7 +110,7 @@
               <tr>
                 <tr>
                   <th>Indeks</th>
-                  <td>{{ $suratMasuk->id }}</td>
+                  <td>{{ $suratMasuk->index }}</td>
                 </tr>
                 <tr>
                   <th>Nomor Surat</th>

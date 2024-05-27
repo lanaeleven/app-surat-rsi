@@ -21,6 +21,8 @@
             <form method="post" action="/spo/save" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="id" value="{{ $spo->id }}">
+              <input type="hidden" name="index" value="{{ $spo->index }}">
+              <input type="hidden" name="tahun" value="{{ $spo->tahun }}">
                 <div class="row mb-3">
                   <label for="tanggalSurat" class="col-sm-3 col-form-label">Tanggal Surat</label>
                   <div class="col-sm-9">

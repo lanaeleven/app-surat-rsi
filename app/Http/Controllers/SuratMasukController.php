@@ -18,7 +18,7 @@ use Illuminate\Http\RedirectResponse;
 class SuratMasukController extends Controller
 {
     public function create(?string $keterangan = null) {
-        $suratMasuk = SuratMasuk::orderBy('id', 'desc');
+        $suratMasuk = SuratMasuk::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $direksi = Direksi::all();
         $judul = "Surat Masuk";
 
@@ -33,7 +33,7 @@ class SuratMasukController extends Controller
         }
 
         if (request('index')) {
-            $suratMasuk->where('id', '=', request('index'));
+            $suratMasuk->where('index', '=', request('index'));
         }
 
         if (request('tanggalAwal')) {
@@ -94,13 +94,21 @@ class SuratMasukController extends Controller
         $fileName = $file->getClientOriginalName();
         $filePath = $file->store('uploads/surat-masuk', 'public');
 
+        $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        // Get the maximum id for the given year
+        $maxIndex = SuratMasuk::where('tahun', $tahun)->max('index');
+        // Determine the new id for the given year
+        $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
         // Store file information in the database
         $suratMasuk = new SuratMasuk();
+        $suratMasuk->index = $newIndex;
         $suratMasuk->idPosisiDisposisi = $request->input('idPosisiDisposisi');
         $suratMasuk->tanggalAgenda = $request->input('tanggalAgenda');
         $suratMasuk->sifatSurat = $request->input('sifatSurat');
         $suratMasuk->nomorSurat = $request->input('nomorSurat');
         $suratMasuk->tanggalSurat = $request->input('tanggalSurat');
+        $suratMasuk->tahun = $tahun;
         $suratMasuk->lampiran = $request->input('lampiran');
         $suratMasuk->pengirim = $request->input('pengirim');
         $suratMasuk->idDireksi = $request->input('direksi');
@@ -158,6 +166,16 @@ class SuratMasukController extends Controller
         if ($request->file('fileSurat')) {
             $suratMasuk->fileName = $fileName;
             $suratMasuk->filePath = $filePath;
+        }
+        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        if ($tahunInput != $request->input('tahun')) {
+            // Get the maximum id for the given year
+            $maxIndex = SuratMasuk::where('tahun', $tahunInput)->max('index');
+            // Determine the new id for the given year
+            $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+            $suratMasuk->tahun = $tahunInput;
+            $suratMasuk->index = $newIndex;         
         }
         $suratMasuk->save();
 

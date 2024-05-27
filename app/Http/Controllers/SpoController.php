@@ -7,6 +7,7 @@ use App\Models\Direksi;
 use App\Models\JenisSurat;
 use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
@@ -14,12 +15,12 @@ class SpoController extends Controller
 {
     public function create() {
 
-        $spo = Spo::orderBy('id', 'desc');
+        $spo = Spo::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $direksi = Direksi::all();
         $judul = "Standar Prosedur Operasional";
 
         if (request('index')) {
-            $spo->where('id', '=', request('index'));
+            $spo->where('index', '=', request('index'));
         }
 
         if (request('tanggalAwal')) {
@@ -71,16 +72,24 @@ class SpoController extends Controller
         $fileName = $file->getClientOriginalName();
         $filePath = $file->store('uploads/spo', 'public');
 
+        $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        // Get the maximum id for the given year
+        $maxIndex = Spo::where('tahun', $tahun)->max('index');
+        // Determine the new id for the given year
+        $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
         // Store file information in the database
-        $suratKeluar = new Spo();
-        $suratKeluar->idDireksi = $request->input('direksi');
-        $suratKeluar->tanggalSurat = $request->input('tanggalSurat');
-        $suratKeluar->tujuan = $request->input('tujuan');
-        $suratKeluar->perihal = $request->input('perihal');
-        $suratKeluar->keterangan = $request->input('keterangan');
-        $suratKeluar->fileName = $fileName;
-        $suratKeluar->filePath = $filePath;
-        $suratKeluar->save();
+        $spo = new Spo();
+        $spo->index = $newIndex;
+        $spo->tahun = $tahun;
+        $spo->idDireksi = $request->input('direksi');
+        $spo->tanggalSurat = $request->input('tanggalSurat');
+        $spo->tujuan = $request->input('tujuan');
+        $spo->perihal = $request->input('perihal');
+        $spo->keterangan = $request->input('keterangan');
+        $spo->fileName = $fileName;
+        $spo->filePath = $filePath;
+        $spo->save();
 
         // Redirect back to the index page with a success message
         return redirect('/spo/index')
@@ -88,7 +97,6 @@ class SpoController extends Controller
     }
 
     public function edit(Spo $spo) {
-        // dd($suratKeluar);
         $direksi = Direksi::all();
 
         return view('spo.edit', ['title' => 'Edit Standar Prosedur Operasional', 'active' => 'spo', 'spo' => $spo, 'direksi' => $direksi]);
@@ -124,6 +132,16 @@ class SpoController extends Controller
         if ($request->file('fileSurat')) {
             $spo->fileName = $fileName;
             $spo->filePath = $filePath;
+        }
+        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        if ($tahunInput != $request->input('tahun')) {
+            // Get the maximum id for the given year
+            $maxIndex = Spo::where('tahun', $tahunInput)->max('index');
+            // Determine the new id for the given year
+            $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+            $spo->tahun = $tahunInput;
+            $spo->index = $newIndex;         
         }
         $spo->save();
 

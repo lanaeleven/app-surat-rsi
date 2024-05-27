@@ -93,7 +93,7 @@
               @foreach ($spo as $s)
                   
               <tr>
-                <th scope="row">{{ $s->id }}</th>
+                <th scope="row">{{ $s->index }}</th>
                 <td>{{ $s->tanggalSurat }}</td>
                 <td>{{ $s->tujuan }}</td>
                 <td>{{ $s->perihal }}</td>
@@ -128,7 +128,7 @@
         <table class="table table-bordered">
           <tr>
             <th>Indeks</th>
-            <td>{{ $s->id }}</td>
+            <td>{{ $s->index }}</td>
           </tr>
           <tr>
             <th>Tanggal</th>

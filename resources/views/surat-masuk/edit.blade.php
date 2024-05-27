@@ -28,6 +28,8 @@
             <form method="post" action="/surat-masuk/save" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="id" value="{{ $suratMasuk->id }}">
+              <input type="hidden" name="index" value="{{ $suratMasuk->index }}">
+              <input type="hidden" name="tahun" value="{{ $suratMasuk->tahun }}">
               <div class="row mb-3">
                 <label for="tanggalAgenda" class="col-sm-3 col-form-label">Tanggal Agenda</label>
                 <div class="col-sm-9">

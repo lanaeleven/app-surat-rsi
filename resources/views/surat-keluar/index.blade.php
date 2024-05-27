@@ -108,7 +108,7 @@
               @foreach ($suratKeluar as $sk)
                   
               <tr>
-                <th scope="row">{{ $sk->id }}</th>
+                <th scope="row">{{ $sk->index }}</th>
                 <td>{{ $sk->tanggalSurat }}</td>
                 <td>{{ $sk->tujuan }}</td>
                 <td>{{ $sk->perihal }}</td>
@@ -144,7 +144,7 @@
         <table class="table table-bordered">
           <tr>
             <th>Indeks</th>
-            <td>{{ $sk->id }}</td>
+            <td>{{ $sk->index }}</td>
           </tr>
           <tr>
             <th>Tanggal</th>

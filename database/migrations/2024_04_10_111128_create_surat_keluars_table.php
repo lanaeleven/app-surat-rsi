@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('surat_keluar', function (Blueprint $table) {
             $table->id();
+            $table->integer('index');
+            $table->year('tahun');
             $table->unsignedInteger('idJenisSurat');
             $table->foreign('idJenisSurat')->references('id')->on('jenis_surat');
             $table->unsignedInteger('idDireksi');
