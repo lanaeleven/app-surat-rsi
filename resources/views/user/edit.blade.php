@@ -125,7 +125,7 @@
 <script>
   function myFunction() {
     var x = document.getElementById("passwordBaru");
-    if (x.type === "password") {
+    if (x.type == "password") {
       x.type = "text";
     } else {
       x.type = "password";

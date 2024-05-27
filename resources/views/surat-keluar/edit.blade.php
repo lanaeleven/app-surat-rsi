@@ -30,7 +30,7 @@
                         <option value="">Pilih Jenis Surat</option>
                         @foreach ($jenisSurat as $js)
                         
-                          <option value="{{ $js->id }}" @if ($suratKeluar->idJenisSurat === $js->id)
+                          <option value="{{ $js->id }}" @if ($suratKeluar->idJenisSurat == $js->id)
                               selected
                           @endif>{{ $js->kodeJenisSurat.'-'.$js->keterangan }}</option>
 
@@ -63,7 +63,7 @@
                           <option value="">Pilih Direksi</option>
                           @foreach ($direksi as $d)
                         
-                          <option value="{{ $d->id }}" @if ($suratKeluar->idDireksi === $d->id)
+                          <option value="{{ $d->id }}" @if ($suratKeluar->idDireksi == $d->id)
                               selected
                           @endif>{{ $d->namaDireksi }}</option>
 

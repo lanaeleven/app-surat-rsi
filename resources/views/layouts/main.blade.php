@@ -29,7 +29,7 @@
         <ul class="sidebar-nav">
           
           <li class="sidebar-item
-          @if ($active === "dashboard")
+          @if ($active == "dashboard")
               active-tab
           @endif
            ">
@@ -42,7 +42,7 @@
           {{-- NAVBAR ADMIN --}}       
               
           <li class="sidebar-item
-          @if ($active === "surat masuk")
+          @if ($active == "surat masuk")
               active-tab
           @endif
            ">
@@ -52,7 +52,7 @@
             </a>
           </li>
           <li class="sidebar-item
-          @if ($active === "surat keluar")
+          @if ($active == "surat keluar")
               active-tab
           @endif
            ">
@@ -62,7 +62,7 @@
             </a>
           </li>
           <li class="sidebar-item
-          @if ($active === "spo")
+          @if ($active == "spo")
               active-tab
           @endif
            ">
@@ -72,7 +72,7 @@
             </a>
           </li>
           <li class="sidebar-item
-          @if ($active === "laporan")
+          @if ($active == "laporan")
               active-tab
           @endif">
             <a href="#"  class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#multi" aria-expanded="false" aria-controls="multi"
@@ -171,7 +171,7 @@
               </li>
             </ul>
           </li>
-          <li class="sidebar-item @if ($active === "data master")
+          <li class="sidebar-item @if ($active == "data master")
           active-tab
           @endif
           ">
@@ -219,21 +219,21 @@
               <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-md-none d-lg-none d-xl-none d-xxl-none">
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
-                  @if ($active === "dashboard")
+                  @if ($active == "dashboard")
                       fw-bold
                   @endif
                    " href="/">Dashboard</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
-                  @if ($active === "surat masuk")
+                  @if ($active == "surat masuk")
                       fw-bold
                   @endif
                    " href="/surat-masuk/index">Surat Masuk</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
-                  @if ($active === "surat keluar")
+                  @if ($active == "surat keluar")
                       fw-bold
                   @endif
                    " href="/surat-keluar/index">Surat Keluar</a>
@@ -250,28 +250,28 @@
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
-                  @if ($active === "dashboard")
+                  @if ($active == "dashboard")
                       fw-bold
                   @endif
                    " href="/">Dashboard</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
-                  @if ($active === "belum diteruskan")
+                  @if ($active == "belum diteruskan")
                       fw-bold
                   @endif
                    " href="/surat-masuk/ns/belum-diteruskan">Belum Diteruskan</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
-                  @if ($active === "sudah diteruskan")
+                  @if ($active == "sudah diteruskan")
                       fw-bold
                   @endif
                    " href="/surat-masuk/ns/sudah-diteruskan">Sudah Diteruskan</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
-                  @if ($active === "akun")
+                  @if ($active == "akun")
                       fw-bold
                   @endif
                    " href="/user/akun-ns">Akun</a>

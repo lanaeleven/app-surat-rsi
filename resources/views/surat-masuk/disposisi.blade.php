@@ -295,7 +295,7 @@
         </form>
         @endif
 
-        @if ($suratMasuk->statusArsip === 1 && auth()->user()->id === 1)
+        @if ($suratMasuk->statusArsip == 1 && auth()->user()->id == 1)
         <form action="/surat-masuk/buka-arsip" method="post">
             @csrf
             <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">

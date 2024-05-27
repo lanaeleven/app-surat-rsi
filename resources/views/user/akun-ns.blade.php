@@ -146,21 +146,21 @@
   
   function myFunction() {
     var x = document.getElementById("passwordSaatIni");
-    if (x.type === "password") {
+    if (x.type == "password") {
       x.type = "text";
     } else {
       x.type = "password";
     }
 
     var y = document.getElementById("passwordBaru");
-    if (y.type === "password") {
+    if (y.type == "password") {
       y.type = "text";
     } else {
       y.type = "password";
     }
 
     var z = document.getElementById("passwordKonfirmasi");
-    if (z.type === "password") {
+    if (z.type == "password") {
       z.type = "text";
     } else {
       z.type = "password";
@@ -171,12 +171,12 @@ var check = function() {
   const pwBaru = document.getElementById('passwordBaru');
   const pwKonfir = document.getElementById('passwordKonfirmasi');
   const labelKonfir = document.getElementById('labelKonfirmasi');
-  if (pwBaru.value == pwKonfir.value && pwBaru.value !== '' && pwKonfir.value != '') {
+  if (pwBaru.value == pwKonfir.value && pwBaru.value != '' && pwKonfir.value != '') {
     labelKonfir.className = "text-success fw-medium";
     labelKonfir.innerHTML  = 'Password Konfirmasi Benar';
     btnUbahPassword.disabled = false;
   }
-  if (pwBaru.value !== pwKonfir.value && pwBaru.value !== '' && pwKonfir.value != '') {
+  if (pwBaru.value != pwKonfir.value && pwBaru.value != '' && pwKonfir.value != '') {
     labelKonfir.className = "text-danger fw-medium";
     labelKonfir.innerHTML  = 'Password Konfirmasi Salah';
     btnUbahPassword.disabled = true;

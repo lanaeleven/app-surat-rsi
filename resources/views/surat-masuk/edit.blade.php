@@ -42,15 +42,15 @@
                 <div class="col-sm-9">
                   <select name="sifatSurat" class="form-select" id="sifatSurat" required>
                       <option value="">Pilih Sifat Surat</option>
-                      <option value="Biasa" @if ($suratMasuk->sifatSurat === 'Biasa')
+                      <option value="Biasa" @if ($suratMasuk->sifatSurat == 'Biasa')
                           selected
                       @endif
                       >Biasa</option>
-                      <option value="Rahasia" @if ($suratMasuk->sifatSurat === 'Rahasia')
+                      <option value="Rahasia" @if ($suratMasuk->sifatSurat == 'Rahasia')
                         selected
                     @endif
                     >Rahasia</option>
-                      <option value="Segera" @if ($suratMasuk->sifatSurat === 'Segera')
+                      <option value="Segera" @if ($suratMasuk->sifatSurat == 'Segera')
                         selected
                     @endif
                     >Segera</option>
@@ -77,10 +77,10 @@
                   <div class="col-sm-9">
                     <select name="lampiran" class="form-select" id="lampiran" required>
                         <option value="">Ada / Tidak Ada</option>
-                        <option value="Ada" @if ($suratMasuk->lampiran === "Ada")
+                        <option value="Ada" @if ($suratMasuk->lampiran == "Ada")
                             selected
                         @endif>Ada</option>
-                        <option value="Tidak Ada" @if ($suratMasuk->lampiran === "Tidak Ada")
+                        <option value="Tidak Ada" @if ($suratMasuk->lampiran == "Tidak Ada")
                           selected
                       @endif>Tidak Ada</option>
                       </select>
@@ -108,7 +108,7 @@
                     <option value="">Pilih Direksi</option>
                     @foreach ($direksi as $d)
                   
-                    <option value="{{ $d->id }}" @if ($suratMasuk->idDireksi === $d->id)
+                    <option value="{{ $d->id }}" @if ($suratMasuk->idDireksi == $d->id)
                         selected
                     @endif>{{ $d->namaDireksi }}</option>
 

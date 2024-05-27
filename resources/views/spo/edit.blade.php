@@ -48,7 +48,7 @@
                           <option value="">Pilih Direksi</option>
                           @foreach ($direksi as $d)
                         
-                          <option value="{{ $d->id }}" @if ($spo->idDireksi === $d->id)
+                          <option value="{{ $d->id }}" @if ($spo->idDireksi == $d->id)
                               selected
                           @endif>{{ $d->namaDireksi }}</option>
 
