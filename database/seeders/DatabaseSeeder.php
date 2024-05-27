@@ -158,14 +158,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'username' => 'kabag sdi dan keuangan',
-            'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
-            'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
-            'password' => Hash::make('rahasia')
-        ]);
-
-        User::create([
             'username' => 'kasubag sdi dan administrasi',
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
