@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Surat RSI | Login</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="icon" type="image/x-icon" href={{ asset("favicon-rsi.png")  }}>
   </head>
   <body>
     <h2 class="text-center text-success mt-5 fw-bold">Aplikasi Surat</h2>
