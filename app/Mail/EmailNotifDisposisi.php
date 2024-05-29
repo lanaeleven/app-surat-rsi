@@ -2,12 +2,13 @@
 
 namespace App\Mail;
 
+use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EmailNotifDisposisi extends Mailable
 {
@@ -16,9 +17,11 @@ class EmailNotifDisposisi extends Mailable
     /**
      * Create a new message instance.
      */
-    var $pengirim, $penerima, $nama, $tanggal, $instruksi;
-    public function __construct($pengirim, $penerima, $nama, $tanggal, $instruksi)
+    var $sifatSurat, $nomorSurat, $pengirim, $penerima, $nama, $tanggal, $instruksi;
+    public function __construct($sifatSurat, $nomorSurat, $pengirim, $penerima, $nama, $tanggal, $instruksi)
     {
+        $this->sifatSurat = $sifatSurat;
+        $this->nomorSurat = $nomorSurat;
         $this->pengirim = $pengirim;
         $this->penerima = $penerima;
         $this->nama = $nama;
@@ -32,7 +35,7 @@ class EmailNotifDisposisi extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Disposisi Baru',
+            subject: Str::upper($this->sifatSurat) . ' - dari ' . $this->pengirim . ' [' . $this->nomorSurat . ']',
         );
     }
 

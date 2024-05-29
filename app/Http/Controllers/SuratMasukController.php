@@ -86,7 +86,7 @@ class SuratMasukController extends Controller
             'pengirim' => 'required',
             'direksi' => 'required',
             'perihal' => 'required',
-            'fileSurat' => 'required|mimes:pdf|max:5120'
+            'fileSurat' => 'required|mimes:pdf,jpg,png|max:5120'
         ]);
 
         // Store the file in storage\app\public folder
@@ -239,11 +239,13 @@ class SuratMasukController extends Controller
         $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
         $suratMasuk->idPosisiDisposisi = $request->input('idTujuanDisposisi');
         $suratMasuk->status = $status;
+        $sifatSurat = $suratMasuk->sifatSurat;
+        $nomorSurat = $suratMasuk->nomorSurat;
         $suratMasuk->save();
 
         $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
 
-        Mail::to($penerima->email)->send(new EmailNotifDisposisi(auth()->user()->namaJabatan, $penerima->namaJabatan, $penerima->nama, \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), $distribusiSurat->instruksi));
+        Mail::to($penerima->email)->send(new EmailNotifDisposisi($sifatSurat, $nomorSurat, auth()->user()->namaJabatan, $penerima->namaJabatan, $penerima->nama, \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), $distribusiSurat->instruksi));
 
         // Redirect back to the index page with a success message
         return redirect($redirect)
