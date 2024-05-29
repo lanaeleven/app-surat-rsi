@@ -64,7 +64,7 @@ class SpoController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'fileSurat' => 'required|mimes:pdf|max:5120'
+            'fileSurat' => 'required|mimes:pdf,jpg,png|max:5120'
         ]);
 
         // Store the file in storage\app\public folder
@@ -110,7 +110,7 @@ class SpoController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'fileSurat' => 'mimes:pdf|max:5120'
+            'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
         ]);
 
         if ($request->file('fileSurat')) {

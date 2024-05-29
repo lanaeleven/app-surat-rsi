@@ -142,7 +142,7 @@ class SuratMasukController extends Controller
             'pengirim' => 'required',
             'direksi' => 'required',
             'perihal' => 'required',
-            'fileSurat' => 'mimes:pdf|max:5120'
+            'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
         ]);
 
         if ($request->file('fileSurat')) {
