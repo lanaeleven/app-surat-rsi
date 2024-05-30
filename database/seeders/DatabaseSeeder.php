@@ -98,7 +98,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Sekretariat',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -106,7 +106,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Direktur Rumah Sakit',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -114,7 +114,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bidang Pelayanan dan Penunjang Medik',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -122,7 +122,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Pelayanan Medik',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
         
         User::create([
@@ -130,7 +130,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Penunjang Medik dan Diklitbang',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -138,7 +138,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bidang Perawatan',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -146,7 +146,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Keperawatan',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -154,7 +154,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -162,7 +162,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian SDI dan Administrasi',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -170,7 +170,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Akuntansi dan Keuangan',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -178,7 +178,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian Umum, Dakwah, dan Kemitraan',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -186,7 +186,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Dakwah',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -194,7 +194,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Kemitraan dan PKRS',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -202,7 +202,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Umum',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -210,7 +210,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Farmasi',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -218,7 +218,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Farmasi',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -226,7 +226,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi PSRS',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -234,7 +234,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab PSRS',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -242,7 +242,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Rekam Medis dan Pendaftaran',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -250,7 +250,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Pendaftaran dan Rekam Medis',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -258,7 +258,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Gizi',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -266,7 +266,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Gizi',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -274,7 +274,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Rawat Inap dan Rawat Jalan',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -282,7 +282,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Rawat Jalan',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -290,7 +290,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Rawat Inap',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -298,7 +298,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Gawat Darurat',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -306,7 +306,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Instalasi Gawat Darurat',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -314,7 +314,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Intensive Care Unit',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -322,7 +322,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Intensive Care Unit',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -330,7 +330,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Radiologi',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -338,7 +338,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Radiologi',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -346,7 +346,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Bedah Sentral',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -354,7 +354,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Instalasi Bedah Sentral',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -362,7 +362,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Laboratorium',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -370,7 +370,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Instalasi Laboratorium',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -378,7 +378,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Dialis',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -386,7 +386,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Dialis',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
         User::create([
@@ -394,7 +394,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi MCU',
-            'password' => Hash::make('rahasia')
+            'password' => Hash::make('Rahasia123!')
         ]);
 
 

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -26,7 +27,7 @@ class UserController extends Controller
             'nama' => 'required',
             'email' => 'required|email:rfc,dns',
             'username' => 'required|unique:users,username',
-            'password' => 'required',
+            'password' => ['required', Password::min(8)->mixedCase()->numbers()->symbols()],
         ]);
 
         // Store file information in the database
