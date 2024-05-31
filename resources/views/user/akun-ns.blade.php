@@ -102,15 +102,24 @@
                   </div>
 
                   <div class="row mb-3">
-                    <label for="passwordBaru" class="col-sm-3 col-form-label">Password Baru</label>
+                    <label for="password" class="col-sm-3 col-form-label">Password Baru</label>
                     <div class="col-sm-9">
-                      <input name="passwordBaru" type="password" class="form-control @error('passwordBaru') is-invalid @enderror" id="passwordBaru" onkeyup='check();' required>
+                      <input name="passwordBaru" type="password" class="form-control @error('passwordBaru') is-invalid @enderror" id="password" onkeyup='check();' pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
                       @error('passwordBaru')
                       <div id="passwordBaru" class="invalid-feedback">
                         {{ $message }}
                       </div>
                       @enderror
+                      <div id="message">(
+                        <span id="letter" class="text-danger">Mengandung huruf kecil,</span>
+                        <span id="capital" class="text-danger">Mengandung huruf kapital,</span>
+                        <span id="number" class="text-danger">Mengandung angka,</span>
+                        <span id="symbol" class="text-danger">Mengandung simbol,</span>
+                        <span id="length" class="text-danger">Minimal 8 karakter</span>
+                      )
+                      </div>
                     </div>
+
                 </div>
 
                 <div class="row">
@@ -140,6 +149,8 @@
           </div>
 </div>
 
+<script src="/js/password-validation.js"></script>
+
 <script>
   const btnUbahPassword = document.getElementById("btnUbahPassword");
   btnUbahPassword.disabled = true;
@@ -152,7 +163,7 @@
       x.type = "password";
     }
 
-    var y = document.getElementById("passwordBaru");
+    var y = document.getElementById("password");
     if (y.type == "password") {
       y.type = "text";
     } else {
@@ -168,7 +179,7 @@
   }
 
 var check = function() {
-  const pwBaru = document.getElementById('passwordBaru');
+  const pwBaru = document.getElementById('password');
   const pwKonfir = document.getElementById('passwordKonfirmasi');
   const labelKonfir = document.getElementById('labelKonfirmasi');
   if (pwBaru.value == pwKonfir.value && pwBaru.value != '' && pwKonfir.value != '') {

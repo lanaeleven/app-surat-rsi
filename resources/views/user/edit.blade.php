@@ -93,9 +93,9 @@
                 <input type="hidden" name="id" value="{{ $user->id }}">
   
                   <div class="row mb-3">
-                      <label for="passwordBaru" class="col-sm-3 col-form-label ">Password Baru</label>
+                      <label for="password" class="col-sm-3 col-form-label ">Password Baru</label>
                       <div class="col-sm-9">
-                        <input name="passwordBaru" type="password" class="form-control @error('passwordBaru') is-invalid @enderror" id="passwordBaru" required>
+                        <input name="passwordBaru" type="password" class="form-control @error('passwordBaru') is-invalid @enderror" id="password" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
                         @error('passwordBaru')
                         <div id="passwordBaru" class="invalid-feedback">
                           {{ $message }}
@@ -104,6 +104,14 @@
                         <div class="form-check mt-3">
                           <input type="checkbox" class="form-check-input" id="passwordToggle" onclick="myFunction()">
                           <label class="form-check-label" for="passwordToggle" >Show Password</label>
+                        </div>
+                        <div id="message">(
+                          <span id="letter" class="text-danger">Mengandung huruf kecil,</span>
+                          <span id="capital" class="text-danger">Mengandung huruf kapital,</span>
+                          <span id="number" class="text-danger">Mengandung angka,</span>
+                          <span id="symbol" class="text-danger">Mengandung simbol,</span>
+                          <span id="length" class="text-danger">Minimal 8 karakter</span>
+                        )
                         </div>
                       </div>
                   </div>
@@ -121,6 +129,8 @@
           </div>
       </div>
 </div>
+
+<script src="/js/password-validation.js"></script>
 
 <script>
   function myFunction() {

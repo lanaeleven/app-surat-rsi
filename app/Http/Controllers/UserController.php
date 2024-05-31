@@ -121,7 +121,7 @@ class UserController extends Controller
         
         $request->validate([
             'passwordSaatIni' => 'required|current_password',
-            'passwordBaru' => 'required'
+            'passwordBaru' => ['required', Password::min(8)->mixedCase()->numbers()->symbols()]
         ]);
 
         $user = User::find($request->input('id'));
@@ -139,7 +139,7 @@ class UserController extends Controller
         // Validate the incoming file. 
         
         $request->validate([
-            'passwordBaru' => 'required'
+            'passwordBaru' => ['required', Password::min(8)->mixedCase()->numbers()->symbols()]
         ]);
 
         $user = User::find($request->input('id'));
