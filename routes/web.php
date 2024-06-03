@@ -60,6 +60,7 @@ Route::post('/spo/save', [SpoController::class, 'save']);
 
 Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
+// Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:3,1');
 Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::get('/direksi/index', [DireksiController::class, 'create'])->middleware('sekre');

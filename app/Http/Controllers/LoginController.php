@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\RateLimiter;
  
 class LoginController extends Controller
 {
@@ -21,12 +22,27 @@ class LoginController extends Controller
             'username' => ['required'],
             'password' => ['required']
         ]);
+
+        // Membuat key unik berdasarkan username dan IP pengguna
+        $key = 'login-attempts:' . $request->input('username') . '|' . $request->ip();
+
+        // Memeriksa apakah sudah terlalu banyak percobaan
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            return back()->with('blocked', 'Terlalu banyak percobaan login. Silakan coba lagi nanti.')->withInput();
+        }
  
         if (Auth::attempt($credentials)) {
+            // Jika autentikasi berhasil, reset hit
+            RateLimiter::clear($key);
+
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
-        return back();
+
+        // Jika autentikasi gagal, tambahkan hit
+        RateLimiter::hit($key, 60); // 60 detik decay time
+
+        return back()->with('failed', 'Username atau Password tidak sesuai');
     }
 
     public function logout(Request $request): RedirectResponse

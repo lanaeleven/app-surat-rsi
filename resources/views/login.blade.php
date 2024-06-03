@@ -8,11 +8,23 @@
     <link rel="icon" type="image/x-icon" href={{ asset("favicon-rsi.png")  }}>
   </head>
   <body>
+    <div class="container">
+      @if (session()->has('failed'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ session('failed') }}
+        </div>
+      @endif
+    </div>
     <h2 class="text-center text-success mt-5 fw-bold">Aplikasi Surat</h2>
     <h2 class="text-center text-success fw-bold">RSI Sultan Agung Banjarbaru</h2>
 
     <div class="card p-4 mt-5 m-auto shadow col-10 col-md-3">
         <img src="/img/logorsi.png" class="card-img-top mb-5" alt="Logo RSI">
+        @if (session()->has('blocked'))
+        <div class="text-danger text-center mb-2">
+          {{ session('blocked') }}
+        </div>
+        @endif
         <form method="POST" action="/login">
           @csrf
           <div class="mb-3">
