@@ -35,6 +35,14 @@
               <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
               </div>
         </form>
+
+        <form action="/exportLaporan" method="POST" id="formExport" class="mt-3 mb-2">
+          @csrf
+          @foreach($suratKeluar as $item)
+              <input type="hidden" name="koleksi[]" value="{{ $item }}">
+          @endforeach
+          <button type="submit" class="btn btn-success btn-sm">Export Data</button>
+      </form>
     </div>
 
     <div class="div">
@@ -71,4 +79,15 @@
     </div>
 
 </div>
+
+<script>
+  document.getElementById("formExport").addEventListener("submit", function(event) {
+      // Mencegah perilaku default dari formulir
+      event.preventDefault();
+      // Membuka tab baru untuk menampilkan hasil proses formulir
+      window.open('', '_blank');
+      // Mengirimkan formulir secara programatik
+      this.submit();
+  });
+</script>
 @endsection

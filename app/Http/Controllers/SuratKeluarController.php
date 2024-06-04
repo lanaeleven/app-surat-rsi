@@ -7,6 +7,7 @@ use App\Models\JenisSurat;
 use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Http\RedirectResponse;
 
 class SuratKeluarController extends Controller
@@ -197,5 +198,41 @@ class SuratKeluarController extends Controller
         }        
 
         return view('surat-keluar.laporan-per-direksi', ['title' => 'Surat Keluar Per Direksi', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
+    }
+
+    public function exportLaporan(Request $request) {
+
+        $jsonStrings = $request->input('koleksi');
+
+        $koleksi = collect($jsonStrings)->map(function($item) {
+            return json_decode($item, true);
+        });
+
+        // Mengambil semua jenis surat dari database
+        $jenisSurat = JenisSurat::all()->keyBy('id');
+
+        $jumlahKeseluruhan = $koleksi->sum('total_surat');
+        
+        $koleksi = $koleksi->map(function($item) use ($jenisSurat) {
+            // Mendapatkan nama jenis surat
+            $namaJenisSurat = $jenisSurat[$item['idJenisSurat']]->kodeJenisSurat . '-' . $jenisSurat[$item['idJenisSurat']]->keterangan ?? 'Unknown'; 
+
+            // Membuat array dengan urutan field yang diinginkan
+            $result = [
+                'Jenis Surat' => $namaJenisSurat,
+                'Total Surat' => $item['total_surat'],
+            ];
+
+            return $result;
+        });
+
+        // Menambahkan row baru dengan jumlah keseluruhan
+        $koleksi->push([
+            'Jenis Surat' => 'Jumlah Keseluruhan',
+            'Total Surat' => $jumlahKeseluruhan,
+        ]);
+
+
+        return (new FastExcel($koleksi))->download('Rekap Surat Keluar Per Jenis Surat.xlsx');
     }
 }

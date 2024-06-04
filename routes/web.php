@@ -48,6 +48,7 @@ Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->mi
 Route::get('/surat-keluar/edit/{suratKeluar}', [SuratKeluarController::class, 'edit'])->middleware('sekre');
 Route::get('/surat-keluar/{ket}', [SuratKeluarController::class, 'create'])->middleware('sekre');
 Route::get('/laporan/surat-keluar/per-jenis-surat', [SuratKeluarController::class, 'laporanPerJenisSurat'])->middleware('sekre');
+Route::post('/exportLaporan', [SuratKeluarController::class, 'exportLaporan'])->middleware('sekre');
 Route::get('/laporan/surat-keluar/per-direksi', [SuratKeluarController::class, 'laporanPerDireksi'])->middleware('sekre');
 Route::post('/surat-keluar/tambah', [SuratKeluarController::class, 'store']);
 Route::post('/surat-keluar/save', [SuratKeluarController::class, 'save']);
