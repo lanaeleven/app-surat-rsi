@@ -89,17 +89,19 @@ class SuratKeluarController extends Controller
             'direksi' => 'required',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:5120'
         ]);
-
-        // Store the file in storage\app\public folder
-        $file = $request->file('fileSurat');
-        $fileName = $file->getClientOriginalName();
-        $filePath = $file->store('uploads/surat-keluar', 'public');
-
+        
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         // Get the maximum id for the given year
         $maxIndex = SuratKeluar::where('tahun', $tahun)->max('index');
         // Determine the new id for the given year
         $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+        // Store the file in storage\app\public folder
+        $file = $request->file('fileSurat');
+        $fileName = $file->getClientOriginalName();
+        $filePath = $file->store('uploads/surat-keluar/' . $tahun . '/' . $bulan, 'public');
+
 
         // Store file information in the database
         $suratKeluar = new SuratKeluar();
@@ -132,11 +134,14 @@ class SuratKeluarController extends Controller
             'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
         ]);
 
+        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
+
         if ($request->file('fileSurat')) {
             // Store the file in storage\app\public folder
             $file = $request->file('fileSurat');
             $fileName = $file->getClientOriginalName();
-            $filePath = $file->store('uploads/surat-keluar', 'public');
+            $filePath = $file->store('uploads/surat-keluar/' . $tahunInput . '/' . $bulan, 'public');
         }
 
 
@@ -153,7 +158,7 @@ class SuratKeluarController extends Controller
             $suratKeluar->fileName = $fileName;
             $suratKeluar->filePath = $filePath;
         }
-        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        
         if ($tahunInput != $request->input('tahun')) {
             // Get the maximum id for the given year
             $maxIndex = SuratKeluar::where('tahun', $tahunInput)->max('index');
