@@ -35,7 +35,6 @@
                         <td>
                             <table class="table">
                                 <tbody>
-                                    
                                     <tr>
                                         <td>Indeks</td>
                                         <td>{{ $suratMasuk->index }}</td>
