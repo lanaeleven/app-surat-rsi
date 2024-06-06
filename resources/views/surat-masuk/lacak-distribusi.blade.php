@@ -18,6 +18,11 @@
       <h3 class="fw-bold fs-4 text-center">Distribusi Surat</h3>
     </div>
     <div>
+      <form action="/unduh-disposisi" method="post">
+        @csrf
+        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+        <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
+      </form>
     </div>
   </div>
   

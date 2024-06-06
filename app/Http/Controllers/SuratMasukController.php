@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SuratMasukController extends Controller
 {
@@ -266,7 +267,34 @@ class SuratMasukController extends Controller
         if (! in_array(auth()->user()->id, $daftarPengirim) && auth()->user()->id != 1) {
             abort(403);
         }
+        // dd($distribusiSurat);
         return view('surat-masuk.lacak-distribusi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
+    }
+
+    public function unduhDisposisi(Request $request) {
+        // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->get();
+        $suratMasuk = SuratMasuk::where('id', '=', $request->input('idSuratMasuk'))->get();
+        $daftarPengirim = [];
+        foreach ($distribusiSurat as $ds) {
+            array_push($daftarPengirim, $ds->idPengirimDisposisi);
+        }
+        $user = User::all()->keyBy('id');
+
+        $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+            $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
+            $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
+        
+            // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
+            return array_merge($item->toArray(), [
+                'namaPengirim' => $namaPengirim,
+                'namaPenerima' => $namaPenerima
+            ]);
+        });
+        // dd($distribusiSurat);
+
+        $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
+        return $pdf->stream();
     }
 
     public function laporanPerDireksi() {

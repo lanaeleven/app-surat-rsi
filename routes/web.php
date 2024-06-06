@@ -42,6 +42,7 @@ Route::post('/surat-masuk/save', [SuratMasukController::class, 'save']);
 Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);
 Route::post('/surat-masuk/arsipkan', [SuratMasukController::class, 'arsipkan']);
 Route::post('/surat-masuk/buka-arsip', [SuratMasukController::class, 'bukaArsip']);
+Route::post('/unduh-disposisi', [SuratMasukController::class, 'unduhDisposisi']);
 
 Route::get('/surat-keluar/index', [SuratKeluarController::class, 'create'])->middleware('sekre');
 Route::get('/surat-keluar/tambah', [SuratKeluarController::class, 'tambah'])->middleware('sekre');
