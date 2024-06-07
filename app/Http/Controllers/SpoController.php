@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use ZipArchive;
 use App\Models\Spo;
 use App\Models\Direksi;
 use App\Models\JenisSurat;
@@ -152,12 +153,29 @@ class SpoController extends Controller
 
         // Redirect back to the index page with a success message
         return redirect('/spo/index')
-            ->with('success', 'Berhasil Mengedit Surat Keluar');
+            ->with('success', 'Berhasil Mengedit SPO');
     }
 
-    
+    public function rekapSpo(Request $request) {
+        $tanggal = $request->input('bulanRekap');
+        $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
+        $spo = Spo::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
 
+        $zip = new ZipArchive();
+        $zipFilePath = storage_path('app/' . 'rekap_spo_' . $tahun . '_' . $bulan . '.zip') ;
 
-    
+        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+            foreach ($spo as $s) {
+                $fileToAdd = storage_path('app/public/' . $s->filePath);
+                $zip->addFile($fileToAdd, 'spo_' . $s->tahun . '_' . $s->index . '.' . pathinfo($fileToAdd, PATHINFO_EXTENSION));
+            }
+            $zip->close();
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            dd('gagal membuka file zip');
+        }
+        
+    }   
 
 }

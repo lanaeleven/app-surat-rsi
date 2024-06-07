@@ -18,7 +18,10 @@ class SpoFactory extends Factory
     {
         return [
             'idDireksi' => 1,
-            'tanggalSurat' => fake()->dateTimeInInterval('-2 years', '+2 years'),
+            'tahun' => 2024,
+            'index' => fake()->unique()->randomNumber(3),
+            // 'tanggalSurat' => fake()->dateTimeInInterval('-2 years', '+2 years'),
+            'tanggalSurat' => fake()->dateTimeThisYear(),
             'tujuan' => fake()->word(),
             'perihal' => fake()->words(3, true),
             'keterangan' => fake()->words(5, true),

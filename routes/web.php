@@ -53,12 +53,14 @@ Route::post('/exportLaporan', [SuratKeluarController::class, 'exportLaporan'])->
 Route::get('/laporan/surat-keluar/per-direksi', [SuratKeluarController::class, 'laporanPerDireksi'])->middleware('sekre');
 Route::post('/surat-keluar/tambah', [SuratKeluarController::class, 'store']);
 Route::post('/surat-keluar/save', [SuratKeluarController::class, 'save']);
+Route::post('/unduh-rekap-suratkeluar', [SuratKeluarController::class, 'rekapSuratKeluar']);
 
 Route::get('/spo/index', [SpoController::class, 'create'])->middleware('sekre');
 Route::get('/spo/tambah', [SpoController::class, 'tambah'])->middleware('sekre');
 Route::get('/spo/edit/{spo}', [SpoController::class, 'edit'])->middleware('sekre');
 Route::post('/spo/tambah', [SpoController::class, 'store']);
 Route::post('/spo/save', [SpoController::class, 'save']);
+Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
 
 Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
