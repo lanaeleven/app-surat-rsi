@@ -26,6 +26,39 @@
       </div>
     </div>
 
+    @if (is_null($keterangan))
+      <div class="d-flex justify-content-end">
+      <div>
+        <button class="btn btn-success btn-sm py-2 fs-6 mx-auto" data-bs-toggle="modal" data-bs-target="#unduhRekapModal">Unduh Rekap</button>
+      </div>
+    </div>
+    @endif
+
+    {{-- Modal Unduh Rekap --}}
+    <div class="modal fade" id="unduhRekapModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="unduhRekapModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="unduhRekapModalLabel">Rekap File Surat Masuk</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <form method="POST" action="/unduh-rekap-suratmasuk">
+              @csrf
+              <div class="mb-3">
+                <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
+                <input type="month" id="bulanRekap" name="bulanRekap"  class="form-control" required>
+              </div>
+                <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    {{-- end of modal --}}
+
     <div>
       <form class="row g-3" action="/surat-masuk/index">
         @if (is_null($keterangan))

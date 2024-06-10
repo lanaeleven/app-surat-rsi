@@ -406,7 +406,7 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\SuratKeluar::factory(50)->create();
 
-        // \App\Models\SuratMasuk::factory(100)->create();
+        \App\Models\SuratMasuk::factory(50)->create();
 
         \App\Models\Spo::factory(50)->create();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use ZipArchive;
 use App\Models\User;
 use App\Models\Direksi;
 use App\Models\SuratMasuk;
@@ -9,12 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\EmailNotifDisposisi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class SuratMasukController extends Controller
 {
@@ -295,6 +296,56 @@ class SuratMasukController extends Controller
 
         $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
         return $pdf->stream();
+    }
+
+    public function rekapSuratMasuk(Request $request) {
+        $tanggal = $request->input('bulanRekap');
+        $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
+        $suratMasuk = SuratMasuk::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
+
+        // dd($suratMasuk);
+
+        $zip = new ZipArchive();
+        $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip') ;
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+            foreach ($suratMasuk as $sm) {
+                $fileToAdd = storage_path('app/public/' . $sm->filePath);
+                $zip->addFile($fileToAdd, 'suratmasuk_' . $sm->tahun . '_' . $sm->index . '.' . pathinfo($fileToAdd, PATHINFO_EXTENSION));
+
+                // GENERATE DISPOSISI
+                $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $sm->id)->get();
+                $suratMasuk = SuratMasuk::where('id', '=', $sm->id)->get();
+                $daftarPengirim = [];
+                foreach ($distribusiSurat as $ds) {
+                    array_push($daftarPengirim, $ds->idPengirimDisposisi);
+                }
+                $user = User::all()->keyBy('id');
+
+                $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+                    $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
+                    $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
+                
+                    // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
+                    return array_merge($item->toArray(), [
+                        'namaPengirim' => $namaPengirim,
+                        'namaPenerima' => $namaPenerima
+                    ]);
+                });
+                // dd($distribusiSurat);
+
+                $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
+                $lembarDisposisi = $pdf->output();
+
+                $zip->addFromString('suratmasuk_' . $sm->tahun . '_' . $sm->index . '_disposisi' . '.' . '.pdf', $lembarDisposisi);
+            }
+            $zip->close();
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            dd('gagal membuka file zip');
+        }
+        
     }
 
     public function laporanPerDireksi() {
