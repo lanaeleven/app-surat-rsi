@@ -23,6 +23,7 @@ use App\Http\Controllers\SuratKeluarController;
 */
 
 Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
+Route::get('/coba', [SuratMasukController::class, 'coba']);
 
 Route::get('/email', [EmailController::class, 'index']);
 

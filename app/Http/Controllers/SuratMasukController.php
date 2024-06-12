@@ -518,4 +518,8 @@ class SuratMasukController extends Controller
 
         return view('surat-masuk.laporan-per-tujuan', ['title' => 'Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap->get()]);
     }
+
+    public function coba() {
+        dd(storage_path());
+    }
 }
