@@ -192,7 +192,7 @@ class SuratMasukController extends Controller
     }
 
     public function disposisi(SuratMasuk $suratMasuk) {
-        $terusan = User::where('id', '<>', auth()->user()->id)->get();
+        $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
         
         // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
         // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
@@ -265,7 +265,7 @@ class SuratMasukController extends Controller
         foreach ($distribusiSurat as $ds) {
             array_push($daftarPengirim, $ds->idPengirimDisposisi);
         }
-        if (! in_array(auth()->user()->id, $daftarPengirim) && auth()->user()->id != 1) {
+        if (! in_array(auth()->user()->id, $daftarPengirim) && auth()->user()->id != 1 && auth()->user()->id != 2) {
             abort(403);
         }
         // dd($distribusiSurat);
@@ -417,7 +417,7 @@ class SuratMasukController extends Controller
         $suratMasuk = SuratMasuk::orderBy('id', 'desc');
         $direksi = Direksi::all();
         $judul = "Laporan Surat Masuk";
-        $terusan = User::where('id', '<>', 1)->get();
+        $terusan = User::where('id', '<>', 1)->where('id', '<>', 2)->get();
 
         if ($keterangan == "posisi-terakhir") {
             $suratMasuk->where('statusArsip', '=', 0);
@@ -519,7 +519,7 @@ class SuratMasukController extends Controller
         return view('surat-masuk.laporan-per-tujuan', ['title' => 'Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap->get()]);
     }
 
-    public function coba() {
-        dd(storage_path());
-    }
+    // public function coba() {
+    //     dd(storage_path());
+    // }
 }

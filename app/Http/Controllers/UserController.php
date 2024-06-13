@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
     public function create() {
-        $user = User::all();
+        $user = User::where('id', '<>', 2)->get();
         return view('user.index', ['title' => 'User', 'active' => 'data master', 'user' => $user]);
     }
 

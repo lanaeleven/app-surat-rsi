@@ -27,11 +27,11 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         Gate::define('dashboard-sekre', function (User $user) {
-            return $user->id == 1;
+            return ($user->id == 1 || $user->id == 2);
         });
 
         Gate::define('dashboard-not-sekre', function (User $user) {
-            return $user->id != 1;
+            return ($user->id != 1 && $user->id != 2);
         });
 
         Gate::define('dashboard-direktur', function (User $user) {

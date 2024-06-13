@@ -6,7 +6,7 @@
   
   @php
     $kembali = "/surat-masuk/index";
-      if (auth()->user()->id != 1) {
+      if (auth()->user()->id != 1 && auth()->user()->id != 2) {
         $kembali = "/surat-masuk/ns/sudah-diteruskan";
       }
   @endphp

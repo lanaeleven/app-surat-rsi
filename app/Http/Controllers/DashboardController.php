@@ -18,14 +18,14 @@ class DashboardController extends Controller
         $suratKeluarHariIni = 0;
         $suratKeluarBulanIni = 0;
 
-        if (auth()->user()->id == 1) {
+        if (auth()->user()->id == 1 || auth()->user()->id == 2) {
             $suratMasukHariIni = SuratMasuk::whereDate('tanggalSurat', '=', now())->count();
             $suratMasukBulanIni = SuratMasuk::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
             $suratKeluarHariIni = SuratKeluar::whereDate('tanggalSurat', '=', now())->count();
             $suratKeluarBulanIni = SuratKeluar::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
         }
 
-        if (auth()->user()->id != 1) {
+        if (auth()->user()->id != 1 && auth()->user()->id != 2) {
             $belumDiteruskan = SuratMasuk::where('idPosisiDisposisi', '=', auth()->user()->id)->count();
             $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->unique('idSuratMasuk')->count();
         }
