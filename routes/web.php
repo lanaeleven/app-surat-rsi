@@ -25,7 +25,7 @@ use App\Http\Controllers\SuratKeluarController;
 Route::get('/', [DashboardController::class, 'create'])->middleware('auth');
 // Route::get('/coba', [SuratMasukController::class, 'coba']);
 
-Route::get('/email', [EmailController::class, 'index']);
+// Route::get('/email', [EmailController::class, 'index']);
 
 Route::get('/surat-masuk/index', [SuratMasukController::class, 'create'])->middleware('sekre');
 Route::get('/surat-masuk/s/{keterangan}', [SuratMasukController::class, 'create'])->middleware('sekre');
