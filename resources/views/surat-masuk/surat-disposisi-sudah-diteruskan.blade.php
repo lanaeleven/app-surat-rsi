@@ -3,7 +3,7 @@
 @section('container')
 <div class="div">
 
-    <div class="d-flex justify-content-between align-items-center my-2">
+    <div class="d-flex justify-content-between align-itemsz-center my-2">
       <div>
         <a href="/" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
       </div>
@@ -46,7 +46,7 @@
                 <td>{{ $sm->perihal }}</td>
                 <td> {{ $sm->status }} </td>
                 <td>
-                    <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-shoe-prints fa-rotate-270" style="color: #000000;"></i></a>
+                    <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-info"><i class="fa-solid fa-shoe-prints fa-rotate-270" style="color: #000000;"></i></a>
                 </td>
               </tr>
 

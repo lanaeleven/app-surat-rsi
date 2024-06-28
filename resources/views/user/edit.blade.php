@@ -73,6 +73,32 @@
                  </div>
 
                  <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label"></label>
+                  <div class="col-sm-9">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="isKepala" value="yes" id="yes" 
+                      @if (in_array($user->id, $idKepala))
+                      checked
+                      @endif
+                      >
+                      <label class="form-check-label" for="yes">
+                        Kabid / Kains / Kabag
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="isKepala" value="no" id="no"  
+                      @if (! in_array($user->id, $idKepala))
+                      checked
+                      @endif
+                      >
+                      <label class="form-check-label" for="no">
+                        BUKAN Kabid / Kains / Kabag
+                      </label>
+                    </div>
+                  </div>
+               </div>
+
+                 <div class="row mb-3">
                   <label for="passwordKonfirmasi" class="col-sm-3 col-form-label"></label>
                   <div class="col-sm-9">
                     <button type="submit" class="btn btn-success mt-3">Simpan</button>

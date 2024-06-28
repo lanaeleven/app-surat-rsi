@@ -6,6 +6,7 @@ use ZipArchive;
 use App\Models\User;
 use App\Models\Direksi;
 use App\Models\SuratMasuk;
+use App\Models\UserKepala;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\DistribusiSurat;
@@ -192,7 +193,25 @@ class SuratMasukController extends Controller
     }
 
     public function disposisi(SuratMasuk $suratMasuk) {
-        $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
+        // $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
+
+        // mengambil id kepala dalam bentuk array
+        $idKepala = UserKepala::select('idUser')->get();
+        $arrIdKepala = [];
+        foreach ($idKepala as $ik) {
+            array_push($arrIdKepala, $ik->idUser);
+        }
+        $terusan = null;
+        
+        if(auth()->user()->id == 1 || in_array(auth()->user()->id, $arrIdKepala)) { // daftar opsi terusan untuk sekre dan kepala 
+            $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
+        } elseif (auth()->user()->id == 3){ // daftar opsi terusan untuk direktur
+            $terusan = User::whereIn('id', $arrIdKepala)->orWhere('id', 1)->get();
+        } else { // daftar opsi terusan untuk kasubbag/penjab/dsb
+            $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->get();
+        }
+        // dd($terusan);
+
         
         // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
         // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
@@ -372,6 +391,10 @@ class SuratMasukController extends Controller
                 $suratMasuk->push($ds->suratMasuk);
         }
         $suratMasuk = $suratMasuk->unique('id');
+        $suratMasuk = $suratMasuk->sortBy([
+            ['tahun', 'desc'],
+            ['index', 'desc'],
+        ]);
         return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'Surat Masuk Sudah Diteruskan', 'active' => 'sudah diteruskan', 'suratMasuk' => $suratMasuk]);
     }
 

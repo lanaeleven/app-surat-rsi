@@ -25,7 +25,7 @@
     </div>
     <div class="d-flex justify-content-center">
         <div class="col-12 col-md-6">
-            <form method="post" action="/surat-masuk/save" enctype="multipart/form-data">
+            <form method="post" id="formEdit" action="/surat-masuk/save" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="id" value="{{ $suratMasuk->id }}">
               <input type="hidden" name="index" value="{{ $suratMasuk->index }}">
@@ -148,7 +148,9 @@
 
                   <div class="d-flex justify-content-center">
                     <div>
-                      <button type="submit" class="btn btn-success mt-3">Simpan</button>
+                      <button type="submit" class="btn btn-success mt-3">Simpan
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerEdit"></span>
+                      </button>
                     </div>
                   </div>
                   
@@ -156,5 +158,19 @@
         </div>
     </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // spinner tombol edit
+    var formEdit = document.getElementById('formEdit'); 
+    formEdit.addEventListener('submit', function(event) {
+      var submitButtonEdit = formEdit.querySelector('button[type="submit"]');
+      if (submitButtonEdit) {
+        submitButtonEdit.disabled = true;
+        document.getElementById('spinnerEdit').classList.remove('d-none');
+      }
+    });
+  });
+</script>
 
 @endsection

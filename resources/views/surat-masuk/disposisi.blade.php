@@ -199,6 +199,7 @@
       </div>
     @endforeach
     </div>
+
     @endif
 
     <div class="row d-flex justify-content-center">
@@ -206,7 +207,7 @@
             
         <h5 class="text-center fw-bold mb-3">Teruskan Surat</h5>
         <div class="col-12 col-md-9">
-            <form action="/surat-masuk/teruskan" method="post">
+            <form action="/surat-masuk/teruskan" id="formTeruskan" method="post">
             @csrf
             <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
             <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
@@ -249,7 +250,9 @@
                     Pastikan tujuan disposisi dan instruksi sudah benar
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Teruskan</button>
+                    <button type="submit" class="btn btn-success">Teruskan
+                      <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerTeruskan"></span>
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -258,7 +261,7 @@
             </form>
         @endif
         @if ($suratMasuk->statusArsip == 0)
-            <form action="/surat-masuk/arsipkan" method="post">
+            <form action="/surat-masuk/arsipkan" id="formArsipkan" method="post">
                 @csrf
                 <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
                 <input type="hidden" name="idTujuanDisposisi" value="1">
@@ -286,13 +289,18 @@
                     </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Arsipkan</button>
+                    <button type="submit" class="btn btn-primary">Arsipkan
+                      <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerArsipkan"></span>
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
                 </div>
             </div>
         </form>
+
+        
+
         @endif
 
         @if ($suratMasuk->statusArsip == 1 && auth()->user()->id == 1)
@@ -326,11 +334,33 @@
         </form>
         @endif
             </div>
-
-            
-
         </div>
     </div>
 </div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // spinner tombol teruskan
+    var formTeruskan = document.getElementById('formTeruskan'); 
+    formTeruskan.addEventListener('submit', function(event) {
+      var submitButtonTeruskan = formTeruskan.querySelector('button[type="submit"]');
+      if (submitButtonTeruskan) {
+        submitButtonTeruskan.disabled = true;
+        document.getElementById('spinnerTeruskan').classList.remove('d-none');
+      }
+    });
+
+    // spinner tombol artsipkan
+    var formArsipkan = document.getElementById('formArsipkan'); 
+    formArsipkan.addEventListener('submit', function(event) {
+      var submitButtonArsipkan = formArsipkan.querySelector('button[type="submit"]');
+      if (submitButtonArsipkan) {
+        submitButtonArsipkan.disabled = true;
+        document.getElementById('spinnerArsipkan').classList.remove('d-none');
+      }
+    });
+
+
+  });
+</script>
 @endsection

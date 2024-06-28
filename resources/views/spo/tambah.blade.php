@@ -16,7 +16,7 @@
     </div>
     <div class="d-flex justify-content-center">
         <div class="col-12 col-md-6">
-            <form method="post" action="/spo/tambah" enctype="multipart/form-data">
+            <form method="post" id="formTambah" action="/spo/tambah" enctype="multipart/form-data">
               @csrf
 
                 <div class="row mb-3">
@@ -77,7 +77,9 @@
 
                 <div class="d-flex justify-content-center">
                   <div>
-                    <button type="submit" class="btn btn-success mt-3">Tambah</button>
+                    <button type="submit" class="btn btn-success mt-3">Tambah
+                      <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerTambah"></span>
+                    </button>
                   </div>
                 </div>
                   
@@ -85,5 +87,19 @@
         </div>
     </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // spinner tombol tambah
+    var formTambah = document.getElementById('formTambah'); 
+    formTambah.addEventListener('submit', function(event) {
+      var submitButtonTambah = formTambah.querySelector('button[type="submit"]');
+      if (submitButtonTambah) {
+        submitButtonTambah.disabled = true;
+        document.getElementById('spinnerTambah').classList.remove('d-none');
+      }
+    });
+  });
+</script>
 
 @endsection

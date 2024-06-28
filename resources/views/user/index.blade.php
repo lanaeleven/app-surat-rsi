@@ -2,6 +2,7 @@
 @extends('layouts.main')
 
 @section('container')
+{{-- @dd($idKepala) --}}
 <div class="div">
   @if (session()->has('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -25,6 +26,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Nama</th>
                 <th scope="col">Jabatan</th>
+                <th scope="col">Level Kepala</th>
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
                 <th scope="col">Aksi</th>
@@ -36,6 +38,13 @@
                     <td>{{ $u->id }}</td>
                     <td>{{ $u->nama }}</td>
                     <td>{{ $u->namaJabatan }}</td>
+                    <td class="text-center">
+                      @if (in_array($u->id, $idKepala))
+                      <i class="fa-solid fa-check" style="color: #0a9400;"></i>
+                      @else
+                      <i class="fa-solid fa-x" style="color: #d62929;"></i>
+                      @endif
+                    </td>
                     <td>{{ $u->username }}</td>
                     <td>{{ $u->email }}</td>
                     <td><a href="/user/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary text-center"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
