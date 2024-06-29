@@ -38,7 +38,7 @@
               @foreach ($suratMasuk as $sm)
                   
               <tr>
-                <th scope="row">{{ $sm->id }}</th>
+                <th scope="row">{{ $sm->index }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
                 <td>{{ $sm->pengirim }}</td>
                 <td>{{ $sm->tanggalSurat }}</td>
@@ -62,7 +62,7 @@
         <table class="table table-bordered">
           <tr>
             <td>Indeks</td>
-            <td>{{ $sm->id }}</td>
+            <td>{{ $sm->index }}</td>
           </tr>
           <tr>
             <td>Direktorat</td>
@@ -95,6 +95,11 @@
       </div>
     </div>        
     @endforeach
+    <div class="d-flex justify-content-center">
+      <div>
+        {{ $suratMasuk->appends(request()->input())->links() }}
+      </div>
+    </div>
     
     @endif
 

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Direksi;
 use App\Models\JenisSurat;
+use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -414,8 +415,27 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\SuratKeluar::factory(50)->create();
 
-        // \App\Models\SuratMasuk::factory(50)->create();
+        // \App\Models\SuratMasuk::factory(20)->create();
 
         // \App\Models\Spo::factory(50)->create();
+        // for ($i=1; $i < 21 ; $i++) { 
+        //     DistribusiSurat::create([
+        //         'idSuratMasuk' => $i,
+        //         'idTujuanDisposisi' => 3,
+        //         'idPengirimDisposisi' => 1,
+        //         'tanggalDiteruskan' => fake()->dateTimeThisYear(),
+        //         'status' => 'Diteruskan ke Direktur Rumah Sakit',
+        //         'instruksi' => 'dadadadadada' 
+        //     ]);
+    
+        //     DistribusiSurat::create([
+        //         'idSuratMasuk' => $i,
+        //         'idTujuanDisposisi' => 18,
+        //         'idPengirimDisposisi' => 3,
+        //         'tanggalDiteruskan' => fake()->dateTimeThisYear(),
+        //         'status' => 'Diteruskan ke Kepala Instalasi PSRS',
+        //         'instruksi' => 'dududududududu' 
+        //     ]);            
+        // }
     }
 }

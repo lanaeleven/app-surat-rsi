@@ -17,9 +17,27 @@ class SuratMasukFactory extends Factory
 
     public function definition(): array
     {
+        // return [
+        //     'idDireksi' => 1,
+        //     'idPosisiDisposisi' => 1,
+        //     'tahun' => 2024,
+        //     'index' => fake()->unique()->randomNumber(3),
+        //     'statusArsip' => 0,
+        //     'nomorSurat' => fake()->word(),
+        //     'tanggalSurat' => fake()->dateTimeThisYear(),
+        //     'tanggalAgenda' => fake()->dateTimeThisYear(),
+        //     'sifatSurat' => fake()->randomElement(['Biasa', 'Rahasia', 'Segera']),
+        //     'pengirim' => fake()->word(),
+        //     'perihal' => fake()->words(2, true),
+        //     'lampiran' => fake()->randomElement(['Ada', 'Tidak Ada']),
+        //     'status' => 'Belum Diteruskan',
+        //     'fileName' => 'sertifprogram.pdf',
+        //     'filePath' => 'uploads/sertifprogram.pdf'
+        // ];
+
         return [
             'idDireksi' => 1,
-            'idPosisiDisposisi' => 1,
+            'idPosisiDisposisi' => 18,
             'tahun' => 2024,
             'index' => fake()->unique()->randomNumber(3),
             'statusArsip' => 0,
@@ -30,7 +48,7 @@ class SuratMasukFactory extends Factory
             'pengirim' => fake()->word(),
             'perihal' => fake()->words(2, true),
             'lampiran' => fake()->randomElement(['Ada', 'Tidak Ada']),
-            'status' => 'Belum Diteruskan',
+            'status' => 'Diteruskan ke Kepala Instalasi PSRS',
             'fileName' => 'sertifprogram.pdf',
             'filePath' => 'uploads/sertifprogram.pdf'
         ];

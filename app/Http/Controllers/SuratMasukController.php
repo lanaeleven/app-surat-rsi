@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class SuratMasukController extends Controller
 {
@@ -395,7 +397,28 @@ class SuratMasukController extends Controller
             ['tahun', 'desc'],
             ['index', 'desc'],
         ]);
-        return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'Surat Masuk Sudah Diteruskan', 'active' => 'sudah diteruskan', 'suratMasuk' => $suratMasuk]);
+
+        // Set the current page
+        $currentPage = Paginator::resolveCurrentPage();
+
+        // Define how many items we want to be visible in each page
+        $perPage = 15;
+
+        // Slice the collection to get the items to display in current page
+        $currentPageItems = $suratMasuk->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        // Create our paginator and pass it to the view
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, $suratMasuk->count(), $perPage, $currentPage, [
+            'path' => Paginator::resolveCurrentPath()
+        ]);
+
+        // return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'Surat Masuk Sudah Diteruskan', 'active' => 'sudah diteruskan', 'suratMasuk' => $suratMasuk]);
+
+        return view('surat-masuk.surat-disposisi-sudah-diteruskan', [
+            'title' => 'Surat Masuk Sudah Diteruskan',
+            'active' => 'sudah diteruskan',
+            'suratMasuk' => $paginatedItems
+        ]);
     }
 
     public function arsipkan(Request $request) {
