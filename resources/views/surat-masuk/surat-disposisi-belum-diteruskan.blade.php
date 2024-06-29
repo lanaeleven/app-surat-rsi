@@ -36,7 +36,7 @@
             <tbody>
               @foreach ($suratMasuk as $sm)
               <tr>
-                <th scope="row">{{ $sm->id }}</th>
+                <th scope="row">{{ $sm->index }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
                 <td>{{ $sm->pengirim }}</td>
                 <td>{{ $sm->tanggalSurat }}</td>
@@ -59,7 +59,7 @@
         <table class="table table-bordered">
           <tr>
             <th>Indeks</th>
-            <td>{{ $sm->id }}</td>
+            <td>{{ $sm->index }}</td>
           </tr>
           <tr>
             <th>Direktorat</th>
