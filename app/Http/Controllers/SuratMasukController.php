@@ -512,7 +512,8 @@ class SuratMasukController extends Controller
         $pdfMerger->addPDF($finalSuratMasukPath, 'all');
 
         $pdfMerger->merge();
-        $pdfMerger->stream();
+        // $pdfMerger->stream();
+        $pdfMerger->download('disposisi_suratmasuk_' . $suratMasuk[0]->tahun . '_' . $suratMasuk[0]->index . '.pdf');
 
         // Hapus file PDF yang dihasilkan oleh DomPDF setelah streaming
         unlink($dompdfFilePath);
