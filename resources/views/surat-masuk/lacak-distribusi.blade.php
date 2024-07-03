@@ -25,6 +25,14 @@
         <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
       </form>
       @endcan
+
+      @if (auth()->user()->id == 10 || auth()->user()->id == 15)
+        <form action="/unduh-disposisi" method="post">
+          @csrf
+          <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+          <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
+        </form>
+      @endif
     </div>
   </div>
   

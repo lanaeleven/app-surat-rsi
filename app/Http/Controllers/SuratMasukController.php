@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use ZipArchive;
 use App\Models\User;
 use App\Models\Direksi;
+use setasign\Fpdi\Fpdi;
 use App\Models\SuratMasuk;
 use App\Models\UserKepala;
 use Illuminate\Http\Request;
@@ -14,11 +15,14 @@ use App\Models\TujuanDisposisi;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\EmailNotifDisposisi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
+use setasign\Fpdi\PdfParser\PdfParserException;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class SuratMasukController extends Controller
 {
@@ -102,6 +106,83 @@ class SuratMasukController extends Controller
         $newIndex = $maxIndex ? $maxIndex + 1 : 1;
 
         // Store the file in storage\app\public folder
+        // Dapatkan tipe MIME file yang diunggah
+        $mimeType = $request->file('fileSurat')->getMimeType();
+        // Cek jika tipe file adalah image (JPEG, PNG)
+        if (strpos($mimeType, 'image') !== false) {
+            // Dapatkan konten gambar
+            $imageContent = file_get_contents($request->file('fileSurat')->getRealPath());
+
+            // Data yang akan dikirim ke view
+            $data = [
+                'imageContent' => $imageContent,
+            ];
+
+            // Load view dan generate PDF
+            $pdf = PDF::loadView('pdf.image-to-pdf', $data);
+
+            // Path untuk menyimpan file PDF
+            $filePath = 'uploads/surat-masuk/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf';
+            $storagePath = 'public/' . $filePath;
+
+            // Simpan file PDF ke storage
+            Storage::put($storagePath, $pdf->output());
+        } else {
+            $filePath = $request->file('fileSurat')->store('uploads/surat-masuk/' . $tahun . '/' . $bulan, 'public');
+        }
+
+        // Store the file in storage\app\public folder
+        $fileName = $request->file('fileSurat')->getClientOriginalName();
+
+
+        // Store file information in the database
+        $suratMasuk = new SuratMasuk();
+        $suratMasuk->index = $newIndex;
+        $suratMasuk->idPosisiDisposisi = $request->input('idPosisiDisposisi');
+        $suratMasuk->tanggalAgenda = $request->input('tanggalAgenda');
+        $suratMasuk->sifatSurat = $request->input('sifatSurat');
+        $suratMasuk->nomorSurat = $request->input('nomorSurat');
+        $suratMasuk->tanggalSurat = $request->input('tanggalSurat');
+        $suratMasuk->tahun = $tahun;
+        $suratMasuk->lampiran = $request->input('lampiran');
+        $suratMasuk->pengirim = $request->input('pengirim');
+        $suratMasuk->idDireksi = $request->input('direksi');
+        $suratMasuk->perihal = $request->input('perihal');
+        $suratMasuk->status = $request->input('status');
+        $suratMasuk->statusArsip = 0;
+        $suratMasuk->fileName = $fileName;
+        $suratMasuk->filePath = $filePath;
+        $suratMasuk->save();
+
+        // Redirect back to the index page with a success message
+        return redirect('/surat-masuk/index')
+            ->with('success', "Berhasil Menambahkan Surat Masuk");
+    }
+
+    public function store_lama(Request $request): RedirectResponse
+    {
+        // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
+        $request->validate([
+            'idPosisiDisposisi' => 'required',
+            'tanggalAgenda' => 'required',
+            'sifatSurat' => 'required',
+            'nomorSurat' => 'required',
+            'tanggalSurat' => 'required',
+            'lampiran' => 'required',
+            'pengirim' => 'required',
+            'direksi' => 'required',
+            'perihal' => 'required',
+            'fileSurat' => 'required|mimes:pdf,jpg,png|max:5120'
+        ]);
+        
+        $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
+        // Get the maximum id for the given year
+        $maxIndex = SuratMasuk::where('tahun', $tahun)->max('index');
+        // Determine the new id for the given year
+        $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+        // Store the file in storage\app\public folder
         $file = $request->file('fileSurat');
         $fileName = $file->getClientOriginalName();
         $filePath = $file->store('uploads/surat-masuk/' . $tahun . '/' . $bulan, 'public');
@@ -138,6 +219,83 @@ class SuratMasukController extends Controller
     }
 
     public function save(Request $request): RedirectResponse
+    {
+        // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
+        $request->validate([
+            'tanggalAgenda' => 'required',
+            'sifatSurat' => 'required',
+            'nomorSurat' => 'required',
+            'tanggalSurat' => 'required',
+            'lampiran' => 'required',
+            'pengirim' => 'required',
+            'direksi' => 'required',
+            'perihal' => 'required',
+            'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
+        ]);
+
+        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
+
+        if ($request->file('fileSurat')) {
+            // Store the file in storage\app\public folder
+            // Dapatkan tipe MIME file yang diunggah
+            $mimeType = $request->file('fileSurat')->getMimeType();
+            // Cek jika tipe file adalah image (JPEG, PNG)
+            if (strpos($mimeType, 'image') !== false) {
+                // Dapatkan konten gambar
+                $imageContent = file_get_contents($request->file('fileSurat')->getRealPath());
+                // Data yang akan dikirim ke view
+                $data = [
+                    'imageContent' => $imageContent,
+                ];
+
+                // Load view dan generate PDF
+                $pdf = PDF::loadView('pdf.image-to-pdf', $data);
+                // Path untuk menyimpan file PDF
+                $filePath = 'uploads/surat-masuk/' . $tahunInput . '/' . $bulan . '/' . uniqid() . '.pdf';
+                $storagePath = 'public/' . $filePath;
+                // Simpan file PDF ke storage
+                Storage::put($storagePath, $pdf->output());
+            } else {
+                $filePath = $request->file('fileSurat')->store('uploads/surat-masuk/' . $tahunInput . '/' . $bulan, 'public');
+            }
+                // Store the file in storage\app\public folder
+                $fileName = $request->file('fileSurat')->getClientOriginalName();
+        }
+
+        // Store file information in the database
+        $suratMasuk = SuratMasuk::find($request->input('id'));
+        $suratMasuk->tanggalAgenda =$request->input('tanggalAgenda');
+        $suratMasuk->sifatSurat =$request->input('sifatSurat');
+        $suratMasuk->nomorSurat =$request->input('nomorSurat');
+        $suratMasuk->tanggalSurat =$request->input('tanggalSurat');
+        $suratMasuk->lampiran =$request->input('lampiran');
+        $suratMasuk->pengirim =$request->input('pengirim');
+        $suratMasuk->idDireksi =$request->input('direksi');
+        $suratMasuk->perihal =$request->input('perihal');
+        $suratMasuk->status =$request->input('status');
+        if ($request->file('fileSurat')) {
+            $suratMasuk->fileName = $fileName;
+            $suratMasuk->filePath = $filePath;
+        }
+        
+        if ($tahunInput != $request->input('tahun')) {
+            // Get the maximum id for the given year
+            $maxIndex = SuratMasuk::where('tahun', $tahunInput)->max('index');
+            // Determine the new id for the given year
+            $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+            $suratMasuk->tahun = $tahunInput;
+            $suratMasuk->index = $newIndex;         
+        }
+        $suratMasuk->save();
+
+        // Redirect back to the index page with a success message
+        return redirect('/surat-masuk/index')
+            ->with('success', "Berhasil Mengedit Surat Masuk");
+    }
+
+    public function save_lama(Request $request): RedirectResponse
     {
         // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
         $request->validate([
@@ -316,10 +474,182 @@ class SuratMasukController extends Controller
         // dd($distribusiSurat);
 
         $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
+        $timestamp = now()->timestamp; // Mendapatkan timestamp saat ini
+        $dompdfFilePath = storage_path('app/public/uploads/disposisi/disposisi_' . $timestamp . '.pdf');
+        file_put_contents($dompdfFilePath, $pdf->output());
+
+        $suratMasukPath = storage_path('app/public/' . $suratMasuk[0]->filePath);
+        $uncompressedSuratMasukPath = storage_path('app/public/uploads/disposisi/uncompressed_suratmasuk_' . $timestamp . '.pdf');
+
+        // Coba buka PDF dengan FPDI untuk mendeteksi masalah
+        try {
+            $pdf = new Fpdi();
+            $pageCount = $pdf->setSourceFile($suratMasukPath);
+            $isProblematic = false;
+        } catch (PdfParserException $e) {
+            $isProblematic = true;
+        }
+
+        $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+
+        if ($isProblematic) {
+            $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
+            exec($command, $output, $return_var);
+
+            if ($return_var !== 0) {
+                unlink($dompdfFilePath);
+                return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
+            }
+
+            $finalSuratMasukPath = $uncompressedSuratMasukPath;
+        } else {
+            $finalSuratMasukPath = $suratMasukPath;
+        }
+
+        // Menggabungkan PDF menggunakan Webklex\PDFMerger\PDFMerger
+        $pdfMerger = PDFMerger::init();
+        $pdfMerger->addPDF($dompdfFilePath, 'all');
+        $pdfMerger->addPDF($finalSuratMasukPath, 'all');
+
+        $pdfMerger->merge();
+        $pdfMerger->stream();
+
+        // Hapus file PDF yang dihasilkan oleh DomPDF setelah streaming
+        unlink($dompdfFilePath);
+        if ($isProblematic) {
+            unlink($uncompressedSuratMasukPath);
+        }
+    }
+
+    public function unduhDisposisi_lama(Request $request) {
+        // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->get();
+        $suratMasuk = SuratMasuk::where('id', '=', $request->input('idSuratMasuk'))->get();
+        $daftarPengirim = [];
+        foreach ($distribusiSurat as $ds) {
+            array_push($daftarPengirim, $ds->idPengirimDisposisi);
+        }
+        $user = User::all()->keyBy('id');
+
+        $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+            $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
+            $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
+        
+            // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
+            return array_merge($item->toArray(), [
+                'namaPengirim' => $namaPengirim,
+                'namaPenerima' => $namaPenerima
+            ]);
+        });
+        // dd($distribusiSurat);
+
+        $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
         return $pdf->stream();
     }
 
     public function rekapSuratMasuk(Request $request) {
+        $tanggal = $request->input('bulanRekap');
+        $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
+        $suratMasuk = SuratMasuk::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
+
+
+        $zip = new ZipArchive();
+        $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip');
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+            foreach ($suratMasuk as $sm) {
+                
+
+                // GENERATE DISPOSISI
+                $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $sm->id)->get();
+                $suratMasuk = SuratMasuk::where('id', '=', $sm->id)->get();
+                $daftarPengirim = [];
+                foreach ($distribusiSurat as $ds) {
+                    array_push($daftarPengirim, $ds->idPengirimDisposisi);
+                }
+                $user = User::all()->keyBy('id');
+
+                $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+                    $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
+                    $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
+                
+                    // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
+                    return array_merge($item->toArray(), [
+                        'namaPengirim' => $namaPengirim,
+                        'namaPenerima' => $namaPenerima
+                    ]);
+                });
+                // dd($distribusiSurat);
+
+                $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
+                $timestamp = now()->timestamp; // Mendapatkan timestamp saat ini
+                $dompdfFilePath = storage_path('app/public/uploads/disposisi/suratmasuk_' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
+                file_put_contents($dompdfFilePath, $pdf->output());
+
+                $suratMasukPath = storage_path('app/public/' . $sm->filePath);
+                $uncompressedSuratMasukPath = storage_path('app/public/uploads/disposisi/uncompressed_suratmasuk_' . $timestamp . '.pdf');
+
+                // Coba buka PDF dengan FPDI untuk mendeteksi masalah
+                try {
+                    $pdf = new Fpdi();
+                    $pageCount = $pdf->setSourceFile($suratMasukPath);
+                    $isProblematic = false;
+                } catch (PdfParserException $e) {
+                    $isProblematic = true;
+                }
+
+                $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+
+                if ($isProblematic) {
+                    // dd($suratMasukPath);
+                    $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
+                    exec($command, $output, $return_var);
+
+                    if ($return_var !== 0) {
+                        unlink($dompdfFilePath);
+                        return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
+                    }
+
+                    $finalSuratMasukPath = $uncompressedSuratMasukPath;
+                } else {
+                    $finalSuratMasukPath = $suratMasukPath;
+                }
+
+                // Menggabungkan PDF menggunakan Webklex\PDFMerger\PDFMerger
+                $pdfMerger = PDFMerger::init();
+                $pdfMerger->addPDF($dompdfFilePath, 'all');
+                $pdfMerger->addPDF($finalSuratMasukPath, 'all');
+
+                $gabunganPath = storage_path('app/public/uploads/disposisi/suratmasuk_gabungan' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
+                $pdfMerger->merge();
+                $pdfMerger->save($gabunganPath);
+
+                $zip->addFile($gabunganPath, 'disposisi_suratmasuk_' . $sm->tahun . '_' . $sm->index . '.pdf');
+
+                // Tambahkan file sementara ke daftar file yang akan dihapus
+                $filesToDelete[] = $dompdfFilePath;
+                $filesToDelete[] = $gabunganPath;
+                if ($isProblematic) {
+                    $filesToDelete[] = $uncompressedSuratMasukPath;
+                }
+            }
+            $zip->close();
+
+            foreach ($filesToDelete as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }        
+
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            dd('gagal membuka file zip');
+        }
+    
+    }
+
+    public function rekapSuratMasuk_lama(Request $request) {
         $tanggal = $request->input('bulanRekap');
         $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
         $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
