@@ -26,7 +26,7 @@
       </form>
       @endcan
 
-      @if (auth()->user()->id == 10 || auth()->user()->id == 15)
+      @if (auth()->user()->id == 10 || auth()->user()->id == 15 || auth()->user()->id == 11)
         <form action="/unduh-disposisi" method="post">
           @csrf
           <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">

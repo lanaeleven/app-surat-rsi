@@ -233,6 +233,7 @@ class SuratMasukController extends Controller
             'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
         ]);
 
+
         $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
 
@@ -368,7 +369,7 @@ class SuratMasukController extends Controller
         } elseif (auth()->user()->id == 3){ // daftar opsi terusan untuk direktur
             $terusan = User::whereIn('id', $arrIdKepala)->orWhere('id', 1)->get();
         } else { // daftar opsi terusan untuk kasubbag/penjab/dsb
-            $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->get();
+            $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->where('id', '<>', auth()->user()->id)->get();
         }
         // dd($terusan);
 
@@ -396,23 +397,92 @@ class SuratMasukController extends Controller
 
     public function teruskan(Request $request): RedirectResponse
     {
+        // pembedaan redirect user sekre dan non-sekre
         if (auth()->user()->id == 1) {
             $redirect = '/surat-masuk/index';
         } else {
             $redirect = '/';
         }        
         
+        // validasi input dari user
         $request->validate([
             'idTujuanDisposisi' => 'required',
             'idSuratMasuk' => 'required',
             'instruksi' => 'required',
-            'idPengirimDisposisi' => 'required'
+            'idPengirimDisposisi' => 'required',
+            'fileLampiran' => 'mimes:pdf,jpg,png|max:5120'
         ]);
+        
+        // START PROCESS file lampiran
+        if ($request->file('fileLampiran')) { 
+            $filesToDelete = [];
+            $mimeType = $request->file('fileLampiran')->getMimeType();
+            if (strpos($mimeType, 'image') !== false) { // jika input user berupa image, maka convert image to pdf
+                $imageContent = file_get_contents($request->file('fileLampiran')->getRealPath());
+                $data = [
+                    'imageContent' => $imageContent,
+                ];
+                $pdf = PDF::loadView('pdf.image-to-pdf', $data);
+                $uploadImagePdfPath = 'public/uploads/lampiran/' . uniqid() . '.pdf'; // path untuk menyimpan file lampiran yg img-to-pdf
+                Storage::put($uploadImagePdfPath, $pdf->output());
+                $fileLampiranPath = storage_path('app/' . $uploadImagePdfPath); // path sementara untuk file lampiran
+                $filesToDelete[] = $fileLampiranPath;
+            } else { // jika input user berupa pdf
+                $fileLampiranPath = storage_path('app/public/' . $request->file('fileLampiran')->store('uploads/lampiran', 'public')); // path sementara untuk file lampiran
+                $filesToDelete[] = $fileLampiranPath;
+            }
+            try { // memeriksa apakah versi pdf bermasalah atau tidak
+                $pdf = new Fpdi();
+                $pageCount = $pdf->setSourceFile($fileLampiranPath);
+                $isProblematic = false;
+            } catch (PdfParserException $e) {
+                $isProblematic = true;
+            }
+            if ($isProblematic) { // jika versi pdf bermasalah, jalankan ghostscript untuk mengganti versi pdf
+                $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+                $uncompressedfileLampiranPath = storage_path('app/public/uploads/lampiran/' . uniqid() . '.pdf'); // path untuk hasil proses yang dilakukan ghostscript
+                $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedfileLampiranPath $fileLampiranPath";
+                exec($command, $output, $return_var);
+                if ($return_var !== 0) {
+                    return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
+                }
+                $fileLampiranPath = $uncompressedfileLampiranPath; // memakai path hasil ghostscript untuk path file lampiran
+                $filesToDelete[] = $fileLampiranPath;
+            }
+
+            // akses row surat masuk untuk menyimpan file surat masuk yang sdh digabung dengan lampiran  
+            $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
+            $suratMasukPath = storage_path('app/public/' . $suratMasuk->filePath); //path surat masuk sebelum digabung
+            $tahun = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('Y');
+            $bulan = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('m');
+            $newSuratMasukPath = 'uploads/surat-masuk/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf'; // path surat berlampiran yg akan disimpan di database
+            $pathPenggabungan = storage_path('app/public/' . $newSuratMasukPath); // path surat untuk keperluan penggabungan
+            
+            // proses penggabungan surat masuk dengan lampiran
+            $pdfMerger = PDFMerger::init();
+            $pdfMerger->addPDF($suratMasukPath, 'all');
+            $pdfMerger->addPDF($fileLampiranPath, 'all');
+            $pdfMerger->merge();
+            $pdfMerger->save($pathPenggabungan);
+
+            // simpan path surat masuk yg sdh berlampiran
+            $suratMasuk->filePath = $newSuratMasukPath;
+            $suratMasuk->save();
+
+            // menghapus file yang tidak lagi terpakai
+            $filesToDelete[] = $suratMasukPath;
+            foreach ($filesToDelete as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }  
+        }
+        // END PROCESS file lampiran 
+
 
         $tujuanDisposisi = User::find($request->input('idTujuanDisposisi'));
         $status = "Diteruskan ke " . $tujuanDisposisi->namaJabatan;
 
-        // Store file information in the database
         $distribusiSurat = new DistribusiSurat();
         $distribusiSurat->idTujuanDisposisi = $request->input('idTujuanDisposisi');
         $distribusiSurat->idPengirimDisposisi = $request->input('idPengirimDisposisi');
@@ -433,7 +503,6 @@ class SuratMasukController extends Controller
 
         Mail::to($penerima->email)->send(new EmailNotifDisposisi($sifatSurat, $nomorSurat, auth()->user()->namaJabatan, $penerima->namaJabatan, $penerima->nama, \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), $distribusiSurat->instruksi));
 
-        // Redirect back to the index page with a success message
         return redirect($redirect)
             ->with('success', "Berhasil Meneruskan Pesan");
     }
@@ -555,7 +624,6 @@ class SuratMasukController extends Controller
         $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
         $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
         $suratMasuk = SuratMasuk::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
-
 
         $zip = new ZipArchive();
         $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip');

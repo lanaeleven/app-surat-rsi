@@ -17,6 +17,21 @@
       <h3 class="fw-bold fs-4 text-center">Disposisi Surat</h3>
     </div>
     <div>
+      @can('dashboard-sekre')
+      <form action="/unduh-disposisi" method="post">
+        @csrf
+        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+        <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
+      </form>
+      @endcan
+
+      @if (auth()->user()->id == 10 || auth()->user()->id == 15 || auth()->user()->id == 11)
+        <form action="/unduh-disposisi" method="post">
+          @csrf
+          <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+          <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
+        </form>
+      @endif
     </div>
   </div>
       
@@ -207,7 +222,7 @@
             
         <h5 class="text-center fw-bold mb-3">Teruskan Surat</h5>
         <div class="col-12 col-md-9">
-            <form action="/surat-masuk/teruskan" id="formTeruskan" method="post">
+            <form action="/surat-masuk/teruskan" id="formTeruskan" method="post" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
             <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
@@ -232,6 +247,18 @@
                   <textarea class="form-control" name="instruksi" id="instruksi" rows="3" required></textarea>
                 </div>
             </div>
+
+            <div class="row mb-3">
+              <label for="fileLampiran" class="col-sm-3 col-form-label">Tambah Lampiran (Opsional)</label>
+              <div class="col-sm-9">
+                  <input name="fileLampiran" class="form-control @error('fileLampiran') is-invalid @enderror" type="file" id="fileLampiran">
+                  @error('fileLampiran')
+                  <div id="fileLampiran" class="invalid-feedback">
+                    {{ $message }}
+                  </div>
+                  @enderror
+              </div>
+          </div>
 
             <div class="d-flex justify-content-center mt-3">
                 <div>
