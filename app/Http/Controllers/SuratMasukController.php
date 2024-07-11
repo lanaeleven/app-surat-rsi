@@ -453,6 +453,28 @@ class SuratMasukController extends Controller
             // akses row surat masuk untuk menyimpan file surat masuk yang sdh digabung dengan lampiran  
             $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
             $suratMasukPath = storage_path('app/public/' . $suratMasuk->filePath); //path surat masuk sebelum digabung
+
+            try { // memeriksa apakah versi pdf bermasalah atau tidak
+                $pdf = new Fpdi();
+                $pageCount = $pdf->setSourceFile($suratMasukPath);
+                $isSuratMasukProblematic = false;
+            } catch (PdfParserException $e) {
+                $isSuratMasukProblematic = true;
+            }
+            if ($isSuratMasukProblematic) { // jika versi pdf bermasalah, jalankan ghostscript untuk mengganti versi pdf
+                $oldSuratMasukPath = $suratMasukPath;
+                $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+                $uncompressedSuratMasukPath = storage_path('app/public/uploads/lampiran/' . uniqid() . '.pdf'); // path untuk hasil proses yang dilakukan ghostscript
+                $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
+                exec($command, $output, $return_var);
+                if ($return_var !== 0) {
+                    return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
+                }
+                $filesToDelete[] = $uncompressedSuratMasukPath;
+                $filesToDelete[] = $oldSuratMasukPath;
+                $suratMasukPath = $uncompressedSuratMasukPath; // memakai path hasil ghostscript untuk path surat masuk
+            }
+
             $tahun = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('Y');
             $bulan = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('m');
             $newSuratMasukPath = 'uploads/surat-masuk/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf'; // path surat berlampiran yg akan disimpan di database
