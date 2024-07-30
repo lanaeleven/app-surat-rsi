@@ -804,9 +804,33 @@ class SuratMasukController extends Controller
         return view('surat-masuk.laporan-per-direksi', ['title' => 'Surat Masuk Per Direksi', 'active' => 'laporan', 'suratMasuk' => $suratMasuk->get()]);
     }
 
+    // public function nonSekreBelumDiteruskan() {
+    //     $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->orderBy('id', 'desc')->get();
+    //     return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk]);
+    // }
+
     public function nonSekreBelumDiteruskan() {
-        $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->orderBy('id', 'desc')->get();
-        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk]);
+        $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->orderBy('id', 'desc');
+
+        if (request('index')) {
+            $suratMasuk = $suratMasuk->where('index', '=', request('index'));
+        }
+        if (request('tanggalAwal')) {
+            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+        }
+        if (request('tanggalAkhir')) {
+            $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }        
+        if (request('pengirim')) {
+            $suratMasuk = $suratMasuk->where('pengirim', 'like', '%' . request('pengirim') . '%');
+        }
+        if (request('nomorSurat')) {
+            $suratMasuk = $suratMasuk->where('nomorSurat', 'like', '%' . request('nomorSurat') . '%');
+        }
+        if (request('perihal')) {
+            $suratMasuk = $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
+        }
+        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk->get()]);
     }
 
     public function nonSekreSudahDiteruskan() {
