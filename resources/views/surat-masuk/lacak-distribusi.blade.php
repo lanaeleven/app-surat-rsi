@@ -186,7 +186,7 @@
             <div class="row mb-3">
                 <label for="tujuan" class="col-sm-3 col-form-label">Tanggal Diteruskan</label>
                 <div class="col-sm-9">
-                    <input class="form-control" type="date" value="{{ $ds->tanggalDiteruskan }}" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="datetime" value="{{ $ds->tanggalDiteruskan }}" aria-label="Disabled input example" disabled readonly>
                 </div>
             </div>
             <div class="row mb-3">

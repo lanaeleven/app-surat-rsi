@@ -14,6 +14,56 @@
       </div>
     </div>
 
+    {{-- BEGINNING OF PENCARIAN --}}
+
+    <div class="mb-3">
+      <form class="row g-3" action="/surat-masuk/ns/sudah-diteruskan">
+        <div class="row g-3">
+          <div class="col-auto">
+            <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
+          </div>
+          <div class="col-auto me-3">
+              <input name="tanggalAwal" type="date" id="tanggalAwal" class="form-control form-control-sm" value="{{ request('tanggalAwal') }}">
+          </div> 
+          <div class="col-auto">
+              <label for="tanggalAkhir" class="col-form-label"><small>Tanggal Akhir :</small></label>
+            </div>
+          <div class="col-auto">
+              <input name="tanggalAkhir" type="date" id="tanggalAkhir" class="form-control form-control-sm" value="{{ request('tanggalAkhir') }}">
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-auto">
+            <input name="index" type="number" class="form-control form-control-sm" placeholder="Index" value="{{ request('index') }}">
+          </div>
+          {{-- <div class="col-auto">
+            <select name="direksi" class="form-select form-select-sm">
+              <option value="">Semua Direksi</option>
+              @foreach ($direksi as $d)
+              <option value="{{ $d->id }}" {{ request('direksi') == $d->id ? 'selected' : '' }}>{{ $d->namaDireksi }}</option>
+              @endforeach
+            </select>
+          </div> --}}
+          <div class="col-auto">
+            <input name="pengirim" type="text" class="form-control form-control-sm" placeholder="Pengirim" value="{{ request('pengirim') }}">
+          </div>
+          <div class="col-auto">
+            <input name="nomorSurat" type="text" class="form-control form-control-sm" placeholder="Nomor Surat" value="{{ request('nomorSurat') }}">
+          </div>
+          <div class="col-auto">
+            <input name="perihal" type="text" class="form-control form-control-sm" placeholder="Perihal" value="{{ request('perihal') }}">
+          </div>
+          
+          <div class="col-auto">
+            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    {{-- END OF PENCARIAN --}}
+
     @if ($suratMasuk->isEmpty())
 
         <p class="text-center fs-6 my-5">Anda Tidak Memiliki Surat Masuk yang Sudah Diteruskan</p>

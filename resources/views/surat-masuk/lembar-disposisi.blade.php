@@ -123,7 +123,8 @@
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: center; font-size: 14;">
-                                    {{ $ds['instruksi'] }}
+                                    {{-- {{ $ds['instruksi'] }} --}}
+                                    {!! nl2br(e($ds['instruksi'])) !!}
                                 </td>
                             </tr>
                         </tbody>

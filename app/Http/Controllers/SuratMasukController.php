@@ -821,6 +821,46 @@ class SuratMasukController extends Controller
             ['index', 'desc'],
         ]);
 
+        // BEGINNING OF PENCARIAN
+
+        if (request('index')) {
+            $suratMasuk = $suratMasuk->where('index', '=', request('index'));
+        }
+
+        if (request('tanggalAwal')) {
+            $tanggalAwal = request('tanggalAwal');
+            $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAwal) {
+                return strtotime($item['tanggalSurat']) >= strtotime($tanggalAwal);
+            });
+        }
+        
+        if (request('tanggalAkhir')) {
+            $tanggalAkhir = request('tanggalAkhir');
+            $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAkhir) {
+                return strtotime($item['tanggalSurat']) <= strtotime($tanggalAkhir);
+            });
+        }
+
+        if (request('pengirim')) {
+            $suratMasuk = $suratMasuk->filter(function ($item) {
+                return stripos($item['pengirim'], request('pengirim')) !== false;
+            });
+        }
+
+        if (request('nomorSurat')) {
+            $suratMasuk = $suratMasuk->filter(function ($item) {
+                return stripos($item['nomorSurat'], request('nomorSurat')) !== false;
+            });
+        }
+
+        if (request('perihal')) {
+            $suratMasuk = $suratMasuk->filter(function ($item) {
+                return stripos($item['perihal'], request('perihal')) !== false;
+            });
+        }
+
+        // END OF PENCARIAN
+
         // Set the current page
         $currentPage = Paginator::resolveCurrentPage();
 

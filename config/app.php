@@ -70,8 +70,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
-
+    // 'timezone' => 'UTC',
+    'timezone' => 'Asia/Makassar',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
