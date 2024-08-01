@@ -90,7 +90,7 @@ class SuratKeluarController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'fileSurat' => 'required|mimes:pdf,jpg,png|max:5120'
+            'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
         
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
@@ -134,7 +134,7 @@ class SuratKeluarController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
+            'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
         ]);
 
         $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
