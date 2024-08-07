@@ -99,6 +99,9 @@
           <div class="col-auto">
             <input name="perihal" type="text" class="form-control form-control-sm" placeholder="Perihal" value="{{ request('perihal') }}">
           </div>
+          <div class="col-auto">
+            <input name="status" type="text" class="form-control form-control-sm" placeholder="Status" value="{{ request('status') }}">
+          </div>
           
           <div class="col-auto">
             <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>

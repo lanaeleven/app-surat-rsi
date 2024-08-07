@@ -58,7 +58,7 @@ class SuratMasukController extends Controller
         }
 
         if (request('status')) {
-            $suratMasuk->where('status', request('status'));
+            $suratMasuk->where('status', 'like', '%' . request('status') . '%');
         }
 
         if (request('pengirim')) {
