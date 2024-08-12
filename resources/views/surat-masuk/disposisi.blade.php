@@ -17,7 +17,7 @@
       <h3 class="fw-bold fs-4 text-center">Disposisi Surat</h3>
     </div>
     <div>
-      @can('dashboard-sekre')
+      {{-- @can('dashboard-sekre')
       <form action="/unduh-disposisi" method="post">
         @csrf
         <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
@@ -31,7 +31,14 @@
           <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
           <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
         </form>
-      @endif
+      @endif --}}
+
+      <form action="/unduh-disposisi" method="post">
+        @csrf
+        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+        <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
+      </form>
+      
     </div>
   </div>
       

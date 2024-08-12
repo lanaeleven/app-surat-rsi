@@ -3,12 +3,20 @@
 
 @section('container')
 <div>
-  @if (session()->has('success'))
+@if (session()->has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ session('success') }}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 @endif  
+
+@if (session()->has('error'))
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+@endif  
+
     <div class="d-flex justify-content-between my-2">
       <div class="mb-2">
       @if (!is_null($keterangan))
@@ -44,13 +52,27 @@
           </div>
           <div class="modal-body">
 
-            <form method="POST" action="/unduh-rekap-suratmasuk">
+            <form method="POST" id="formRekap" action="/unduh-rekap-suratmasuk">
               @csrf
-              <div class="mb-3">
+              {{-- <div class="mb-3">
                 <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
                 <input type="month" id="bulanRekap" name="bulanRekap"  class="form-control" required>
-              </div>
-                <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
+              </div> --}}
+                <div class="col-auto">
+                  <label for="awal" class="col-form-label"><small>Awal</small></label>
+                </div>
+                <div class="col-auto mb-3">
+                    <input name="awal" type="date" id="awal" class="form-control form-control-sm">
+                </div> 
+                <div class="col-auto">
+                    <label for="akhir" class="col-form-label"><small>Akhir</small></label>
+                </div>
+                <div class="col-auto mb-3">
+                    <input name="akhir" type="date" id="akhir" class="form-control form-control-sm">
+                </div>
+                <button type="submit" class="btn btn-success container-fluid">Unduh Rekap
+                  {{-- <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerRekap"></span> --}}
+                </button>
             </div>
             </form>
           </div>
@@ -206,4 +228,19 @@
     </div>
     @endif
 </div>
+
+{{-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // spinner tombol rekap
+    var formRekap = document.getElementById('formRekap'); 
+    formRekap.addEventListener('submit', function(event) {
+      var submitButtonRekap = formRekap.querySelector('button[type="submit"]');
+      if (submitButtonRekap) {
+        submitButtonRekap.disabled = true;
+        document.getElementById('spinnerRekap').classList.remove('d-none');
+      }
+    });
+  });
+</script> --}}
+
 @endsection

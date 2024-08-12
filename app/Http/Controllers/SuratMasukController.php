@@ -642,18 +642,34 @@ class SuratMasukController extends Controller
     }
 
     public function rekapSuratMasuk(Request $request) {
-        $tanggal = $request->input('bulanRekap');
-        $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
-        $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
-        $suratMasuk = SuratMasuk::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
+        // start (setup dengan parameter bulan)
+        // $tanggal = $request->input('bulanRekap');
+        // $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
+        // $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
+        // $suratMasuk = SuratMasuk::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
+
+        // $zip = new ZipArchive();
+        // $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip');
+        
+        // end (setup dengan parameter bulan)
+
+        // start (setup dengan awal dan akhir)
+
+        $awal = $request->input('awal');
+        $akhir = $request->input('akhir');
+        $suratMasuk = SuratMasuk::whereDate('tanggalSurat', '>=', $awal)->whereDate('tanggalSurat', '<=', $akhir)->get();
 
         $zip = new ZipArchive();
-        $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_' . $tahun . '_' . $bulan . '.zip');
+        $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_dari_' . $awal . '_sampai_' . $akhir . '.zip');
+        
+        // end (setup dengan awal dan akhir)
+
+        if ($suratMasuk->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada Surat Masuk pada rentang tanggal tersebut');
+        }
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
             foreach ($suratMasuk as $sm) {
-                
-
                 // GENERATE DISPOSISI
                 $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $sm->id)->get();
                 $suratMasuk = SuratMasuk::where('id', '=', $sm->id)->get();
