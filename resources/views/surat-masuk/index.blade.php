@@ -86,7 +86,7 @@
         @if (is_null($keterangan))
         <div class="row g-3">
           <div class="col-auto">
-            <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
+            <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awallll :</small></label>
           </div>
           <div class="col-auto me-3">
               <input name="tanggalAwal" type="date" id="tanggalAwal" class="form-control form-control-sm" value="{{ request('tanggalAwal') }}">
