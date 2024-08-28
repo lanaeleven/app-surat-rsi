@@ -49,6 +49,22 @@ class User extends Authenticatable
         return $this->hasMany(DistribusiSurat::class, 'idTujuanDisposisi');
     }
 
+    public function senderPengirimKhusus(): HasMany {
+        return $this->hasMany(PengirimKhusus::class, 'idUser');
+    }
+
+    public function receiverPengirimKhusus(): HasMany {
+        return $this->hasMany(PengirimKhusus::class, 'bisaMengirimKe');
+    }
+
+    public function receiverPenerimaKhusus(): HasMany {
+        return $this->hasMany(PenerimaKhusus::class, 'idUser');
+    }
+
+    public function senderPenerimaKhusus(): HasMany {
+        return $this->hasMany(PenerimaKhusus::class, 'bisaMenerimaDari');
+    }
+
     public function isKepala(): HasOne
     {
         return $this->hasOne(UserKepala::class);

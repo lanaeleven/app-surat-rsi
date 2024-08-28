@@ -84,7 +84,7 @@ class SuratMasukController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
+        // Validate the incoming file.
         $request->validate([
             'idPosisiDisposisi' => 'required',
             'tanggalAgenda' => 'required',
@@ -95,7 +95,7 @@ class SuratMasukController extends Controller
             'pengirim' => 'required',
             'direksi' => 'required',
             'perihal' => 'required',
-            'fileSurat' => 'required|mimes:pdf,jpg,png|max:7168'
+            'fileSurat' => 'required|mimes:pdf,jpg,png|max:10240'
         ]);
         
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
