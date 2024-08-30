@@ -9,6 +9,8 @@ use setasign\Fpdi\Fpdi;
 use App\Models\SuratMasuk;
 use App\Models\UserKepala;
 use Illuminate\Http\Request;
+use App\Models\PenerimaKhusus;
+use App\Models\PengirimKhusus;
 use Illuminate\Support\Carbon;
 use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
@@ -363,14 +365,32 @@ class SuratMasukController extends Controller
             array_push($arrIdKepala, $ik->idUser);
         }
         $terusan = null;
-        
-        if(auth()->user()->id == 1 || in_array(auth()->user()->id, $arrIdKepala)) { // daftar opsi terusan untuk sekre dan kepala 
-            $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
-        } elseif (auth()->user()->id == 3){ // daftar opsi terusan untuk direktur
-            $terusan = User::whereIn('id', $arrIdKepala)->orWhere('id', 1)->get();
-        } else { // daftar opsi terusan untuk kasubbag/penjab/dsb
-            $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->where('id', '<>', auth()->user()->id)->get();
+
+        if (auth()->user()->isKhusus) {
+            $penerimaTerusanKhusus = PengirimKhusus::where('idUser', auth()->user()->id)->get();
+            $terusan = User::whereIn('id', $penerimaTerusanKhusus->select('bisaMengirimKe'))->get();
+        } else {
+            $pengirimTerusanKhusus = PenerimaKhusus::where('bisaMenerimaDari', auth()->user()->id)->get();
+            $terusanKhusus = User::whereIn('id', $pengirimTerusanKhusus->select('idUser'))->get();
+            
+            if(auth()->user()->id == 1 || in_array(auth()->user()->id, $arrIdKepala)) { // daftar opsi terusan untuk sekre dan kepala 
+                $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->where('isKhusus', false)->get();
+                if ($terusanKhusus->isNotEmpty()) {
+                    $terusan = $terusan->merge($terusanKhusus);
+                }
+            } elseif (auth()->user()->id == 3){ // daftar opsi terusan untuk direktur
+                $terusan = User::whereIn('id', $arrIdKepala)->orWhere('id', 1)->where('isKhusus', false)->get();
+                if ($terusanKhusus->isNotEmpty()) {
+                    $terusan = $terusan->merge($terusanKhusus);
+                }
+            } else { // daftar opsi terusan untuk kasubbag/penjab/dsb
+                $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->where('id', '<>', auth()->user()->id)->where('isKhusus', false)->get();
+                if ($terusanKhusus->isNotEmpty()) {
+                    $terusan = $terusan->merge($terusanKhusus);
+                }
+            }
         }
+        
         // dd($terusan);
 
         
@@ -1068,7 +1088,4 @@ class SuratMasukController extends Controller
         return view('surat-masuk.laporan-per-tujuan', ['title' => 'Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap->get()]);
     }
 
-    // public function coba() {
-    //     dd(storage_path());
-    // }
 }

@@ -16,11 +16,11 @@ class PenerimaKhusus extends Model
 
     protected $table = 'penerima_khusus';
 
-    public function pengirim(): BelongsTo {
+    public function penerima(): BelongsTo {
         return $this->belongsTo(User::class, 'idUser');
     }
 
-    public function penerima(): BelongsTo {
+    public function pengirim(): BelongsTo {
         return $this->belongsTo(User::class, 'bisaMenerimaDari');
     }
 }

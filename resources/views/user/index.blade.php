@@ -37,7 +37,9 @@
                   <tr>
                     <td>{{ $u->id }}</td>
                     <td>{{ $u->nama }}</td>
-                    <td>{{ $u->namaJabatan }}</td>
+                    <td>{{ $u->namaJabatan }} @if ($u->isKhusus)
+                        (Akun Khusus)
+                    @endif </td>
                     <td class="text-center">
                       @if (in_array($u->id, $idKepala))
                       <i class="fa-solid fa-check" style="color: #0a9400;"></i>

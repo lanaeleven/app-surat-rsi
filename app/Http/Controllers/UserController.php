@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserKepala;
 use Illuminate\Http\Request;
+use App\Models\PenerimaKhusus;
+use App\Models\PengirimKhusus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\Password;
@@ -190,5 +192,93 @@ class UserController extends Controller
 
         // Redirect back to the index page with a success message
         return redirect('/user/index')->with('success', 'Berhasil Mengubah Password');
+    }
+
+    public function jadikanKhusus(Request $request) {
+
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $user = User::find($request->input('id'));
+        $user->isKhusus = true;
+        $user->save();
+        
+        return redirect()->back()->with('success', "Berhasil Menjadikan Akun Khusus");
+    }
+
+    public function batalkanKhusus(Request $request) {
+
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $user = User::find($request->input('id'));
+        $user->isKhusus = false;
+        $user->save();
+        
+        return redirect()->back()->with('success', "Berhasil Membatalkan Akun Khusus");
+    }
+
+    public function kelolaKhusus(User $user) {
+        $daftarPengirim = PenerimaKhusus::where('idUser', $user->id)->get();
+        $daftarBukanPengirim = User::whereNotIn('id', $daftarPengirim->select('bisaMenerimaDari'))->where('isKhusus', false)->get();
+
+        $daftarPenerima = PengirimKhusus::where('idUser', $user->id)->get();
+        $daftarBukanPenerima = User::whereNotIn('id', $daftarPenerima->select('bisaMengirimKe'))->where('isKhusus', false)->get();
+        
+        return view('user.kelola-khusus', [
+            'title' => 'Kelola Akun Khusus',
+            'active' => 'data master',
+            'user' => $user,
+            'daftarPengirim' => $daftarPengirim,
+            'daftarBukanPengirim' => $daftarBukanPengirim,
+            'daftarPenerima' => $daftarPenerima,
+            'daftarBukanPenerima' => $daftarBukanPenerima
+        ]);
+    }
+
+    public function tambahPengirim(Request $request) {
+        $request->validate([
+            'idUser' => 'required',
+            'idPengirim' => 'required'
+        ]);
+
+        $penerimaKhusus = new PenerimaKhusus();
+        $penerimaKhusus->idUser = $request->input('idUser');
+        $penerimaKhusus->bisaMenerimaDari = $request->input('idPengirim');
+        $penerimaKhusus->save();
+
+        return redirect('/user/kelola-khusus/' . $request->input('idUser'))->with('success', 'Berhasil Menambah Pengirim');
+    }
+
+    public function hapusPengirim($id) {
+        $penerimaKhusus = PenerimaKhusus::findOrFail($id);
+        $idUser = $penerimaKhusus->idUser;
+        $penerimaKhusus->delete();
+
+        return redirect('/user/kelola-khusus/' . $idUser)->with('success', 'Berhasil Menghapus Pengirim');
+    }
+
+    public function tambahPenerima(Request $request) {
+        $request->validate([
+            'idUser' => 'required',
+            'idPenerima' => 'required'
+        ]);
+
+        $pengirimKhusus = new PengirimKhusus();
+        $pengirimKhusus->idUser = $request->input('idUser');
+        $pengirimKhusus->bisaMengirimKe = $request->input('idPenerima');
+        $pengirimKhusus->save();
+
+        return redirect('/user/kelola-khusus/' . $request->input('idUser'))->with('success', 'Berhasil Menambah Penerima');
+    }
+
+    public function hapusPenerima($id) {
+        $pengirimKhusus = PengirimKhusus::findOrFail($id);
+        $idUser = $pengirimKhusus->idUser;
+        $pengirimKhusus->delete();
+
+        return redirect('/user/kelola-khusus/' . $idUser)->with('success', 'Berhasil Menghapus Penerima');
     }
 }

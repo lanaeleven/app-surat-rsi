@@ -5,6 +5,13 @@
     
 <div>
 
+  @if (session()->has('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ session('success') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endif  
+
   <div class="d-flex justify-content-between align-items-center my-4">
     <div>
       <a href="/user/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
@@ -72,6 +79,8 @@
                     </div>
                  </div>
 
+                 @if (!$user->isKhusus)
+
                  <div class="row mb-3">
                   <label class="col-sm-3 col-form-label"></label>
                   <div class="col-sm-9">
@@ -97,6 +106,8 @@
                     </div>
                   </div>
                </div>
+
+               @endif
 
                  <div class="row mb-3">
                   <label for="passwordKonfirmasi" class="col-sm-3 col-form-label"></label>
@@ -154,6 +165,42 @@
           </div>
           </div>
       </div>
+
+      @if (! in_array($user->id, $idKepala))
+      
+      <div class="row justify-content-center">
+        <div class="card col-8 mb-5">
+          <div class="card-body">
+
+            @if ($user->isKhusus)
+            
+            Akun ini adalah akun khusus. <a href="/user/kelola-khusus/{{ $user->id }}">Kelola Akun Khusus</a>
+            
+            <form action="/user/batalkanKhusus" method="post">
+              @csrf
+              <input type="hidden" name="id" value="{{ $user->id }}">
+              <button type="submit" id="btnBatalkanKhusus" class="btn btn-danger mt-3">Batalkan Khusus</button>
+            </form>
+
+            
+
+            @else
+
+            Akun ini bukan akun khusus.
+            <form action="/user/jadikanKhusus" method="post">
+              @csrf
+              <input type="hidden" name="id" value="{{ $user->id }}">
+              <button type="submit" id="btnJadikanKhusus" class="btn btn-danger mt-3">Jadikan Khusus</button>
+            </form>
+
+            @endif
+
+          </div>
+        </div>
+      </div>
+
+      @endif
+
 </div>
 
 <script src="/js/password-validation.js"></script>

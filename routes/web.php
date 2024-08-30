@@ -85,10 +85,17 @@ Route::get('/user/index', [UserController::class, 'create'])->middleware('sekre'
 Route::get('/user/tambah', [UserController::class, 'tambah'])->middleware('sekre');
 Route::get('/user/edit/{user}', [UserController::class, 'edit'])->middleware('sekre');
 Route::get('/user/akun-ns', [UserController::class, 'akunNs'])->middleware('notSekre');
+Route::get('/user/kelola-khusus/{user}', [UserController::class, 'kelolaKhusus'])->middleware('sekre');
+Route::get('/hapusPengirim/{id}', [UserController::class, 'hapusPengirim']);
+Route::get('/hapusPenerima/{id}', [UserController::class, 'hapusPenerima']);
 Route::post('/user/tambah', [UserController::class, 'store']);
 Route::post('/user/save', [UserController::class, 'save']);
 Route::post('/user/updateInfoProfil', [UserController::class, 'updateInfoProfil']);
 Route::post('/user/updatePasswordNs', [UserController::class, 'updatePasswordNs']);
 Route::post('/user/updatePassword', [UserController::class, 'updatePassword']);
+Route::post('/user/jadikanKhusus', [UserController::class, 'jadikanKhusus']);
+Route::post('/user/batalkanKhusus', [UserController::class, 'batalkanKhusus']);
+Route::post('/akun-khusus/tambah-pengirim', [UserController::class, 'tambahPengirim']);
+Route::post('/akun-khusus/tambah-penerima', [UserController::class, 'tambahPenerima']);
 
 // Route::get('/dashboard-laporan/akun-ns', [DashboardController::class, 'dashboardLaporan'])->middleware('notSekre');
