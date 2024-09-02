@@ -7,7 +7,11 @@
   @php
     $kembali = "/surat-masuk/index";
       if (auth()->user()->id != 1 && auth()->user()->id != 2) {
-        $kembali = "/surat-masuk/ns/sudah-diteruskan";
+        if ($suratMasuk->status == 'Diarsipkan') {
+          $kembali = "/surat-masuk/ns/sudah-diarsipkan";
+        } else {
+          $kembali = "/surat-masuk/ns/sudah-diteruskan";
+        }
       }
   @endphp
   <div class="d-flex justify-content-between align-items-center my-2">

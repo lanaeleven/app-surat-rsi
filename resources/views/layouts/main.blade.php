@@ -272,6 +272,13 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
+                  @if ($active == "sudah diarsipkan")
+                      fw-bold
+                  @endif
+                   " href="/surat-masuk/ns/sudah-diarsipkan">Sudah Diarsipkan</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
                   @if ($active == "akun")
                       fw-bold
                   @endif

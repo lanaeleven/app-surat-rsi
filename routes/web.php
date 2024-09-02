@@ -38,6 +38,7 @@ Route::get('/surat-masuk/disposisi/{suratMasuk}', [SuratMasukController::class, 
 Route::get('/surat-masuk/lacak-distribusi/{suratMasuk}', [SuratMasukController::class, 'lacakDistribusi'])->middleware('auth');
 Route::get('/surat-masuk/ns/belum-diteruskan', [SuratMasukController::class, 'nonSekreBelumDiteruskan'])->middleware('notSekre');
 Route::get('/surat-masuk/ns/sudah-diteruskan', [SuratMasukController::class, 'nonSekreSudahDiteruskan'])->middleware('notSekre');
+Route::get('/surat-masuk/ns/sudah-diarsipkan', [SuratMasukController::class, 'nonSekreSudahDiarsipkan'])->middleware('notSekre');
 Route::post('/surat-masuk/tambah', [SuratMasukController::class, 'store']);
 Route::post('/surat-masuk/save', [SuratMasukController::class, 'save']);
 Route::post('/surat-masuk/teruskan', [SuratMasukController::class, 'teruskan']);

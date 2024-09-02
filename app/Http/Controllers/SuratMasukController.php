@@ -866,6 +866,9 @@ class SuratMasukController extends Controller
         if (request('perihal')) {
             $suratMasuk = $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
         }
+        if (request('status')) {
+            $suratMasuk = $suratMasuk->where('status', 'like', '%' . request('status') . '%');
+        }
         return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk->get()]);
     }
 
@@ -880,6 +883,89 @@ class SuratMasukController extends Controller
             ['tahun', 'desc'],
             ['index', 'desc'],
         ]);
+        $suratMasuk = $suratMasuk->where('status', '<>', 'Diarsipkan');
+
+        // BEGINNING OF PENCARIAN
+
+        if (request('index')) {
+            $suratMasuk = $suratMasuk->where('index', '=', request('index'));
+        }
+
+        if (request('tanggalAwal')) {
+            $tanggalAwal = request('tanggalAwal');
+            $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAwal) {
+                return strtotime($item['tanggalSurat']) >= strtotime($tanggalAwal);
+            });
+        }
+        
+        if (request('tanggalAkhir')) {
+            $tanggalAkhir = request('tanggalAkhir');
+            $suratMasuk = $suratMasuk->filter(function ($item) use ($tanggalAkhir) {
+                return strtotime($item['tanggalSurat']) <= strtotime($tanggalAkhir);
+            });
+        }
+
+        if (request('pengirim')) {
+            $suratMasuk = $suratMasuk->filter(function ($item) {
+                return stripos($item['pengirim'], request('pengirim')) !== false;
+            });
+        }
+
+        if (request('nomorSurat')) {
+            $suratMasuk = $suratMasuk->filter(function ($item) {
+                return stripos($item['nomorSurat'], request('nomorSurat')) !== false;
+            });
+        }
+
+        if (request('perihal')) {
+            $suratMasuk = $suratMasuk->filter(function ($item) {
+                return stripos($item['perihal'], request('perihal')) !== false;
+            });
+        }
+
+        if (request('status')) {
+            $suratMasuk = $suratMasuk->filter(function ($item) {
+                return stripos($item['status'], request('status')) !== false;
+            });
+        }
+
+        // END OF PENCARIAN
+
+        // Set the current page
+        $currentPage = Paginator::resolveCurrentPage();
+
+        // Define how many items we want to be visible in each page
+        $perPage = 15;
+
+        // Slice the collection to get the items to display in current page
+        $currentPageItems = $suratMasuk->slice(($currentPage - 1) * $perPage, $perPage)->all();
+
+        // Create our paginator and pass it to the view
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, $suratMasuk->count(), $perPage, $currentPage, [
+            'path' => Paginator::resolveCurrentPath()
+        ]);
+
+        // return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'Surat Masuk Sudah Diteruskan', 'active' => 'sudah diteruskan', 'suratMasuk' => $suratMasuk]);
+
+        return view('surat-masuk.surat-disposisi-sudah-diteruskan', [
+            'title' => 'Surat Masuk Sudah Diteruskan',
+            'active' => 'sudah diteruskan',
+            'suratMasuk' => $paginatedItems
+        ]);
+    }
+
+    public function nonSekreSudahDiarsipkan() {
+        $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS;
+        $suratMasuk = collect([]);
+        foreach ($distribusiSurat as $ds) {
+                $suratMasuk->push($ds->suratMasuk);
+        }
+        $suratMasuk = $suratMasuk->unique('id');
+        $suratMasuk = $suratMasuk->sortBy([
+            ['tahun', 'desc'],
+            ['index', 'desc'],
+        ]);
+        $suratMasuk = $suratMasuk->where('status', 'Diarsipkan');
 
         // BEGINNING OF PENCARIAN
 
@@ -937,9 +1023,9 @@ class SuratMasukController extends Controller
 
         // return view('surat-masuk.surat-disposisi-sudah-diteruskan', ['title' => 'Surat Masuk Sudah Diteruskan', 'active' => 'sudah diteruskan', 'suratMasuk' => $suratMasuk]);
 
-        return view('surat-masuk.surat-disposisi-sudah-diteruskan', [
-            'title' => 'Surat Masuk Sudah Diteruskan',
-            'active' => 'sudah diteruskan',
+        return view('surat-masuk.surat-disposisi-sudah-diarsipkan', [
+            'title' => 'Surat Masuk Sudah Diarsipkan',
+            'active' => 'sudah diarsipkan',
             'suratMasuk' => $paginatedItems
         ]);
     }

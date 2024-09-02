@@ -13,6 +13,7 @@ class DashboardController extends Controller
     public function create() {
         $belumDiteruskan = 0;
         $sudahDiteruskan = 0;
+        $arsip = 0;
         $suratMasukHariIni = 0;
         $suratMasukBulanIni = 0;
         $suratKeluarHariIni = 0;
@@ -27,7 +28,15 @@ class DashboardController extends Controller
 
         if (auth()->user()->id != 1 && auth()->user()->id != 2) {
             $belumDiteruskan = SuratMasuk::where('idPosisiDisposisi', '=', auth()->user()->id)->count();
-            $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->unique('idSuratMasuk')->count();
+            // $sudahDiteruskan = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->unique('idSuratMasuk')->count();
+            $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS->unique('idSuratMasuk');
+            $suratDiteruskan = collect([]);
+            foreach ($distribusiSurat as $sd) {
+                $suratDiteruskan->push($sd->suratMasuk);
+            }
+            $sudahDiteruskan = $suratDiteruskan->where('status', '<>', 'Diarsipkan')->count();
+            $arsip = $suratDiteruskan->where('status', 'Diarsipkan')->count();
+            
         }
 
         return view('dashboard', [
@@ -35,6 +44,7 @@ class DashboardController extends Controller
             'active' => 'dashboard', 
             'belumDiteruskan' => $belumDiteruskan, 
             'sudahDiteruskan' => $sudahDiteruskan,
+            'arsip' => $arsip,
             'suratMasukHariIni' => $suratMasukHariIni,
             'suratMasukBulanIni' => $suratMasukBulanIni,
             'suratKeluarHariIni' => $suratKeluarHariIni,
