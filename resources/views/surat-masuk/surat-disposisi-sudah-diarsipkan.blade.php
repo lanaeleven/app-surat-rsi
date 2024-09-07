@@ -17,7 +17,7 @@
     {{-- BEGINNING OF PENCARIAN --}}
 
     <div class="mb-3">
-      <form class="row g-3" action="/surat-masuk/ns/sudah-diteruskan">
+      <form class="row g-3" action="/surat-masuk/ns/sudah-diarsipkan">
         <div class="row g-3">
           <div class="col-auto">
             <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
