@@ -677,7 +677,8 @@ class SuratMasukController extends Controller
 
         $awal = $request->input('awal');
         $akhir = $request->input('akhir');
-        $suratMasuk = SuratMasuk::whereDate('tanggalSurat', '>=', $awal)->whereDate('tanggalSurat', '<=', $akhir)->get();
+        $suratMasuk = SuratMasuk::whereDate('tanggalSurat', '>=', $awal)->whereDate('tanggalSurat', '<=', $akhir)->with(['distribusiSurat'])->get();
+        $user = User::all()->keyBy('id');
 
         $zip = new ZipArchive();
         $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_dari_' . $awal . '_sampai_' . $akhir . '.zip');
@@ -691,13 +692,13 @@ class SuratMasukController extends Controller
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
             foreach ($suratMasuk as $sm) {
                 // GENERATE DISPOSISI
-                $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $sm->id)->get();
-                $suratMasuk = SuratMasuk::where('id', '=', $sm->id)->get();
+                $distribusiSurat = $sm->distribusiSurat;
+                $suratMasuk = $sm;
                 $daftarPengirim = [];
                 foreach ($distribusiSurat as $ds) {
                     array_push($daftarPengirim, $ds->idPengirimDisposisi);
                 }
-                $user = User::all()->keyBy('id');
+                
 
                 $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
                     $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
@@ -711,7 +712,7 @@ class SuratMasukController extends Controller
                 });
                 // dd($distribusiSurat);
 
-                $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
+                $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
                 $timestamp = now()->timestamp; // Mendapatkan timestamp saat ini
                 $dompdfFilePath = storage_path('app/public/uploads/disposisi/suratmasuk_' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
                 file_put_contents($dompdfFilePath, $pdf->output());
