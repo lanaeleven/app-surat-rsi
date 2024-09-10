@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Rap2hpoutre\FastExcel\FastExcel;
+use App\Jobs\ProcessRekapSuratKeluar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 
@@ -245,24 +246,47 @@ class SuratKeluarController extends Controller
     }
 
     public function rekapSuratKeluar(Request $request) {
+        // $tanggal = $request->input('bulanRekap');
+        // $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
+        // $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
+        // $suratKeluar = SuratKeluar::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
+
+        // $zip = new ZipArchive();
+        // $zipFilePath = storage_path('app/' . 'rekap_suratkeluar_' . $tahun . '_' . $bulan . '.zip') ;
+
+        // if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+        //     foreach ($suratKeluar as $sk) {
+        //         $fileToAdd = storage_path('app/public/' . $sk->filePath);
+        //         $zip->addFile($fileToAdd, 'suratkeluar_' . $sk->tahun . '_' . $sk->index . '.' . pathinfo($fileToAdd, PATHINFO_EXTENSION));
+        //     }
+        //     $zip->close();
+        //     return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        // } else {
+        //     dd('gagal membuka file zip');
+        // }
+        
         $tanggal = $request->input('bulanRekap');
         $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
         $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
-        $suratKeluar = SuratKeluar::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
+        
+        // $job = new jenisSuratJob();
+        $job = new ProcessRekapSuratKeluar($bulan, $tahun);
+        dispatch($job);
 
-        $zip = new ZipArchive();
-        $zipFilePath = storage_path('app/' . 'rekap_suratkeluar_' . $tahun . '_' . $bulan . '.zip') ;
+        return redirect('/surat-keluar/index')
+            ->with('success', 'Anda akan menerima email ketika unduhan sudah siap');
+        
+    }
 
-        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-            foreach ($suratKeluar as $sk) {
-                $fileToAdd = storage_path('app/public/' . $sk->filePath);
-                $zip->addFile($fileToAdd, 'suratkeluar_' . $sk->tahun . '_' . $sk->index . '.' . pathinfo($fileToAdd, PATHINFO_EXTENSION));
-            }
-            $zip->close();
+    public function downloadZip(String $fileName)
+    {
+        // dd('tes');
+        $zipFilePath = storage_path('app/' . $fileName . '.zip');
+
+        if (file_exists($zipFilePath)) {
             return response()->download($zipFilePath)->deleteFileAfterSend(true);
         } else {
-            dd('gagal membuka file zip');
+            abort(404, 'File tidak ditemukan');
         }
-        
     }
 }
