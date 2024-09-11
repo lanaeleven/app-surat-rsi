@@ -281,10 +281,24 @@ class SuratKeluarController extends Controller
     public function downloadZip(String $fileName)
     {
         // dd('tes');
+        set_time_limit(0);
+        
         $zipFilePath = storage_path('app/' . $fileName . '.zip');
 
         if (file_exists($zipFilePath)) {
             return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            abort(404, 'File tidak ditemukan');
+        }
+    }
+
+    public function testDownload()
+    {
+        // dd('tes');
+        $zipFilePath = storage_path('app/a.zip');
+
+        if (file_exists($zipFilePath)) {
+            return response()->download($zipFilePath);
         } else {
             abort(404, 'File tidak ditemukan');
         }
