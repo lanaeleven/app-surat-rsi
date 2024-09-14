@@ -17,6 +17,7 @@ use App\Models\TujuanDisposisi;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\EmailNotifDisposisi;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\ProcessNotifDisposisi;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -576,7 +577,19 @@ class SuratMasukController extends Controller
 
         $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
 
-        Mail::to($penerima->email)->send(new EmailNotifDisposisi($sifatSurat, $nomorSurat, auth()->user()->namaJabatan, $penerima->namaJabatan, $penerima->nama, \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), $distribusiSurat->instruksi));
+        $job = new ProcessNotifDisposisi(
+            $sifatSurat, 
+            $nomorSurat, 
+            auth()->user()->namaJabatan, 
+            $penerima->namaJabatan, 
+            $penerima->nama, 
+            \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), 
+            $distribusiSurat->instruksi,
+            $penerima->email)
+        ;
+        dispatch($job);
+
+        
 
         
 
