@@ -75,6 +75,18 @@ class SuratMasukController extends Controller
             $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
         }
 
+        // penyimpanan session
+        session([
+            'search_tanggalAwal' => request('tanggalAwal'),
+            'search_tanggalAkhir' => request('tanggalAkhir'),
+            'search_index' => request('index'),
+            'search_direksi' => request('direksi'),
+            'search_pengirim' => request('pengirim'),
+            'search_nomorSurat' => request('nomorSurat'),
+            'search_perihal' => request('perihal'),
+            'search_status' => request('status')
+        ]);
+
         return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with('direksi')->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul]);
     }
 
@@ -359,6 +371,7 @@ class SuratMasukController extends Controller
         // $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();
 
         // mengambil id kepala dalam bentuk array
+        // dd(request('perihal'));
         $idKepala = UserKepala::select('idUser')->get();
         $arrIdKepala = [];
         foreach ($idKepala as $ik) {
@@ -417,12 +430,32 @@ class SuratMasukController extends Controller
 
     public function teruskan(Request $request): RedirectResponse
     {
+        // $perihal = session('search_query_perihal', '');
+        
         // pembedaan redirect user sekre dan non-sekre
         if (auth()->user()->id == 1) {
-            $redirect = '/surat-masuk/index';
+            $redirect = '/surat-masuk/index'
+                    . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
+                    . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
+                    . '&index=' . urlencode(session('search_index', ''))
+                    . '&direksi=' . urlencode(session('search_direksi', ''))
+                    . '&pengirim=' . urlencode(session('search_pengirim', ''))
+                    . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
+                    . '&perihal=' . urlencode(session('search_perihal', ''))
+                    . '&status=' . urlencode(session('search_status', ''))
+            ;
         } else {
             $redirect = '/';
-        }        
+        } 
+
+        session()->forget('search_tanggalAwal');
+        session()->forget('search_tanggalAkhir');
+        session()->forget('search_index');
+        session()->forget('search_direksi');
+        session()->forget('search_pengirim');
+        session()->forget('search_nomorSurat');
+        session()->forget('search_perihal');
+        session()->forget('search_status');
         
         // validasi input dari user
         $request->validate([
@@ -544,6 +577,8 @@ class SuratMasukController extends Controller
         $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
 
         Mail::to($penerima->email)->send(new EmailNotifDisposisi($sifatSurat, $nomorSurat, auth()->user()->namaJabatan, $penerima->namaJabatan, $penerima->nama, \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), $distribusiSurat->instruksi));
+
+        
 
         return redirect($redirect)
             ->with('success', "Berhasil Meneruskan Pesan");
@@ -1041,8 +1076,26 @@ class SuratMasukController extends Controller
 
         $redirect = "/";
         if (auth()->user()->id == 1) {
-            $redirect = "/surat-masuk/index";
+            $redirect = "/surat-masuk/index"
+                    . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
+                    . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
+                    . '&index=' . urlencode(session('search_index', ''))
+                    . '&direksi=' . urlencode(session('search_direksi', ''))
+                    . '&pengirim=' . urlencode(session('search_pengirim', ''))
+                    . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
+                    . '&perihal=' . urlencode(session('search_perihal', ''))
+                    . '&status=' . urlencode(session('search_status', ''))
+            ;
         }
+
+        session()->forget('search_tanggalAwal');
+        session()->forget('search_tanggalAkhir');
+        session()->forget('search_index');
+        session()->forget('search_direksi');
+        session()->forget('search_pengirim');
+        session()->forget('search_nomorSurat');
+        session()->forget('search_perihal');
+        session()->forget('search_status');
 
         $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
         $suratMasuk->statusArsip = 1;

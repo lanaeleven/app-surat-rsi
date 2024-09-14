@@ -3,20 +3,9 @@
 @section('container')
     
 <div>
-  
-  @php
-    $kembali = "/surat-masuk/index";
-      if (auth()->user()->id != 1 && auth()->user()->id != 2) {
-        if ($suratMasuk->status == 'Diarsipkan') {
-          $kembali = "/surat-masuk/ns/sudah-diarsipkan";
-        } else {
-          $kembali = "/surat-masuk/ns/sudah-diteruskan";
-        }
-      }
-  @endphp
   <div class="d-flex justify-content-between align-items-center my-2">
     <div>
-      <a href="{{ $kembali }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
+      <button onclick="history.back()" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></button>
     </div>
     <div>
       <h3 class="fw-bold fs-4 text-center">Distribusi Surat</h3>

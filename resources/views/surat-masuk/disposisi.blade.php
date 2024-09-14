@@ -3,36 +3,14 @@
 @section('container')
     
 <div>
-  @php
-    $kembali = "/surat-masuk/index";
-      if (auth()->user()->id != 1) {
-        $kembali = "/surat-masuk/ns/belum-diteruskan";
-      }
-  @endphp
   <div class="d-flex justify-content-between align-items-center my-2">
     <div>
-      <a href="{{ $kembali }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
+      <button onclick="history.back()" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></button>
     </div>
     <div>
       <h3 class="fw-bold fs-4 text-center">Disposisi Surat</h3>
     </div>
     <div>
-      {{-- @can('dashboard-sekre')
-      <form action="/unduh-disposisi" method="post">
-        @csrf
-        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
-        <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
-      </form>
-      @endcan
-
-      @if (auth()->user()->id == 10 || auth()->user()->id == 15 || auth()->user()->id == 11)
-        <form action="/unduh-disposisi" method="post">
-          @csrf
-          <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
-          <button type="submit" class="btn btn-success btn-sm">Unduh Lembar Disposisi</button>
-        </form>
-      @endif --}}
-
       <form action="/unduh-disposisi" method="post">
         @csrf
         <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
