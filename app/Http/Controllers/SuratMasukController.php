@@ -18,6 +18,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Mail\EmailNotifDisposisi;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\ProcessNotifDisposisi;
+use App\Jobs\ProcessRekapSuratMasuk;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -612,32 +613,34 @@ class SuratMasukController extends Controller
 
     public function unduhDisposisi(Request $request) {
         // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
-        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->get();
-        $suratMasuk = SuratMasuk::where('id', '=', $request->input('idSuratMasuk'))->get();
-        $daftarPengirim = [];
-        foreach ($distribusiSurat as $ds) {
-            array_push($daftarPengirim, $ds->idPengirimDisposisi);
-        }
-        $user = User::all()->keyBy('id');
+        $suratMasuk = SuratMasuk::where('id', '=', $request->input('idSuratMasuk'))->get()[0];
+        // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $request->input('idSuratMasuk'))->get();
+        $distribusiSurat = $suratMasuk->distribusiSurat;
+        // dd($distribusiSurat);
+        // $daftarPengirim = [];
+        // foreach ($distribusiSurat as $ds) {
+        //     array_push($daftarPengirim, $ds->idPengirimDisposisi);
+        // }
+        // $user = User::all()->keyBy('id');
 
-        $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
-            $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
-            $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
+        // $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+        //     $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
+        //     $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
         
-            // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
-            return array_merge($item->toArray(), [
-                'namaPengirim' => $namaPengirim,
-                'namaPenerima' => $namaPenerima
-            ]);
-        });
+        //     // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
+        //     return array_merge($item->toArray(), [
+        //         'namaPengirim' => $namaPengirim,
+        //         'namaPenerima' => $namaPenerima
+        //     ]);
+        // });
         // dd($distribusiSurat);
 
-        $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk[0], 'distribusiSurat' => $distribusiSurat]);
+        $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
         $timestamp = now()->timestamp; // Mendapatkan timestamp saat ini
         $dompdfFilePath = storage_path('app/public/uploads/disposisi/disposisi_' . $timestamp . '.pdf');
         file_put_contents($dompdfFilePath, $pdf->output());
 
-        $suratMasukPath = storage_path('app/public/' . $suratMasuk[0]->filePath);
+        $suratMasukPath = storage_path('app/public/' . $suratMasuk->filePath);
         $uncompressedSuratMasukPath = storage_path('app/public/uploads/disposisi/uncompressed_suratmasuk_' . $timestamp . '.pdf');
 
         // Coba buka PDF dengan FPDI untuk mendeteksi masalah
@@ -672,7 +675,7 @@ class SuratMasukController extends Controller
 
         $pdfMerger->merge();
         // $pdfMerger->stream();
-        $pdfMerger->setFileName('disposisi_suratmasuk_' . $suratMasuk[0]->tahun . '_' . $suratMasuk[0]->index . '.pdf');
+        $pdfMerger->setFileName('disposisi_suratmasuk_' . $suratMasuk->tahun . '_' . $suratMasuk->index . '.pdf');
 
         $pdfMerger->download();
 
@@ -725,105 +728,114 @@ class SuratMasukController extends Controller
 
         $awal = $request->input('awal');
         $akhir = $request->input('akhir');
-        $suratMasuk = SuratMasuk::whereDate('tanggalSurat', '>=', $awal)->whereDate('tanggalSurat', '<=', $akhir)->with(['distribusiSurat'])->get();
-        $user = User::all()->keyBy('id');
 
-        $zip = new ZipArchive();
-        $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_dari_' . $awal . '_sampai_' . $akhir . '.zip');
+        // run job
+        $job = new ProcessRekapSuratMasuk($awal, $akhir);
+        dispatch($job);
+        // end job
+
+        return redirect('/surat-masuk/index')
+            ->with('success', 'Anda akan menerima email ketika unduhan sudah siap');
+
+        // $rekapSuratMasuk = SuratMasuk::whereDate('tanggalSurat', '>=', $awal)->whereDate('tanggalSurat', '<=', $akhir)->with(['distribusiSurat'])->get();
+        // // $user = User::all()->keyBy('id');
+
+        // $zip = new ZipArchive();
+        // $zipFilePath = storage_path('app/' . 'rekap_suratmasuk_dari_' . $awal . '_sampai_' . $akhir . '.zip');
         
-        // end (setup dengan awal dan akhir)
+        // // end (setup dengan awal dan akhir)
 
-        if ($suratMasuk->isEmpty()) {
-            return redirect()->back()->with('error', 'Tidak ada Surat Masuk pada rentang tanggal tersebut');
-        }
+        // if ($rekapSuratMasuk->isEmpty()) {
+        //     return redirect()->back()->with('error', 'Tidak ada Surat Masuk pada rentang tanggal tersebut');
+        // }
 
-        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-            foreach ($suratMasuk as $sm) {
-                // GENERATE DISPOSISI
-                $distribusiSurat = $sm->distribusiSurat;
-                $suratMasuk = $sm;
-                $daftarPengirim = [];
-                foreach ($distribusiSurat as $ds) {
-                    array_push($daftarPengirim, $ds->idPengirimDisposisi);
-                }
+        // if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+        //     foreach ($rekapSuratMasuk as $sm) {
+        //         // GENERATE DISPOSISI
+        //         $distribusiSurat = $sm->distribusiSurat;
+        //         $suratMasuk = $sm;
+        //         // $daftarPengirim = [];
+        //         // foreach ($distribusiSurat as $ds) {
+        //         //     array_push($daftarPengirim, $ds->idPengirimDisposisi);
+        //         // }
                 
 
-                $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
-                    $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
-                    $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
+        //         // $distribusiSurat = $distribusiSurat->map(function($item) use ($user) {
+        //         //     $namaPengirim = isset($user[$item['idPengirimDisposisi']]) ? $user[$item['idPengirimDisposisi']]->namaJabatan : 'Unknown';
+        //         //     $namaPenerima = isset($user[$item['idTujuanDisposisi']]) ? $user[$item['idTujuanDisposisi']]->namaJabatan : 'Unknown';
                 
-                    // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
-                    return array_merge($item->toArray(), [
-                        'namaPengirim' => $namaPengirim,
-                        'namaPenerima' => $namaPenerima
-                    ]);
-                });
-                // dd($distribusiSurat);
+        //         //     // Mengembalikan item dengan tambahan field namaPengirim dan namaPenerima
+        //         //     return array_merge($item->toArray(), [
+        //         //         'namaPengirim' => $namaPengirim,
+        //         //         'namaPenerima' => $namaPenerima
+        //         //     ]);
+        //         // });
+        //         // dd($distribusiSurat);
 
-                $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
-                $timestamp = now()->timestamp; // Mendapatkan timestamp saat ini
-                $dompdfFilePath = storage_path('app/public/uploads/disposisi/suratmasuk_' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
-                file_put_contents($dompdfFilePath, $pdf->output());
+        //         $pdf = Pdf::loadView('surat-masuk.lembar-disposisi', ['suratMasuk' => $suratMasuk, 'distribusiSurat' => $distribusiSurat]);
+        //         $timestamp = now()->timestamp; // Mendapatkan timestamp saat ini
+        //         $dompdfFilePath = storage_path('app/public/uploads/disposisi/suratmasuk_' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
+        //         file_put_contents($dompdfFilePath, $pdf->output());
 
-                $suratMasukPath = storage_path('app/public/' . $sm->filePath);
-                $uncompressedSuratMasukPath = storage_path('app/public/uploads/disposisi/uncompressed_suratmasuk_' . $timestamp . '.pdf');
+        //         $suratMasukPath = storage_path('app/public/' . $sm->filePath);
+        //         $uncompressedSuratMasukPath = storage_path('app/public/uploads/disposisi/uncompressed_suratmasuk_' . $timestamp . '.pdf');
 
-                // Coba buka PDF dengan FPDI untuk mendeteksi masalah
-                try {
-                    $pdf = new Fpdi();
-                    $pageCount = $pdf->setSourceFile($suratMasukPath);
-                    $isProblematic = false;
-                } catch (PdfParserException $e) {
-                    $isProblematic = true;
-                }
+        //         // Coba buka PDF dengan FPDI untuk mendeteksi masalah
+        //         try {
+        //             $pdf = new Fpdi();
+        //             $pageCount = $pdf->setSourceFile($suratMasukPath);
+        //             $isProblematic = false;
+        //         } catch (PdfParserException $e) {
+        //             $isProblematic = true;
+        //         }
 
-                $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+        //         $ghostscriptPath = env('GHOSTSCRIPT_PATH');
 
-                if ($isProblematic) {
-                    // dd($suratMasukPath);
-                    $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
-                    exec($command, $output, $return_var);
+        //         if ($isProblematic) {
+        //             // dd($suratMasukPath);
+        //             $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
+        //             exec($command, $output, $return_var);
 
-                    if ($return_var !== 0) {
-                        unlink($dompdfFilePath);
-                        return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
-                    }
+        //             if ($return_var !== 0) {
+        //                 unlink($dompdfFilePath);
+        //                 return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
+        //             }
 
-                    $finalSuratMasukPath = $uncompressedSuratMasukPath;
-                } else {
-                    $finalSuratMasukPath = $suratMasukPath;
-                }
+        //             $finalSuratMasukPath = $uncompressedSuratMasukPath;
+        //         } else {
+        //             $finalSuratMasukPath = $suratMasukPath;
+        //         }
 
-                // Menggabungkan PDF menggunakan Webklex\PDFMerger\PDFMerger
-                $pdfMerger = PDFMerger::init();
-                $pdfMerger->addPDF($dompdfFilePath, 'all');
-                $pdfMerger->addPDF($finalSuratMasukPath, 'all');
+        //         // Menggabungkan PDF menggunakan Webklex\PDFMerger\PDFMerger
+        //         $pdfMerger = PDFMerger::init();
+        //         $pdfMerger->addPDF($dompdfFilePath, 'all');
+        //         $pdfMerger->addPDF($finalSuratMasukPath, 'all');
 
-                $gabunganPath = storage_path('app/public/uploads/disposisi/suratmasuk_gabungan' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
-                $pdfMerger->merge();
-                $pdfMerger->save($gabunganPath);
+        //         $gabunganPath = storage_path('app/public/uploads/disposisi/suratmasuk_gabungan' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
+        //         $pdfMerger->merge();
+        //         $pdfMerger->save($gabunganPath);
 
-                $zip->addFile($gabunganPath, 'disposisi_suratmasuk_' . $sm->tahun . '_' . $sm->index . '.pdf');
+        //         $zip->addFile($gabunganPath, 'disposisi_suratmasuk_' . $sm->tahun . '_' . $sm->index . '.pdf');
 
-                // Tambahkan file sementara ke daftar file yang akan dihapus
-                $filesToDelete[] = $dompdfFilePath;
-                $filesToDelete[] = $gabunganPath;
-                if ($isProblematic) {
-                    $filesToDelete[] = $uncompressedSuratMasukPath;
-                }
-            }
-            $zip->close();
+        //         // Tambahkan file sementara ke daftar file yang akan dihapus
+        //         $filesToDelete[] = $dompdfFilePath;
+        //         $filesToDelete[] = $gabunganPath;
+        //         if ($isProblematic) {
+        //             $filesToDelete[] = $uncompressedSuratMasukPath;
+        //         }
+        //     }
+        //     $zip->close();
 
-            foreach ($filesToDelete as $file) {
-                if (file_exists($file)) {
-                    unlink($file);
-                }
-            }        
+        //     foreach ($filesToDelete as $file) {
+        //         if (file_exists($file)) {
+        //             unlink($file);
+        //         }
+        //     }        
 
-            return response()->download($zipFilePath)->deleteFileAfterSend(true);
-        } else {
-            dd('gagal membuka file zip');
-        }
+        //     return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        // } else {
+        //     dd('gagal membuka file zip');
+        // }
     
     }
 
@@ -1240,5 +1252,6 @@ class SuratMasukController extends Controller
 
         return view('surat-masuk.laporan-per-tujuan', ['title' => 'Surat Masuk Per Tujuan Disposisi', 'active' => 'laporan', 'rekap' => $rekap->get()]);
     }
+
 
 }

@@ -19,12 +19,12 @@ class ProcessRekapSuratKeluar implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    protected $bulan, $tahun;
+    protected $awal, $akhir;
 
-    public function __construct($bulan, $tahun)
+    public function __construct($awal, $akhir)
     {
-        $this->bulan = $bulan;
-        $this->tahun = $tahun;
+        $this->awal = $awal;
+        $this->akhir = $akhir;
     }
 
     /**
@@ -32,9 +32,10 @@ class ProcessRekapSuratKeluar implements ShouldQueue
      */
     public function handle()
     {
-        $suratKeluar = SuratKeluar::whereMonth('tanggalSurat', '=', $this->bulan)->whereYear('tanggalSurat', '=', $this->tahun)->get();
+        // $suratKeluar = SuratKeluar::whereMonth('tanggalSurat', '=', $this->bulan)->whereYear('tanggalSurat', '=', $this->tahun)->get();
+        $suratKeluar = SuratKeluar::whereDate('tanggalSurat', '>=', $this->awal)->whereDate('tanggalSurat', '<=', $this->akhir)->get();
 
-        $fileName = 'rekap_suratkeluar_' . $this->tahun . '_' . $this->bulan;
+        $fileName = 'rekap_suratkeluar_dari_' . $this->awal . '_sampai_' . $this->akhir;
         $zip = new ZipArchive();
         $zipFilePath = storage_path('app/' . $fileName . '.zip') ;
 

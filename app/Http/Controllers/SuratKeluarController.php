@@ -264,13 +264,16 @@ class SuratKeluarController extends Controller
         // } else {
         //     dd('gagal membuka file zip');
         // }
+
+        $awal = $request->input('awal');
+        $akhir = $request->input('akhir');
         
-        $tanggal = $request->input('bulanRekap');
-        $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
-        $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
+        // $tanggal = $request->input('bulanRekap');
+        // $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
+        // $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
         
         // $job = new jenisSuratJob();
-        $job = new ProcessRekapSuratKeluar($bulan, $tahun);
+        $job = new ProcessRekapSuratKeluar($awal, $akhir);
         dispatch($job);
 
         return redirect('/surat-keluar/index')

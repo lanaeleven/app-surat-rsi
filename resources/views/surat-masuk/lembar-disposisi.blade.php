@@ -97,7 +97,7 @@
                                     Oleh
                                 </td>
                                 <td>
-                                    {{ $ds['namaPengirim'] }}
+                                    {{ $ds->pengirimDisposisi->namaJabatan }}
                                 </td>
                             </tr>
                             <tr>
@@ -105,7 +105,7 @@
                                     Kepada
                                 </td>
                                 <td>
-                                    {{ $ds['namaPenerima'] }}
+                                    {{ $ds->tujuanDisposisi->namaJabatan }}
                                 </td>
                             </tr>
                             <tr>
@@ -113,7 +113,7 @@
                                     Tanggal Diteruskan
                                 </td>
                                 <td>
-                                    {{ $ds['tanggalDiteruskan'] }}
+                                    {{ $ds->tanggalDiteruskan }}
                                 </td>
                             </tr>
                             <tr>
@@ -124,7 +124,7 @@
                             <tr>
                                 <td colspan="2" style="text-align: center; font-size: 14;">
                                     {{-- {{ $ds['instruksi'] }} --}}
-                                    {!! nl2br(e($ds['instruksi'])) !!}
+                                    {!! nl2br(e($ds->instruksi)) !!}
                                 </td>
                             </tr>
                         </tbody>

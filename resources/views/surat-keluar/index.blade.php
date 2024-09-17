@@ -48,11 +48,23 @@
 
             <form method="POST" action="/unduh-rekap-suratkeluar">
               @csrf
-              <div class="mb-3">
+              {{-- <div class="mb-3">
                 <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
                 <input type="month" id="bulanRekap" name="bulanRekap"  class="form-control" required>
+              </div> --}}
+              <div class="col-auto">
+                <label for="awal" class="col-form-label"><small>Awal</small></label>
               </div>
-                <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
+              <div class="col-auto mb-3">
+                  <input name="awal" type="date" id="awal" class="form-control form-control-sm">
+              </div> 
+              <div class="col-auto">
+                  <label for="akhir" class="col-form-label"><small>Akhir</small></label>
+              </div>
+              <div class="col-auto mb-3">
+                  <input name="akhir" type="date" id="akhir" class="form-control form-control-sm">
+              </div>
+              <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
             </div>
             </form>
           </div>
