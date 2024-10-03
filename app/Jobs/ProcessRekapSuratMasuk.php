@@ -135,7 +135,9 @@ class ProcessRekapSuratMasuk implements ShouldQueue
                 }
             }        
 
-            Mail::to('akunlana11@gmail.com')->send(new NotifDownload($fileName));
+            $emailPenerima = env("EMAIL_PENERIMA");
+
+            Mail::to($emailPenerima)->send(new NotifDownload($fileName));
 
             // return response()->download($zipFilePath)->deleteFileAfterSend(true);
         } else {
