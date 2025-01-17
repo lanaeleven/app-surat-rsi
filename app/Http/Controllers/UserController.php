@@ -7,6 +7,7 @@ use App\Models\UserKepala;
 use Illuminate\Http\Request;
 use App\Models\PenerimaKhusus;
 use App\Models\PengirimKhusus;
+use App\Models\StrukturOrganisasi;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\Password;
@@ -21,7 +22,9 @@ class UserController extends Controller
             array_push($arrIdKepala, $ik->idUser);
         }
 
-        $user = User::where('id', '<>', 2)->get();
+        $user = User::where('id', '<>', 2)->with(['strukturOrganisasi'])->get();
+
+        // dd($user);
         return view('user.index', ['title' => 'User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala]);
     }
 
@@ -61,7 +64,9 @@ class UserController extends Controller
             array_push($arrIdKepala, $ik->idUser);
         }
 
-        return view('user.edit', ['title' => 'Edit User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala]);
+        $atasan = User::where('id', '<>', 1)->where('id', '<>', 2)->with(['strukturOrganisasi'])->get();
+
+        return view('user.edit', ['title' => 'Edit User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala, 'atasan' => $atasan]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -74,7 +79,7 @@ class UserController extends Controller
             'nama' => 'required',
             'email' => 'required|email:rfc,dns',
             'username' => 'required',
-            'isKepala' => 'required'
+            // 'isKepala' => 'required'
         ]);
 
         
@@ -100,26 +105,26 @@ class UserController extends Controller
         $user->email = $request->input('email');
         $user->save();
 
-        // ADD OR DELETE USER_KEPALA
-        // mengambil id kepala dalam bentuk array
-        $idKepala = UserKepala::select('idUser')->get();
-        $arrIdKepala = [];
-        foreach ($idKepala as $ik) {
-            array_push($arrIdKepala, $ik->idUser);
-        }
+        // // ADD OR DELETE USER_KEPALA
+        // // mengambil id kepala dalam bentuk array
+        // $idKepala = UserKepala::select('idUser')->get();
+        // $arrIdKepala = [];
+        // foreach ($idKepala as $ik) {
+        //     array_push($arrIdKepala, $ik->idUser);
+        // }
 
-        if (in_array($request->input('id'), $arrIdKepala)) { // jika user sudah terdaftar menjadi kepala
-            if($request->input('isKepala') == 'no') { // dan isian isKepala adalah no, maka hapus di user_kepala
-                $userKepala = UserKepala::where('idUser', $request->input('id'))->get()[0];
-                $userKepala->delete();
-            }
-        } else { // jika user belum terdaftar menjadi kepala
-            if($request->input('isKepala') == 'yes') { // dan isian isKepala adalah yes, maka tambahkan user ke user_kepala
-                $userKepala = new UserKepala();
-                $userKepala->idUser = $request->input('id');
-                $userKepala->save();
-            }
-        }
+        // if (in_array($request->input('id'), $arrIdKepala)) { // jika user sudah terdaftar menjadi kepala
+        //     if($request->input('isKepala') == 'no') { // dan isian isKepala adalah no, maka hapus di user_kepala
+        //         $userKepala = UserKepala::where('idUser', $request->input('id'))->get()[0];
+        //         $userKepala->delete();
+        //     }
+        // } else { // jika user belum terdaftar menjadi kepala
+        //     if($request->input('isKepala') == 'yes') { // dan isian isKepala adalah yes, maka tambahkan user ke user_kepala
+        //         $userKepala = new UserKepala();
+        //         $userKepala->idUser = $request->input('id');
+        //         $userKepala->save();
+        //     }
+        // }
 
         // Redirect back to the index page with a success message
         return redirect('/user/index')->with('success', 'Berhasil Mengedit Tujuan Disposisi');

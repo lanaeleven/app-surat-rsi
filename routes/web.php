@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\StrukturOrganisasi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SpoController;
 use App\Http\Controllers\UserController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
+use App\Http\Controllers\StrukturOrganisasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,5 +102,9 @@ Route::post('/user/jadikanKhusus', [UserController::class, 'jadikanKhusus']);
 Route::post('/user/batalkanKhusus', [UserController::class, 'batalkanKhusus']);
 Route::post('/akun-khusus/tambah-pengirim', [UserController::class, 'tambahPengirim']);
 Route::post('/akun-khusus/tambah-penerima', [UserController::class, 'tambahPenerima']);
+
+Route::get('/struktur-organisasi/tambah/{user}', [StrukturOrganisasiController::class, 'tambah'])->middleware('sekre');
+Route::post('/struktur-organisasi/store', [StrukturOrganisasiController::class, 'store']);
+Route::post('/struktur-organisasi/save', [StrukturOrganisasiController::class, 'save']);
 
 // Route::get('/dashboard-laporan/akun-ns', [DashboardController::class, 'dashboardLaporan'])->middleware('notSekre');

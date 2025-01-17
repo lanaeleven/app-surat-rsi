@@ -24,23 +24,22 @@
   </div>
 
       <div class="row justify-content-center">
-        <div class="card col-8 mb-5">
+        <div class="card col-12 col-md-8 mb-5">
           <div class="card-body">
-            <h6 class="card-title text-center mb-3">INFORMASI PROFIL</h6>
+            <h4 class="card-title text-center mb-3">INFORMASI PROFIL</h4>
             <form method="post" action="/user/save">
               @csrf
                 <input type="hidden" name="id" value="{{ $user->id }}">
-
-                <div class="row mb-3">
-                  <label for="nama" class="col-sm-3 col-form-label">Nama</label>
-                  <div class="col-sm-9">
+              <div class="row mb-3">
+                <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                <div class="col-sm-9">
                     <input name="nama" type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" value="{{ $user->nama }}" required>
                     @error('nama')
                     <div id="nama" class="invalid-feedback">
                       {{ $message }}
                     </div>
                     @enderror
-                  </div>
+                </div>
               </div>
   
                   <div class="row mb-3">
@@ -79,7 +78,7 @@
                     </div>
                  </div>
 
-                 @if (!$user->isKhusus)
+                 {{-- @if (!$user->isKhusus)
 
                  <div class="row mb-3">
                   <label class="col-sm-3 col-form-label"></label>
@@ -107,12 +106,12 @@
                   </div>
                </div>
 
-               @endif
+               @endif --}}
 
                  <div class="row mb-3">
                   <label for="passwordKonfirmasi" class="col-sm-3 col-form-label"></label>
                   <div class="col-sm-9">
-                    <button type="submit" class="btn btn-success mt-3">Simpan</button>
+                    <button type="submit" class="btn btn-success mt-3">Update Profil</button>
                   </div>
               </div>
                   
@@ -121,10 +120,112 @@
           </div>
       </div>
 
+      @if (!$user->isKhusus)
+          
       <div class="row justify-content-center">
-        <div class="card col-8 mb-5">
+        <div class="card col-12 col-md-8 mb-5">
           <div class="card-body">
-            <h6 class="card-title text-center mb-3">UBAH PASSWORD</h6>
+            <h4 class="card-title text-center mb-3">SOTK</h4>
+
+            {{-- @dd($user->strukturOrganisasi->idAtasan) --}}
+            
+
+            @if (is_null($user->strukturOrganisasi))
+            <div class="text-center">
+              <p>SOTK user ini belum diatur.</p>
+              <a class="btn btn-warning" href="/struktur-organisasi/tambah/{{ $user->id }}">Atur SOTK</a>
+            </div>
+                
+            @else
+
+              @if ($user->id == 1 || $user->id == 3)
+
+              <form>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Jabatan Atasan</label>
+                  <div class="col-sm-9">
+                    <select class="form-select" disabled>
+                        <option selected value="">{{ $user->strukturOrganisasi->atasan->namaJabatan }}</option>
+                      </select>
+                  </div>
+              </div>
+                <div class="row mb-3">
+                  <label class="col-sm-3 col-form-label">Level Jabatan</label>
+                  <div class="col-sm-9">
+                    <select class="form-select"  disabled>
+                        <option selected>@if ($user->strukturOrganisasi->levelJabatan == 1)
+                                Sekretariat
+                                @else
+                                Direktur
+                                @endif
+                              </option>
+                      </select>
+                  </div>
+              </div>
+                    
+            </form>
+                  
+              @else
+
+                  <form method="post" action="/struktur-organisasi/save">
+                    @csrf
+                    <input type="hidden" name="idUser" value="{{ $user->id }}" >
+                    <div class="row mb-3">
+                      <label for="idAtasan" class="col-sm-3 col-form-label">Jabatan Atasan</label>
+                      <div class="col-sm-9">
+                        <select name="idAtasan" class="form-select" id="idAtasan" required>
+                            <option value="">Pilih Jabatan Atasan</option>
+                            @foreach ($atasan as $a)
+                          
+                            <option value="{{ $a->id }}" @if ($user->strukturOrganisasi->idAtasan == $a->id)
+                                selected
+                            @endif>{{ $a->namaJabatan }}</option>
+        
+                            @endforeach
+                          </select>
+                      </div>
+                  </div>
+
+                    <div class="row mb-3">
+                      <label for="levelJabatan" class="col-sm-3 col-form-label">Level Jabatan</label>
+                      <div class="col-sm-9">
+                        <select name="levelJabatan" class="form-select" id="levelJabatan" required>
+                            <option value="">Pilih Level Jabatan</option>
+                            <option value='3' @if ($user->strukturOrganisasi->levelJabatan == 3)
+                                selected
+                            @endif>Kabag/Kabid/kains/Komite/Tim</option>
+                            <option value='4' @if ($user->strukturOrganisasi->levelJabatan == 4)
+                              selected
+                          @endif>Kasubbag/Kasi/Penjab</option>
+                          </select>
+                      </div>
+                  </div>
+        
+        
+                    <div class="row mb-3">
+                      <label for="passwordKonfirmasi" class="col-sm-3 col-form-label"></label>
+                      <div class="col-sm-9">
+                        <button type="submit" id="btnUbahPassword" class="btn btn-secondary mt-3">Update SOTK</button>
+                      </div>
+                  </div>
+                        
+                </form>
+                  
+              @endif
+                
+              
+
+            @endif
+          </div>
+          </div>
+      </div>
+
+      @endif
+
+      <div class="row justify-content-center">
+        <div class="card col-12 col-md-8 mb-5">
+          <div class="card-body">
+            <h4 class="card-title text-center mb-3">UBAH PASSWORD</h4>
             <form method="post" action="/user/updatePassword">
               @csrf
                 <input type="hidden" name="id" value="{{ $user->id }}">
@@ -153,11 +254,10 @@
                       </div>
                   </div>
   
-  
               <div class="row mb-3">
                 <label for="passwordKonfirmasi" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-9">
-                  <button type="submit" id="btnUbahPassword" class="btn btn-warning mt-3">Ubah Password</button>
+                  <button type="submit" id="btnUbahPassword" class="btn btn-warning mt-3">Update Password</button>
                 </div>
             </div>
                   

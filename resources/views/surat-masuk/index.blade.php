@@ -86,7 +86,7 @@
         @if (is_null($keterangan))
         <div class="row g-3">
           <div class="col-auto">
-            <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awallll :</small></label>
+            <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
           </div>
           <div class="col-auto me-3">
               <input name="tanggalAwal" type="date" id="tanggalAwal" class="form-control form-control-sm" value="{{ request('tanggalAwal') }}">
@@ -139,7 +139,7 @@
     @else
 
     <div class="div">
-        <table class="table table-striped d-none d-md-table d-lg-table d-xl-table d-xxl-table">
+        <table class="table table-striped table-bordered d-none d-md-table d-lg-table d-xl-table d-xxl-table mt-2">
             <thead>
               <tr>
                 <th scope="col">Indeks</th>

@@ -19,6 +19,7 @@ use App\Mail\EmailNotifDisposisi;
 use Illuminate\Support\Facades\DB;
 use App\Jobs\ProcessNotifDisposisi;
 use App\Jobs\ProcessRekapSuratMasuk;
+use App\Models\StrukturOrganisasi;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -374,6 +375,7 @@ class SuratMasukController extends Controller
 
         // mengambil id kepala dalam bentuk array
         // dd(request('perihal'));
+        $idUser = auth()->user()->id;
         $idKepala = UserKepala::select('idUser')->get();
         $arrIdKepala = [];
         foreach ($idKepala as $ik) {
@@ -382,28 +384,134 @@ class SuratMasukController extends Controller
         $terusan = null;
 
         if (auth()->user()->isKhusus) {
-            $penerimaTerusanKhusus = PengirimKhusus::where('idUser', auth()->user()->id)->get();
+            $penerimaTerusanKhusus = PengirimKhusus::where('idUser', $idUser)->get();
             $terusan = User::whereIn('id', $penerimaTerusanKhusus->select('bisaMengirimKe'))->get();
-        } else {
-            $pengirimTerusanKhusus = PenerimaKhusus::where('bisaMenerimaDari', auth()->user()->id)->get();
+        } 
+        
+        else {
+            $pengirimTerusanKhusus = PenerimaKhusus::where('bisaMenerimaDari', $idUser)->get();
             $terusanKhusus = User::whereIn('id', $pengirimTerusanKhusus->select('idUser'))->get();
             
-            if(auth()->user()->id == 1 || in_array(auth()->user()->id, $arrIdKepala)) { // daftar opsi terusan untuk sekre dan kepala 
-                $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->where('isKhusus', false)->get();
-                if ($terusanKhusus->isNotEmpty()) {
-                    $terusan = $terusan->merge($terusanKhusus);
+            // if($idUser == 1 || in_array($idUser, $arrIdKepala)) { // daftar opsi terusan untuk sekre dan kepala 
+            //     $terusan = User::where('id', '<>', $idUser)->where('id', '<>', 2)->where('isKhusus', false)->get();
+            //     if ($terusanKhusus->isNotEmpty()) {
+            //         $terusan = $terusan->merge($terusanKhusus);
+            //     }
+            // } elseif ($idUser == 3){ // daftar opsi terusan untuk direktur
+            //     $terusan = User::whereIn('id', $arrIdKepala)->orWhere('id', 1)->where('isKhusus', false)->get();
+            //     if ($terusanKhusus->isNotEmpty()) {
+            //         $terusan = $terusan->merge($terusanKhusus);
+            //     }
+            // } else { // daftar opsi terusan untuk kasubbag/penjab/dsb
+            //     $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->where('id', '<>', $idUser)->where('isKhusus', false)->get();
+            //     if ($terusanKhusus->isNotEmpty()) {
+            //         $terusan = $terusan->merge($terusanKhusus);
+            //     }
+            // }
+
+            // MetaData
+            // Level Jabatan
+            // 1 = Sekretariat
+            // 2 = Direktur
+            // 3 = Kepala
+            // 4 = Kepala Bagian
+            //
+            // Id User Spesial
+            // 1 = Sekretariat
+            // 2 = Developer
+            // 3 = Direktur
+
+            $levelJabatan = null;
+            try {
+                $results = StrukturOrganisasi::select('levelJabatan')->where('idUser', $idUser)->get();
+                if ($results->isEmpty()) {
+                    $levelJabatan = null; // Atau nilai default lainnya
+                } else {
+                    $levelJabatan = $results[0]->levelJabatan;
                 }
-            } elseif (auth()->user()->id == 3){ // daftar opsi terusan untuk direktur
-                $terusan = User::whereIn('id', $arrIdKepala)->orWhere('id', 1)->where('isKhusus', false)->get();
-                if ($terusanKhusus->isNotEmpty()) {
-                    $terusan = $terusan->merge($terusanKhusus);
-                }
-            } else { // daftar opsi terusan untuk kasubbag/penjab/dsb
-                $terusan = User::where('id', '<>', 2)->where('id', '<>', 3)->where('id', '<>', auth()->user()->id)->where('isKhusus', false)->get();
-                if ($terusanKhusus->isNotEmpty()) {
-                    $terusan = $terusan->merge($terusanKhusus);
-                }
+            } catch (\Throwable $th) {
+                throw $th;
             }
+
+            if ($levelJabatan) {
+                if ($levelJabatan == 1) {
+                    $terusan = User::where('id', '<>', $idUser)->where('id', '<>', 2)->where('isKhusus', false)->get();
+                    if ($terusanKhusus->isNotEmpty()) {
+                        $terusan = $terusan->merge($terusanKhusus);
+                    }
+                } elseif ($levelJabatan == 2) {
+                    $terusan = DB::select(
+                            'SELECT *
+                            FROM users
+                            WHERE ( 
+                                id IN (SELECT idUser
+                                FROM struktur_organisasi
+                                WHERE levelJabatan = 3)
+                                -- OR id = 1
+                            ) AND isKhusus = false AND id != :idUser ;',
+                            ['idUser' => $idUser]
+                            );
+                    if ($terusanKhusus->isNotEmpty()) {
+                        $terusan = [...$terusan, ...$terusanKhusus];
+                    }
+                } elseif ($levelJabatan == 3) {
+                    $terusan = DB::select(
+                        'SELECT *
+                        FROM users
+                        WHERE (
+                            id IN (SELECT idUser
+                            FROM struktur_organisasi
+                            WHERE levelJabatan = 3
+                            OR idAtasan = :idAtasan)
+                            -- OR id IN (1,3)
+                            OR id = (3)
+                            )
+                        AND isKhusus = false AND id != :idUser ;',
+                        ['idAtasan' => $idUser,
+                        'idUser' => $idUser]
+                        );
+
+                    if ($idUser == 9 || $idUser == 10) {
+                        $terusanKeSekre = User::where('id', 1)->get();
+                        $terusan = [...$terusan, ...$terusanKeSekre];
+                    }
+
+                    if ($terusanKhusus->isNotEmpty()) {
+                        $terusan = [...$terusan, ...$terusanKhusus];
+                    }
+                } elseif ($levelJabatan == 4) {
+                    $terusan = DB::select(
+                        'SELECT *  FROM users 
+                        WHERE (
+                            id IN (SELECT idUser
+                                FROM struktur_organisasi
+                                WHERE levelJabatan = 4) 
+                            OR id = (SELECT idAtasan 
+                                FROM struktur_organisasi
+                                WHERE idUser = ?
+                                LIMIT 1)
+                            -- OR id = 1
+                            )
+                        AND isKhusus = false AND id != ? ;',
+                        [$idUser, $idUser]
+                        );
+
+                    if ($idUser == 9 || $idUser == 10) {
+                        $terusanKeSekre = User::where('id', 1)->get();
+                        $terusan = [...$terusan, ...$terusanKeSekre];
+                    }
+
+                    if ($terusanKhusus->isNotEmpty()) {
+                        $terusan = [...$terusan, ...$terusanKhusus];
+                    }
+                }
+            } else {
+                return ('Maaf, posisi Jabatan Akun Anda belum disetting oleh Sekretariat, Silakan hubungi Sekretariat');
+            }
+
+            
+            
+            
         }
         
         // dd($terusan);
@@ -413,14 +521,14 @@ class SuratMasukController extends Controller
         // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
         if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
             $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
-            if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && auth()->user()->id != 1) {
+            if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && $idUser != 1) {
                 abort(403);
             }
         }
 
         // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG BELUM DITERUSKAN
         // PENGECEKAN APAKAH SURAT MASUK YANG BELUM DITERUSKAN DIAKSES OLEH ADMIN ATAU BUKAN, JIKA BUKAN ADMIN MAKA TIDAK DIPERBOLEHKAN
-        if ($suratMasuk->status == "Belum Diteruskan" && auth()->user()->id != 1) {
+        if ($suratMasuk->status == "Belum Diteruskan" && $idUser != 1) {
             abort(403);
         }
 

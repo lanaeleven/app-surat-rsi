@@ -69,4 +69,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserKepala::class);
     }
+
+    public function strukturOrganisasi()
+    {
+        return $this->hasOne(StrukturOrganisasi::class, 'idUser', 'id');
+    }
+
 }

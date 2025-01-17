@@ -71,7 +71,7 @@
     @else
 
     <div class="d-none d-md-block">
-        <table class="table table-striped">
+        <table class="table table-striped  table-bordered mt-2">
             <thead>
               <tr>
                 <th scope="col">Indeks</th>

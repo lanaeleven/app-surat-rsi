@@ -136,7 +136,7 @@
     @else
     
     <div>
-        <table class="table table-striped  d-none d-md-table d-lg-table d-xl-table d-xxl-table">
+        <table class="table table-striped table-bordered d-none d-md-table d-lg-table d-xl-table d-xxl-table mt-2">
             <thead>
               <tr>
                 <th scope="col">Indeks</th>

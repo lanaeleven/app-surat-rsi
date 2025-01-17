@@ -9,6 +9,7 @@ use App\Models\JenisSurat;
 use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
 use Illuminate\Database\Seeder;
+use App\Models\StrukturOrganisasi;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -99,7 +100,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Sekretariat',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -115,7 +116,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Direktur Rumah Sakit',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -123,7 +124,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bidang Pelayanan dan Penunjang Medik',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -131,7 +132,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Pelayanan Medik',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
         
         User::create([
@@ -139,7 +140,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Penunjang Medik dan Diklitbang',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -147,7 +148,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bidang Perawatan',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -155,7 +156,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Seksi Keperawatan',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -163,7 +164,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -171,7 +172,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian SDI dan Administrasi',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -179,7 +180,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Akuntansi dan Keuangan',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -187,7 +188,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian Umum, Dakwah, dan Kemitraan',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -195,7 +196,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Dakwah',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -203,7 +204,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Kemitraan dan PKRS',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -211,7 +212,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Umum',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -219,7 +220,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Farmasi',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -227,7 +228,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Farmasi',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -235,7 +236,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi PSRS',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -243,7 +244,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab PSRS',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -251,7 +252,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Rekam Medis dan Pendaftaran',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -259,7 +260,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Pendaftaran dan Rekam Medis',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -267,7 +268,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Gizi',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -275,7 +276,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Gizi',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -283,7 +284,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Rawat Inap dan Rawat Jalan',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -291,7 +292,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Rawat Jalan',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -299,7 +300,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Rawat Inap',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -307,7 +308,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Gawat Darurat',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -315,7 +316,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Instalasi Gawat Darurat',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -323,7 +324,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Intensive Care Unit',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -331,7 +332,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Intensive Care Unit',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -339,7 +340,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Radiologi',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -347,7 +348,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Radiologi',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -355,7 +356,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Bedah Sentral',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -363,7 +364,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Ruang Instalasi Bedah Sentral',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -371,7 +372,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Laboratorium',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -379,7 +380,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Instalasi Laboratorium',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -387,7 +388,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi Dialis',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -395,7 +396,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Penanggung Jawab Dialis',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
         User::create([
@@ -403,7 +404,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Instalasi MCU',
-            'password' => Hash::make('Rahasia123!')
+            'password' => Hash::make('1')
         ]);
 
 
@@ -437,5 +438,244 @@ class DatabaseSeeder extends Seeder
         //         'instruksi' => 'dududududududu' 
         //     ]);            
         // }
+
+
+
+        // SEEDER TABEL STRUKTUR ORGANISASI
+
+        StrukturOrganisasi::create([
+            'idUser' => 1,
+            'idAtasan' => 1,
+            'levelJabatan' => 1
+        ]);
+
+        StrukturOrganisasi::create([
+            'idUser' => 2,
+            'idAtasan' => 2,
+            'levelJabatan' => 2
+        ]);
+
+        StrukturOrganisasi::create([
+            'idUser' => 3,
+            'idAtasan' => 3,
+            'levelJabatan' => 2
+        ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 4,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 5,
+        //     'idAtasan' => 4,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 6,
+        //     'idAtasan' => 4,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 7,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 8,
+        //     'idAtasan' => 7,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 9,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 10,
+        //     'idAtasan' => 9,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 11,
+        //     'idAtasan' => 9,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 12,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 13,
+        //     'idAtasan' => 12,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 14,
+        //     'idAtasan' => 12,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 15,
+        //     'idAtasan' => 12,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 16,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 17,
+        //     'idAtasan' => 16,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 18,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 19,
+        //     'idAtasan' => 18,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 20,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 21,
+        //     'idAtasan' => 20,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 22,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 23,
+        //     'idAtasan' => 22,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 24,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 25,
+        //     'idAtasan' => 24,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 26,
+        //     'idAtasan' => 24,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 27,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 28,
+        //     'idAtasan' => 27,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 29,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 30,
+        //     'idAtasan' => 29,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 31,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 32,
+        //     'idAtasan' => 31,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 33,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 34,
+        //     'idAtasan' => 33,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 35,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 36,
+        //     'idAtasan' => 35,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 37,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 38,
+        //     'idAtasan' => 37,
+        //     'levelJabatan' => 4
+        // ]);
+
+        // StrukturOrganisasi::create([
+        //     'idUser' => 39,
+        //     'idAtasan' => 3,
+        //     'levelJabatan' => 3
+        // ]);
+
     }
 }

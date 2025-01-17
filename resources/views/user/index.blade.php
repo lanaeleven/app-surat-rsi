@@ -20,13 +20,14 @@
   </div>
 
     <div class="div">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered">
             <thead>
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Nama</th>
                 <th scope="col">Jabatan</th>
-                <th scope="col">Level Kepala</th>
+                <th scope="col">Level</th>
+                <th scope="col">Atasan</th>
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
                 <th scope="col">Aksi</th>
@@ -40,13 +41,42 @@
                     <td>{{ $u->namaJabatan }} @if ($u->isKhusus)
                         (Akun Khusus)
                     @endif </td>
-                    <td class="text-center">
+                    <td @if (is_null($u->strukturOrganisasi)) class="bg-danger text-white bg-gradient" @endif>
+                      @if (is_null($u->strukturOrganisasi))
+                        Belum Diisi
+                      @else
+                      @switch($u->strukturOrganisasi->levelJabatan)
+                        @case(1)
+                            Sekretariat
+                            @break
+                        @case(2)
+                            Direktur
+                            @break
+                        @case(3)
+                            Kabag/Kabid/kains/Komite/Tim
+                            @break
+                        @case(4)
+                            Kasubbag/Kasi/Penjab
+                            @break
+                        @default
+                            
+                    @endswitch
+                      @endif
+                    </td>
+                    <td @if (is_null($u->strukturOrganisasi)) class="bg-danger text-white bg-gradient" @endif>
+                      @if (is_null($u->strukturOrganisasi))
+                        Belum Diisi
+                      @else
+                      {{ $u->strukturOrganisasi->atasan->namaJabatan }}
+                      @endif
+                    </td>
+                    {{-- <td class="text-center">
                       @if (in_array($u->id, $idKepala))
                       <i class="fa-solid fa-check" style="color: #0a9400;"></i>
                       @else
                       <i class="fa-solid fa-x" style="color: #d62929;"></i>
                       @endif
-                    </td>
+                    </td> --}}
                     <td>{{ $u->username }}</td>
                     <td>{{ $u->email }}</td>
                     <td><a href="/user/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary text-center"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>

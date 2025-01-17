@@ -16,8 +16,9 @@
       <h3 class="fw-bold fs-4 text-center">PROFIL</h3>
     </div>
   </div>
-      <div class="card">
-        <div class="card-body col-12 col-md-8">
+  <div class="row justify-content-center">
+      <div class="card col-12 col-md-8">
+        <div class="card-body">
           <h6 class="card-title">INFORMASI PROFIL</h6>
           <form method="post" action="/user/updateInfoProfil">
             @csrf
@@ -82,8 +83,8 @@
         </div>
         </div>
 
-        <div class="card my-5">
-          <div class="card-body col-12 col-md-8">
+        <div class="card my-5 col-12 col-md-8">
+          <div class="card-body">
             <h6 class="card-title">UBAH PASSWORD</h6>
             <form method="post" action="/user/updatePasswordNs">
               @csrf
@@ -147,6 +148,7 @@
           </form>
           </div>
           </div>
+        </div>
 </div>
 
 <script src="/js/password-validation.js"></script>
