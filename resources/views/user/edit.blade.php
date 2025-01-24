@@ -193,10 +193,10 @@
                             <option value="">Pilih Level Jabatan</option>
                             <option value='3' @if ($user->strukturOrganisasi->levelJabatan == 3)
                                 selected
-                            @endif>Kabag/Kabid/kains/Komite/Tim</option>
+                            @endif>Kabag/Kabid/Komite/Tim</option>
                             <option value='4' @if ($user->strukturOrganisasi->levelJabatan == 4)
                               selected
-                          @endif>Kasubbag/Kasi/Penjab</option>
+                          @endif>Kains/Kasubbag/Kasi/Penjab</option>
                           </select>
                       </div>
                   </div>
