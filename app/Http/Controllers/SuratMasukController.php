@@ -480,30 +480,30 @@ class SuratMasukController extends Controller
                         $terusan = [...$terusan, ...$terusanKhusus];
                     }
                 } elseif ($levelJabatan == 4) {
-                    // $terusan = DB::select(
-                    //     'SELECT *  FROM users 
-                    //     WHERE (
-                    //         id IN (SELECT idUser
-                    //             FROM struktur_organisasi
-                    //             WHERE levelJabatan = 4) 
-                    //         OR id = (SELECT idAtasan 
-                    //             FROM struktur_organisasi
-                    //             WHERE idUser = ?
-                    //             LIMIT 1)
-                    //         -- OR id = 1
-                    //         )
-                    //     AND isKhusus = false AND id != ? ;',
-                    //     [$idUser, $idUser]
-                    //     );
-
                     $terusan = DB::select(
                         'SELECT *  FROM users 
-                        WHERE id IN (SELECT idUser
+                        WHERE (
+                            id IN (SELECT idUser
                                 FROM struktur_organisasi
-                                WHERE levelJabatan = 4 OR levelJabatan = 3)
+                                WHERE levelJabatan = 4) 
+                            OR id = (SELECT idAtasan 
+                                FROM struktur_organisasi
+                                WHERE idUser = ?
+                                LIMIT 1)
+                            -- OR id = 1
+                            )
                         AND isKhusus = false AND id != ? ;',
-                        [$idUser]
+                        [$idUser, $idUser]
                         );
+
+                    // $terusan = DB::select(
+                    //     'SELECT *  FROM users 
+                    //     WHERE id IN (SELECT idUser
+                    //             FROM struktur_organisasi
+                    //             WHERE levelJabatan = 4 OR levelJabatan = 3)
+                    //     AND isKhusus = false AND id != ? ;',
+                    //     [$idUser]
+                    //     );
 
                     if ($idUser == 9 || $idUser == 10) {
                         $terusanKeSekre = User::where('id', 1)->get();
