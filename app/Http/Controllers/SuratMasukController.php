@@ -413,8 +413,9 @@ class SuratMasukController extends Controller
             // Level Jabatan
             // 1 = Sekretariat
             // 2 = Direktur
-            // 3 = Kepala
+            // 3 = Kabag/Kabid
             // 4 = Kepala Bagian
+            // 5 = Komite/Tim
             //
             // Id User Spesial
             // 1 = Sekretariat
@@ -425,7 +426,7 @@ class SuratMasukController extends Controller
             try {
                 $results = StrukturOrganisasi::select('levelJabatan')->where('idUser', $idUser)->get();
                 if ($results->isEmpty()) {
-                    $levelJabatan = null; // Atau nilai default lainnya
+                    $levelJabatan = null;
                 } else {
                     $levelJabatan = $results[0]->levelJabatan;
                 }
@@ -446,7 +447,7 @@ class SuratMasukController extends Controller
                             WHERE ( 
                                 id IN (SELECT idUser
                                 FROM struktur_organisasi
-                                WHERE levelJabatan = 3)
+                                WHERE levelJabatan = 3 OR levelJabatan = 5)
                                 -- OR id = 1
                             ) AND isKhusus = false AND id != :idUser ;',
                             ['idUser' => $idUser]
@@ -461,7 +462,7 @@ class SuratMasukController extends Controller
                         WHERE (
                             id IN (SELECT idUser
                             FROM struktur_organisasi
-                            WHERE levelJabatan = 3
+                            WHERE levelJabatan = 3 OR levelJabatan = 5
                             OR idAtasan = :idAtasan)
                             -- OR id IN (1,3)
                             OR id = (3)
@@ -485,7 +486,7 @@ class SuratMasukController extends Controller
                         WHERE (
                             id IN (SELECT idUser
                                 FROM struktur_organisasi
-                                WHERE levelJabatan = 4) 
+                                WHERE levelJabatan = 4 OR levelJabatan = 5) 
                             OR id = (SELECT idAtasan 
                                 FROM struktur_organisasi
                                 WHERE idUser = ?
@@ -513,10 +514,24 @@ class SuratMasukController extends Controller
                     if ($terusanKhusus->isNotEmpty()) {
                         $terusan = [...$terusan, ...$terusanKhusus];
                     }
+                } elseif ($levelJabatan == 5) {
+                    $terusan = DB::select(
+                            'SELECT *
+                            FROM users
+                            WHERE ( 
+                                id IN (SELECT idUser
+                                FROM struktur_organisasi
+                                WHERE levelJabatan IN (2,3,4,5))
+                            ) AND isKhusus = false AND id != :idUser ;',
+                            ['idUser' => $idUser]
+                            );
+                    if ($terusanKhusus->isNotEmpty()) {
+                        $terusan = [...$terusan, ...$terusanKhusus];
+                    }
+                } else {
+                    return ('Maaf, posisi Jabatan Akun Anda belum disetting oleh Sekretariat, Silakan hubungi Sekretariat');
                 }
-            } else {
-                return ('Maaf, posisi Jabatan Akun Anda belum disetting oleh Sekretariat, Silakan hubungi Sekretariat');
-            }
+            } 
 
             
             

@@ -48,8 +48,9 @@
               <div class="col-sm-9">
                 <select name="levelJabatan" class="form-select" id="levelJabatan" required>
                     <option value="">Pilih Level Jabatan</option>
-                    <option value='3'>Kabag/Kabid/Komite/Tim</option>
+                    <option value='3'>Kabag/Kabid</option>
                     <option value='4'>Kains/Kasubbag/Kasi/Penjab</option>
+                    <option value='5'>Komite/Tim</option>
                   </select>
               </div>
           </div>

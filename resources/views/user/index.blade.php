@@ -53,10 +53,13 @@
                             Direktur
                             @break
                         @case(3)
-                            Kabag/Kabid/Komite/Tim
+                            Kabag/Kabid
                             @break
                         @case(4)
                             Kains/Kasubbag/Kasi/Penjab
+                            @break
+                        @case(5)
+                            Komite/Tim
                             @break
                         @default
                             
