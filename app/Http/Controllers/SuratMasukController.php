@@ -565,7 +565,7 @@ class SuratMasukController extends Controller
         ]);
         
         // START PROCESS file lampiran
-        if ($request->file('fileLampiran')) { 
+        if ($request->file('fileLampiran')) {
             $filesToDelete = [];
             $mimeType = $request->file('fileLampiran')->getMimeType();
             if (strpos($mimeType, 'image') !== false) { // jika input user berupa image, maka convert image to pdf
@@ -1218,7 +1218,8 @@ class SuratMasukController extends Controller
             'idTujuanDisposisi' => 'required',
             'idSuratMasuk' => 'required',
             'instruksi' => 'required',
-            'idPengirimDisposisi' => 'required'
+            'idPengirimDisposisi' => 'required',
+            'fileLampiranArsip' => 'mimes:pdf,jpg,png|max:5120'
         ]);
 
         $redirect = "/";
@@ -1243,6 +1244,94 @@ class SuratMasukController extends Controller
         session()->forget('search_nomorSurat');
         session()->forget('search_perihal');
         session()->forget('search_status');
+
+        // START PROCESS file lampiran
+        if ($request->file('fileLampiranArsip')) {
+            // dd("masuk lampiran");
+            $filesToDelete = [];
+            $mimeType = $request->file('fileLampiranArsip')->getMimeType();
+            if (strpos($mimeType, 'image') !== false) { // jika input user berupa image, maka convert image to pdf
+                $imageContent = file_get_contents($request->file('fileLampiranArsip')->getRealPath());
+                $data = [
+                    'imageContent' => $imageContent,
+                ];
+                $pdf = PDF::loadView('pdf.image-to-pdf', $data);
+                $uploadImagePdfPath = 'public/uploads/lampiran/' . uniqid() . '.pdf'; // path untuk menyimpan file lampiran yg img-to-pdf
+                Storage::put($uploadImagePdfPath, $pdf->output());
+                $fileLampiranPath = storage_path('app/' . $uploadImagePdfPath); // path sementara untuk file lampiran
+                $filesToDelete[] = $fileLampiranPath;
+            } else { // jika input user berupa pdf
+                $fileLampiranPath = storage_path('app/public/' . $request->file('fileLampiranArsip')->store('uploads/lampiran', 'public')); // path sementara untuk file lampiran
+                $filesToDelete[] = $fileLampiranPath;
+            }
+            try { // memeriksa apakah versi pdf bermasalah atau tidak
+                $pdf = new Fpdi();
+                $pageCount = $pdf->setSourceFile($fileLampiranPath);
+                $isProblematic = false;
+            } catch (PdfParserException $e) {
+                $isProblematic = true;
+            }
+            if ($isProblematic) { // jika versi pdf bermasalah, jalankan ghostscript untuk mengganti versi pdf
+                $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+                $uncompressedfileLampiranPath = storage_path('app/public/uploads/lampiran/' . uniqid() . '.pdf'); // path untuk hasil proses yang dilakukan ghostscript
+                $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedfileLampiranPath $fileLampiranPath";
+                exec($command, $output, $return_var);
+                if ($return_var !== 0) {
+                    return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
+                }
+                $fileLampiranPath = $uncompressedfileLampiranPath; // memakai path hasil ghostscript untuk path file lampiran
+                $filesToDelete[] = $fileLampiranPath;
+            }
+
+            // akses row surat masuk untuk menyimpan file surat masuk yang sdh digabung dengan lampiran  
+            $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
+            $suratMasukPath = storage_path('app/public/' . $suratMasuk->filePath); //path surat masuk sebelum digabung
+
+            try { // memeriksa apakah versi pdf bermasalah atau tidak
+                $pdf = new Fpdi();
+                $pageCount = $pdf->setSourceFile($suratMasukPath);
+                $isSuratMasukProblematic = false;
+            } catch (PdfParserException $e) {
+                $isSuratMasukProblematic = true;
+            }
+            if ($isSuratMasukProblematic) { // jika versi pdf bermasalah, jalankan ghostscript untuk mengganti versi pdf
+                $oldSuratMasukPath = $suratMasukPath;
+                $ghostscriptPath = env('GHOSTSCRIPT_PATH');
+                $uncompressedSuratMasukPath = storage_path('app/public/uploads/lampiran/' . uniqid() . '.pdf'); // path untuk hasil proses yang dilakukan ghostscript
+                $command = "$ghostscriptPath -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$uncompressedSuratMasukPath $suratMasukPath";
+                exec($command, $output, $return_var);
+                if ($return_var !== 0) {
+                    return redirect()->back()->with('error', 'Failed to process PDF with Ghostscript.');
+                }
+                $filesToDelete[] = $uncompressedSuratMasukPath;
+                $filesToDelete[] = $oldSuratMasukPath;
+                $suratMasukPath = $uncompressedSuratMasukPath; // memakai path hasil ghostscript untuk path surat masuk
+            }
+
+            $tahun = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('Y');
+            $bulan = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('m');
+            $newSuratMasukPath = 'uploads/surat-masuk/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf'; // path surat berlampiran yg akan disimpan di database
+            $pathPenggabungan = storage_path('app/public/' . $newSuratMasukPath); // path surat untuk keperluan penggabungan
+            
+            // proses penggabungan surat masuk dengan lampiran
+            $pdfMerger = PDFMerger::init();
+            $pdfMerger->addPDF($suratMasukPath, 'all');
+            $pdfMerger->addPDF($fileLampiranPath, 'all');
+            $pdfMerger->merge();
+            $pdfMerger->save($pathPenggabungan);
+
+            // simpan path surat masuk yg sdh berlampiran
+            $suratMasuk->filePath = $newSuratMasukPath;
+            $suratMasuk->save();
+
+            // menghapus file yang tidak lagi terpakai
+            $filesToDelete[] = $suratMasukPath;
+            foreach ($filesToDelete as $file) {
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }  
+        }
 
         $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
         $suratMasuk->statusArsip = 1;

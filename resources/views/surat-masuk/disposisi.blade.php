@@ -279,7 +279,7 @@
             </form>
         @endif
         @if ($suratMasuk->statusArsip == 0)
-            <form action="/surat-masuk/arsipkan" id="formArsipkan" method="post">
+            <form action="/surat-masuk/arsipkan" id="formArsipkan" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
                 <input type="hidden" name="idTujuanDisposisi" value="1">
@@ -287,8 +287,7 @@
                 <div>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalArsipkan">Arsipkan</button>
                 </div>
-            
-            
+
             <!-- Modal Tombol Arsipkan -->
             <div class="modal fade" data-bs-backdrop="static" id="modalArsipkan" tabindex="-1" aria-labelledby="modalArsipkanLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -304,6 +303,17 @@
                         <div class="col-sm-9">
                           <textarea class="form-control" name="instruksi" id="instruksi" rows="3" required></textarea>
                         </div>
+                    </div>
+                    <div class="row my-3">
+                      <label for="fileLampiranArsip" class="col-sm-3 col-form-label">Lampiran (Opsional)</label>
+                      <div class="col-sm-9">
+                          <input name="fileLampiranArsip" class="form-control @error('fileLampiranArsip') is-invalid @enderror" type="file" id="fileLampiranArsip">
+                          @error('fileLampiranArsip')
+                          <div id="fileLampiranArsip" class="invalid-feedback">
+                            {{ $message }}
+                          </div>
+                          @enderror
+                      </div>
                     </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
