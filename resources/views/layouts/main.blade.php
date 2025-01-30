@@ -258,6 +258,13 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
+                  @if ($active == "dikirim")
+                      fw-bold
+                  @endif
+                   " href="/surat-masuk/ns/dikirim">Dikirim</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-center fs-6
                   @if ($active == "belum diteruskan")
                       fw-bold
                   @endif

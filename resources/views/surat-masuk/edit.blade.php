@@ -94,11 +94,33 @@
                   </div>
               </div>
 
-              <div class="row mb-3">
+              {{-- <div class="row mb-3">
                 <label for="pengirim" class="col-sm-3 col-form-label">Pengirim</label>
                 <div class="col-sm-9">
                   <input name="pengirim" type="text" class="form-control" id="pengirim" value="{{ $suratMasuk->pengirim }}" required>
                 </div>
+            </div> --}}
+
+            <div class="row mb-3">
+              <label for="idPengirim" class="col-sm-3 col-form-label">Pengirim</label>
+              <div class="col-sm-9">
+                <select name="idPengirim" class="form-select" id="idPengirim" onchange="handleChange(event)" required>
+                  <option value="">Pilih Pengirim</option>
+                  @foreach ($pengirim as $p)
+                
+                  <option value="{{ $p->id }}" @if ($suratMasuk->idPengirim == $p->id)
+                    selected
+                    @endif>{{ $p->namaJabatan }}</option>
+
+                  @endforeach
+                  <option value="lainnya" @if ($suratMasuk->idPengirim == "")
+                      selected
+                  @endif>Lainnya</option>
+                </select>
+                <div class="col-sm-12 mt-2 d-none" id="containerPengirimLuar">
+                  <input name="pengirimLuar" type="text" class="form-control" id="pengirim" value="{{ $suratMasuk->pengirim }}" >
+                </div>  
+              </div> 
             </div>
 
             <div class="row mb-3">
@@ -171,6 +193,21 @@
       }
     });
   });
+</script>
+
+<script>
+  const inputPengirimLuar = document.getElementById("pengirimLuar");  
+  const containerPengirimLuar = document.getElementById("containerPengirimLuar");
+
+  function handleChange(e) {
+    if (e.target.value == "lainnya") {
+      containerPengirimLuar.classList.replace('d-none', 'd-block');
+      inputPengirimLuar.required = false;
+    } else {
+      containerPengirimLuar.classList.replace('d-block', 'd-none');
+      inputPengirimLuar.required = true;
+    }
+  }
 </script>
 
 @endsection

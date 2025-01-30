@@ -83,7 +83,13 @@
               <tr>
                 <th scope="row">{{ $sm->index }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
-                <td>{{ $sm->pengirim }}</td>
+                <td>
+                  @empty($sm->idPengirim)
+                    {{ $sm->pengirim }}
+                  @else
+                    {{ $sm->userPengirim->namaJabatan }}
+                  @endempty
+                </td>
                 <td>{{ $sm->tanggalSurat }}</td>
                 <td>{{ $sm->nomorSurat }}</td>
                 <td>{{ $sm->perihal }}</td>

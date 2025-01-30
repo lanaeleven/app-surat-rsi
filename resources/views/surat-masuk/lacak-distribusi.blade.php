@@ -60,7 +60,13 @@
                                     </tr>
                                     <tr>
                                         <td>Dari</td>
-                                        <td>{{ $suratMasuk->pengirim }}</td>                                        
+                                        <td>
+                                          @empty($suratMasuk->idPengirim)
+                                            {{ $suratMasuk->pengirim }}
+                                          @else
+                                            {{ $suratMasuk->userPengirim->namaJabatan }}
+                                          @endempty
+                                        </td>                                        
                                     </tr>
                                     <tr>
                                         <td>Direksi</td>

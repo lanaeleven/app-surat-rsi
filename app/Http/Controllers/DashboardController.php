@@ -18,6 +18,7 @@ class DashboardController extends Controller
         $suratMasukBulanIni = 0;
         $suratKeluarHariIni = 0;
         $suratKeluarBulanIni = 0;
+        $dikirim = 0;
 
         if (auth()->user()->id == 1 || auth()->user()->id == 2) {
             $suratMasukHariIni = SuratMasuk::whereDate('tanggalSurat', '=', now())->count();
@@ -36,6 +37,7 @@ class DashboardController extends Controller
             }
             $sudahDiteruskan = $suratDiteruskan->where('status', '<>', 'Diarsipkan')->count();
             $arsip = $suratDiteruskan->where('status', 'Diarsipkan')->count();
+            $dikirim = SuratMasuk::where('idPengirim', '=', auth()->user()->id)->count();
             
         }
 
@@ -48,7 +50,8 @@ class DashboardController extends Controller
             'suratMasukHariIni' => $suratMasukHariIni,
             'suratMasukBulanIni' => $suratMasukBulanIni,
             'suratKeluarHariIni' => $suratKeluarHariIni,
-            'suratKeluarBulanIni' => $suratKeluarBulanIni
+            'suratKeluarBulanIni' => $suratKeluarBulanIni,
+            'dikirim' => $dikirim,
         ]);
     } 
 

@@ -71,7 +71,16 @@
     <div class="col">
       <h3 class="fw-bold fs-4 mb-3 text-center text-md-start">Dashboard {{ auth()->user()->namaJabatan }}</h3>
       <div class="row">
-          <div class="col-sm-4 mb-3 mb-sm-0">
+          <div class="col-sm-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title fw-bold">{{ $dikirim }} Surat</h2>
+                <p class="card-text fs-3">Surat Masuk yang Dikirim</p>
+                <a href="/surat-masuk/ns/dikirim" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mb-4">
             <div class="card">
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $belumDiteruskan }} Surat</h2>
@@ -80,7 +89,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-4 mb-4">
             <div class="card">
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $sudahDiteruskan }} Surat</h2>
@@ -89,7 +98,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-4 mb-4">
             <div class="card">
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $arsip }} Surat</h2>

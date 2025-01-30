@@ -22,8 +22,12 @@ class SuratMasuk extends Model
     public function direksi(): BelongsTo {
         return $this->belongsTo(Direksi::class, 'idDireksi');
     }
-
+    
     public function distribusiSurat(): HasMany {
         return $this->hasMany(DistribusiSurat::class, 'idSuratMasuk');
+    }
+
+    public function userPengirim(): BelongsTo {
+        return $this->belongsTo(User::class, 'idPengirim');
     }
 }

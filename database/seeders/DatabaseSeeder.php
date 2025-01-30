@@ -416,7 +416,7 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\SuratKeluar::factory(50)->create();
 
-        // \App\Models\SuratMasuk::factory(20)->create();
+        // \App\Models\SuratMasuk::factory(30)->create();
 
         // \App\Models\Spo::factory(50)->create();
         // for ($i=1; $i < 21 ; $i++) { 
@@ -461,221 +461,221 @@ class DatabaseSeeder extends Seeder
             'levelJabatan' => 2
         ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 4,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 4,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 5,
-        //     'idAtasan' => 4,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 5,
+            'idAtasan' => 4,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 6,
-        //     'idAtasan' => 4,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 6,
+            'idAtasan' => 4,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 7,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 7,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 8,
-        //     'idAtasan' => 7,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 8,
+            'idAtasan' => 7,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 9,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 9,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 10,
-        //     'idAtasan' => 9,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 10,
+            'idAtasan' => 9,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 11,
-        //     'idAtasan' => 9,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 11,
+            'idAtasan' => 9,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 12,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 12,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 13,
-        //     'idAtasan' => 12,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 13,
+            'idAtasan' => 12,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 14,
-        //     'idAtasan' => 12,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 14,
+            'idAtasan' => 12,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 15,
-        //     'idAtasan' => 12,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 15,
+            'idAtasan' => 12,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 16,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 16,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 17,
-        //     'idAtasan' => 16,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 17,
+            'idAtasan' => 16,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 18,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 18,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 19,
-        //     'idAtasan' => 18,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 19,
+            'idAtasan' => 18,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 20,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 20,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 21,
-        //     'idAtasan' => 20,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 21,
+            'idAtasan' => 20,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 22,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 22,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 23,
-        //     'idAtasan' => 22,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 23,
+            'idAtasan' => 22,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 24,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 24,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 25,
-        //     'idAtasan' => 24,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 25,
+            'idAtasan' => 24,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 26,
-        //     'idAtasan' => 24,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 26,
+            'idAtasan' => 24,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 27,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 27,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 28,
-        //     'idAtasan' => 27,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 28,
+            'idAtasan' => 27,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 29,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 29,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 30,
-        //     'idAtasan' => 29,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 30,
+            'idAtasan' => 29,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 31,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 31,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 32,
-        //     'idAtasan' => 31,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 32,
+            'idAtasan' => 31,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 33,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 33,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 34,
-        //     'idAtasan' => 33,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 34,
+            'idAtasan' => 33,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 35,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 35,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 36,
-        //     'idAtasan' => 35,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 36,
+            'idAtasan' => 35,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 37,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 37,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 38,
-        //     'idAtasan' => 37,
-        //     'levelJabatan' => 4
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 38,
+            'idAtasan' => 37,
+            'levelJabatan' => 4
+        ]);
 
-        // StrukturOrganisasi::create([
-        //     'idUser' => 39,
-        //     'idAtasan' => 3,
-        //     'levelJabatan' => 3
-        // ]);
+        StrukturOrganisasi::create([
+            'idUser' => 39,
+            'idAtasan' => 3,
+            'levelJabatan' => 3
+        ]);
 
     }
 }

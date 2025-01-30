@@ -64,15 +64,19 @@ class User extends Authenticatable
     public function senderPenerimaKhusus(): HasMany {
         return $this->hasMany(PenerimaKhusus::class, 'bisaMenerimaDari');
     }
-
+    
     public function isKepala(): HasOne
     {
         return $this->hasOne(UserKepala::class);
     }
-
+    
     public function strukturOrganisasi()
     {
         return $this->hasOne(StrukturOrganisasi::class, 'idUser', 'id');
+    }
+
+    public function suratMasuk(): HasMany {
+        return $this->hasMany(SuratMasuk::class, 'idPengirim');
     }
 
 }
