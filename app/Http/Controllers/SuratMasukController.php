@@ -36,6 +36,7 @@ class SuratMasukController extends Controller
         $suratMasuk = SuratMasuk::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $direksi = Direksi::all();
         $judul = "Surat Masuk";
+        $pengirim = User::whereNotIn("id", [1,2,3])->get();
 
         if ($keterangan == 'hari-ini') {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '=', now());
@@ -50,7 +51,7 @@ class SuratMasukController extends Controller
         if (request('index')) {
             $suratMasuk->where('index', '=', request('index'));
         }
-
+        
         if (request('tanggalAwal')) {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
         }
@@ -67,8 +68,12 @@ class SuratMasukController extends Controller
             $suratMasuk->where('status', 'like', '%' . request('status') . '%');
         }
 
-        if (request('pengirim')) {
-            $suratMasuk->where('pengirim', 'like', '%' . request('pengirim') . '%');
+        if (request('idPengirim')) {
+            $suratMasuk->where('idPengirim', request('idPengirim'));
+        }
+
+        if (request('pengirimLuar')) {
+            $suratMasuk->where('pengirim', 'like', '%' . request('pengirimLuar') . '%');
         }
 
         if (request('nomorSurat')) {
@@ -77,6 +82,10 @@ class SuratMasukController extends Controller
 
         if (request('perihal')) {
             $suratMasuk->where('perihal', 'like', '%' . request('perihal') . '%');
+        }
+
+        if (request('tahun')) {
+            $suratMasuk->where('tahun', 'like', '%' . request('tahun') . '%');
         }
 
         // penyimpanan session
@@ -91,7 +100,7 @@ class SuratMasukController extends Controller
             'search_status' => request('status')
         ]);
 
-        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['direksi', 'userPengirim'])->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul]);
+        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['direksi', 'userPengirim'])->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul, 'pengirim' => $pengirim]);
     }
 
     public function tambah() {
@@ -176,8 +185,9 @@ class SuratMasukController extends Controller
         $suratMasuk->filePath = $filePath;
         $suratMasuk->save();
 
-        
-        if (!is_null($request->input('idPengirim'))) {
+        // dd($request->input('idPengirim'));
+        // dd(!is_null($request->input('idPengirim')));
+        if (!($request->input('idPengirim') == 'lainnya')) {
             $user = User::find($request->input('idPengirim'));
             $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
             dispatch($job);
@@ -276,62 +286,6 @@ class SuratMasukController extends Controller
             ->with('success', "Berhasil Mengedit Surat Masuk");
     }
 
-    public function save_lama(Request $request): RedirectResponse
-    {
-        // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
-        $request->validate([
-            'tanggalAgenda' => 'required',
-            'sifatSurat' => 'required',
-            'nomorSurat' => 'required',
-            'tanggalSurat' => 'required',
-            'lampiran' => 'required',
-            'pengirim' => 'required',
-            'direksi' => 'required',
-            'perihal' => 'required',
-            'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
-        ]);
-
-        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
-        $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
-
-        if ($request->file('fileSurat')) {
-            // Store the file in storage\app\public folder
-            $file = $request->file('fileSurat');
-            $fileName = $file->getClientOriginalName();
-            $filePath = $file->store('uploads/surat-masuk/' . $tahunInput . '/' . $bulan, 'public');
-        }
-
-        // Store file information in the database
-        $suratMasuk = SuratMasuk::find($request->input('id'));
-        $suratMasuk->tanggalAgenda =$request->input('tanggalAgenda');
-        $suratMasuk->sifatSurat =$request->input('sifatSurat');
-        $suratMasuk->nomorSurat =$request->input('nomorSurat');
-        $suratMasuk->tanggalSurat =$request->input('tanggalSurat');
-        $suratMasuk->lampiran =$request->input('lampiran');
-        $suratMasuk->pengirim =$request->input('pengirim');
-        $suratMasuk->idDireksi =$request->input('direksi');
-        $suratMasuk->perihal =$request->input('perihal');
-        $suratMasuk->status =$request->input('status');
-        if ($request->file('fileSurat')) {
-            $suratMasuk->fileName = $fileName;
-            $suratMasuk->filePath = $filePath;
-        }
-        
-        if ($tahunInput != $request->input('tahun')) {
-            // Get the maximum id for the given year
-            $maxIndex = SuratMasuk::where('tahun', $tahunInput)->max('index');
-            // Determine the new id for the given year
-            $newIndex = $maxIndex ? $maxIndex + 1 : 1;
-
-            $suratMasuk->tahun = $tahunInput;
-            $suratMasuk->index = $newIndex;         
-        }
-        $suratMasuk->save();
-
-        // Redirect back to the index page with a success message
-        return redirect('/surat-masuk/index')
-            ->with('success', "Berhasil Mengedit Surat Masuk");
-    }
 
     public function disposisi(SuratMasuk $suratMasuk) {
         // $terusan = User::where('id', '<>', auth()->user()->id)->where('id', '<>', 2)->get();

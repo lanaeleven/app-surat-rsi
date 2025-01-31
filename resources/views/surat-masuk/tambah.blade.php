@@ -5,7 +5,7 @@
 <div>
     <div class="d-flex justify-content-between align-items-center my-4">
       <div>
-        <a href="/surat-masuk/index" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
+        <a href="/surat-masuk/index?tahun={{ config('app.tahun') }}" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
       </div>
       <div>
         <h3 class="fw-bold fs-4 text-center">Tambah Surat Masuk</h3>

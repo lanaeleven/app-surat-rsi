@@ -86,6 +86,9 @@
         @if (is_null($keterangan))
         <div class="row g-3">
           <div class="col-auto">
+            <input name="tahun" type="number" class="form-control form-control-sm" placeholder="Tahun" value="{{ request('tahun') }}">
+          </div>
+          <div class="col-auto">
             <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
           </div>
           <div class="col-auto me-3">
@@ -113,7 +116,15 @@
             </select>
           </div>
           <div class="col-auto">
-            <input name="pengirim" type="text" class="form-control form-control-sm" placeholder="Pengirim" value="{{ request('pengirim') }}">
+            <select name="idPengirim" class="form-select form-select-sm">
+              <option value="">Pengirim</option>
+              @foreach ($pengirim as $p)
+              <option value="{{ $p->id }}" {{ request('idPengirim') == $p->id ? 'selected' : '' }}>{{ $p->namaJabatan }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-auto">
+            <input name="pengirimLuar" type="text" class="form-control form-control-sm" placeholder="Pengirim Luar" value="{{ request('pengirimLuar') }}">
           </div>
           <div class="col-auto">
             <input name="nomorSurat" type="text" class="form-control form-control-sm" placeholder="Nomor Surat" value="{{ request('nomorSurat') }}">

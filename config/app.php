@@ -185,4 +185,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'tahun' => env('TAHUN', '2025'),
+
+
 ];

@@ -47,7 +47,7 @@
               active-tab
           @endif
            ">
-            <a href="/surat-masuk/index" class="sidebar-link">
+            <a href="/surat-masuk/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
               <i class="fa-solid fa-folder-closed" style="color: #ffffff;"></i>
               <span>Surat Masuk</span>
             </a>
@@ -230,7 +230,7 @@
                   @if ($active == "surat masuk")
                       fw-bold
                   @endif
-                   " href="/surat-masuk/index">Surat Masuk</a>
+                   " href="/surat-masuk/index?tahun={{ config('app.tahun') }}">Surat Masuk</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
