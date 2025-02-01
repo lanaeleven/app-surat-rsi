@@ -36,7 +36,7 @@ class SuratMasukController extends Controller
         $suratMasuk = SuratMasuk::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $direksi = Direksi::all();
         $judul = "Surat Masuk";
-        $pengirim = User::whereNotIn("id", [1,2,3])->get();
+        // $pengirim = User::whereNotIn("id", [1,2,3])->get();
 
         if ($keterangan == 'hari-ini') {
             $suratMasuk = $suratMasuk->whereDate('tanggalSurat', '=', now());
@@ -68,12 +68,8 @@ class SuratMasukController extends Controller
             $suratMasuk->where('status', 'like', '%' . request('status') . '%');
         }
 
-        if (request('idPengirim')) {
-            $suratMasuk->where('idPengirim', request('idPengirim'));
-        }
-
-        if (request('pengirimLuar')) {
-            $suratMasuk->where('pengirim', 'like', '%' . request('pengirimLuar') . '%');
+        if (request('pengirim')) {
+            $suratMasuk->where('pengirim', 'like', '%' . request('pengirim') . '%');
         }
 
         if (request('nomorSurat')) {
@@ -100,7 +96,7 @@ class SuratMasukController extends Controller
             'search_status' => request('status')
         ]);
 
-        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['direksi', 'userPengirim'])->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul, 'pengirim' => $pengirim]);
+        return view('surat-masuk.index', ['title' => $judul, 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->with(['direksi', 'userPengirim'])->paginate(15), 'direksi' => $direksi, 'keterangan' => $keterangan, 'judul' => $judul]);
     }
 
     public function tambah() {
@@ -112,8 +108,6 @@ class SuratMasukController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        // dd($request->input());
-        // Validate the incoming file.
         $request->validate([
             'idPosisiDisposisi' => 'required',
             'tanggalAgenda' => 'required',
@@ -121,7 +115,8 @@ class SuratMasukController extends Controller
             'nomorSurat' => 'required',
             'tanggalSurat' => 'required',
             'lampiran' => 'required',
-            // 'pengirim' => 'required',
+            'pengirim' => 'required',
+            'idPengirim' => 'required',
             'direksi' => 'required',
             'perihal' => 'required',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:10240'
@@ -159,13 +154,11 @@ class SuratMasukController extends Controller
         } else {
             $filePath = $request->file('fileSurat')->store('uploads/surat-masuk/' . $tahun . '/' . $bulan, 'public');
         }
-
-        // Store the file in storage\app\public folder
         $fileName = $request->file('fileSurat')->getClientOriginalName();
 
         
 
-        // Store file information in the database
+        
         $suratMasuk = new SuratMasuk();
         $suratMasuk->index = $newIndex;
         $suratMasuk->idPosisiDisposisi = $request->input('idPosisiDisposisi');
@@ -176,7 +169,7 @@ class SuratMasukController extends Controller
         $suratMasuk->tahun = $tahun;
         $suratMasuk->lampiran = $request->input('lampiran');
         $suratMasuk->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL; 
-        $suratMasuk->pengirim = $request->input('pengirimLuar') !== null ? $request->input('pengirimLuar') : '';
+        $suratMasuk->pengirim = $request->input('pengirim');
         $suratMasuk->idDireksi = $request->input('direksi');
         $suratMasuk->perihal = $request->input('perihal');
         $suratMasuk->status = $request->input('status');
@@ -185,8 +178,7 @@ class SuratMasukController extends Controller
         $suratMasuk->filePath = $filePath;
         $suratMasuk->save();
 
-        // dd($request->input('idPengirim'));
-        // dd(!is_null($request->input('idPengirim')));
+        
         if (!($request->input('idPengirim') == 'lainnya')) {
             $user = User::find($request->input('idPengirim'));
             $job = new ProcessNotifSuratMasukBaru($user->email, $user->namaJabatan, $request->input('nomorSurat'));
@@ -194,8 +186,7 @@ class SuratMasukController extends Controller
         }
 
 
-        // Redirect back to the index page with a success message
-        return redirect('/surat-masuk/index')
+        return redirect('/surat-masuk/index?tahun=' . config('app.tahun'))
             ->with('success', "Berhasil Menambahkan Surat Masuk");
     }
 
@@ -215,7 +206,8 @@ class SuratMasukController extends Controller
             'nomorSurat' => 'required',
             'tanggalSurat' => 'required',
             'lampiran' => 'required',
-            // 'pengirim' => 'required',
+            'pengirim' => 'required',
+            'idPengirim' => 'required',
             'direksi' => 'required',
             'perihal' => 'required',
             'fileSurat' => 'mimes:pdf,jpg,png|max:7168'
@@ -262,7 +254,7 @@ class SuratMasukController extends Controller
         $suratMasuk->lampiran =$request->input('lampiran');
         $suratMasuk->idDireksi =$request->input('direksi');
         $suratMasuk->idPengirim = $request->input('idPengirim') != "lainnya" ? $request->input('idPengirim') : NULL; 
-        $suratMasuk->pengirim = $request->input('pengirimLuar') !== null ? $request->input('pengirimLuar') : '';
+        $suratMasuk->pengirim = $request->input('pengirim');
         $suratMasuk->perihal =$request->input('perihal');
         $suratMasuk->status =$request->input('status');
         if ($request->file('fileSurat')) {
@@ -282,7 +274,7 @@ class SuratMasukController extends Controller
         $suratMasuk->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/surat-masuk/index')
+        return redirect('/surat-masuk/index?tahun=' . config('app.tahun'))
             ->with('success', "Berhasil Mengedit Surat Masuk");
     }
 

@@ -94,18 +94,18 @@
                   </div>
               </div>
 
-              {{-- <div class="row mb-3">
+              <div class="row mb-3">
                 <label for="pengirim" class="col-sm-3 col-form-label">Pengirim</label>
                 <div class="col-sm-9">
                   <input name="pengirim" type="text" class="form-control" id="pengirim" value="{{ $suratMasuk->pengirim }}" required>
                 </div>
-            </div> --}}
+            </div>
 
             <div class="row mb-3">
-              <label for="idPengirim" class="col-sm-3 col-form-label">Pengirim</label>
+              <label for="idPengirim" class="col-sm-3 col-form-label">User</label>
               <div class="col-sm-9">
                 <select name="idPengirim" class="form-select" id="idPengirim" onchange="handleChange(event)" required>
-                  <option value="">Pilih Pengirim</option>
+                  <option value="">Pilih User</option>
                   @foreach ($pengirim as $p)
                 
                   <option value="{{ $p->id }}" @if ($suratMasuk->idPengirim == $p->id)
@@ -117,9 +117,9 @@
                       selected
                   @endif>Lainnya</option>
                 </select>
-                <div class="col-sm-12 mt-2 d-none" id="containerPengirimLuar">
+                {{-- <div class="col-sm-12 mt-2 d-none" id="containerPengirimLuar">
                   <input name="pengirimLuar" type="text" class="form-control" id="pengirim" value="{{ $suratMasuk->pengirim }}" >
-                </div>  
+                </div>   --}}
               </div> 
             </div>
 
@@ -195,7 +195,7 @@
   });
 </script>
 
-<script>
+{{-- <script>
   const inputPengirimLuar = document.getElementById("pengirimLuar");  
   const containerPengirimLuar = document.getElementById("containerPengirimLuar");
 
@@ -208,6 +208,6 @@
       inputPengirimLuar.required = true;
     }
   }
-</script>
+</script> --}}
 
 @endsection

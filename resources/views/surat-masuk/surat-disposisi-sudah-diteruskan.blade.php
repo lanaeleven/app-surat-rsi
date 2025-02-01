@@ -94,11 +94,7 @@
                 <th scope="row">{{ $sm->index }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
                 <td>
-                  @empty($sm->idPengirim)
-                    {{ $sm->pengirim }}
-                  @else
-                    {{ $sm->userPengirim->namaJabatan }}
-                  @endempty
+                  {{ $sm->pengirim }}
                 </td>
                 <td>{{ $sm->tanggalSurat }}</td>
                 <td>{{ $sm->nomorSurat }}</td>

@@ -115,16 +115,16 @@
               @endforeach
             </select>
           </div>
-          <div class="col-auto">
+          {{-- <div class="col-auto">
             <select name="idPengirim" class="form-select form-select-sm">
               <option value="">Pengirim</option>
               @foreach ($pengirim as $p)
               <option value="{{ $p->id }}" {{ request('idPengirim') == $p->id ? 'selected' : '' }}>{{ $p->namaJabatan }}</option>
               @endforeach
             </select>
-          </div>
+          </div> --}}
           <div class="col-auto">
-            <input name="pengirimLuar" type="text" class="form-control form-control-sm" placeholder="Pengirim Luar" value="{{ request('pengirimLuar') }}">
+            <input name="pengirim" type="text" class="form-control form-control-sm" placeholder="Pengirim" value="{{ request('pengirim') }}">
           </div>
           <div class="col-auto">
             <input name="nomorSurat" type="text" class="form-control form-control-sm" placeholder="Nomor Surat" value="{{ request('nomorSurat') }}">
@@ -170,11 +170,7 @@
                 <th scope="row">{{ $sm->index }}</th>
                 <td>{{ $sm->direksi->namaDireksi }}</td>
                 <td>
-                  @empty($sm->idPengirim)
                     {{ $sm->pengirim }}
-                  @else
-                    {{ $sm->userPengirim->namaJabatan }}
-                  @endempty
                 </td>
                 <td>{{ $sm->tanggalSurat }}</td>
                 <td>{{ $sm->nomorSurat }}</td>
