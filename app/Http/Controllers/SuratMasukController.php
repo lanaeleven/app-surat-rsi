@@ -1009,28 +1009,28 @@ class SuratMasukController extends Controller
     public function nonSekreSudahDiteruskan() {
 
         // Old penarikan data
-        // $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS;
-        // $suratMasuk = collect([]);
-        // foreach ($distribusiSurat as $ds) {
-        //         $suratMasuk->push($ds->suratMasuk);
-        // }
-        // $suratMasuk = $suratMasuk->unique('id');
-        // $suratMasuk = $suratMasuk->sortBy([
-        //     ['tahun', 'desc'],
-        //     ['index', 'desc'],
-        // ]);
-        // $suratMasuk = $suratMasuk->where('status', '<>', 'Diarsipkan');
+        $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS;
+        $suratMasuk = collect([]);
+        foreach ($distribusiSurat as $ds) {
+                $suratMasuk->push($ds->suratMasuk);
+        }
+        $suratMasuk = $suratMasuk->unique('id');
+        $suratMasuk = $suratMasuk->sortBy([
+            ['tahun', 'desc'],
+            ['index', 'desc'],
+        ]);
+        $suratMasuk = $suratMasuk->where('status', '<>', 'Diarsipkan');
         
-        $idUser = auth()->user()->id;      
-        $suratMasuk = SuratMasuk::join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
-        ->where('distribusi_surat.idPengirimDisposisi', $idUser)
-        ->where('surat_masuk.status', '<>', 'Diarsipkan')
-        ->select('surat_masuk.*')
-        ->with(['direksi', 'userPengirim'])
-        ->groupBy('surat_masuk.id')
-        ->orderBy('surat_masuk.tahun', 'DESC')
-        ->orderBy('surat_masuk.id', 'DESC')
-        ->get();
+        // $idUser = auth()->user()->id;      
+        // $suratMasuk = SuratMasuk::join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
+        // ->where('distribusi_surat.idPengirimDisposisi', $idUser)
+        // ->where('surat_masuk.status', '<>', 'Diarsipkan')
+        // ->select('surat_masuk.*')
+        // ->with(['direksi', 'userPengirim'])
+        // ->groupBy('surat_masuk.id')
+        // ->orderBy('surat_masuk.tahun', 'DESC')
+        // ->orderBy('surat_masuk.id', 'DESC')
+        // ->get();
         
 
         // BEGINNING OF PENCARIAN
@@ -1087,28 +1087,28 @@ class SuratMasukController extends Controller
     }
 
     public function nonSekreSudahDiarsipkan() {
-        // $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS;
-        // $suratMasuk = collect([]);
-        // foreach ($distribusiSurat as $ds) {
-        //         $suratMasuk->push($ds->suratMasuk);
-        // }
-        // $suratMasuk = $suratMasuk->unique('id');
-        // $suratMasuk = $suratMasuk->sortBy([
-        //     ['tahun', 'desc'],
-        //     ['index', 'desc'],
-        // ]);
-        // $suratMasuk = $suratMasuk->where('status', 'Diarsipkan');
+        $distribusiSurat = User::where('id', '=', auth()->user()->id)->get()[0]->mengirimDS;
+        $suratMasuk = collect([]);
+        foreach ($distribusiSurat as $ds) {
+                $suratMasuk->push($ds->suratMasuk);
+        }
+        $suratMasuk = $suratMasuk->unique('id');
+        $suratMasuk = $suratMasuk->sortBy([
+            ['tahun', 'desc'],
+            ['index', 'desc'],
+        ]);
+        $suratMasuk = $suratMasuk->where('status', 'Diarsipkan');
 
-        $idUser = auth()->user()->id;      
-        $suratMasuk = SuratMasuk::join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
-        ->where('distribusi_surat.idPengirimDisposisi', $idUser)
-        ->where('surat_masuk.status', 'Diarsipkan')
-        ->select('surat_masuk.*')
-        ->with(['direksi', 'userPengirim'])
-        ->groupBy('surat_masuk.id')
-        ->orderBy('surat_masuk.tahun', 'DESC')
-        ->orderBy('surat_masuk.id', 'DESC')
-        ->get();
+        // $idUser = auth()->user()->id;      
+        // $suratMasuk = SuratMasuk::join('distribusi_surat', 'surat_masuk.id', '=', 'distribusi_surat.idSuratMasuk')
+        // ->where('distribusi_surat.idPengirimDisposisi', $idUser)
+        // ->where('surat_masuk.status', 'Diarsipkan')
+        // ->select('surat_masuk.*')
+        // ->with(['direksi', 'userPengirim'])
+        // ->groupBy('surat_masuk.id')
+        // ->orderBy('surat_masuk.tahun', 'DESC')
+        // ->orderBy('surat_masuk.id', 'DESC')
+        // ->get();
 
         // BEGINNING OF PENCARIAN
         if (request('index')) {
