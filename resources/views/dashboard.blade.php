@@ -75,7 +75,7 @@
             <div class="card">
               <div class="card-body">
                 <h2 class="card-title fw-bold">{{ $dikirim }} Surat</h2>
-                <p class="card-text fs-3">Surat Masuk Unit</p>
+                <p class="card-text fs-3">Lacak Surat Keluar Anda</p>
                 <a href="/surat-masuk/ns/dikirim" class="btn btn-sm btn-primary">Lihat Selengkapnya</a>
               </div>
             </div>
