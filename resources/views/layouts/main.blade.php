@@ -57,7 +57,7 @@
               active-tab
           @endif
            ">
-            <a href="/surat-keluar/index" class="sidebar-link">
+            <a href="/surat-keluar/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
               <i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>
               <span>Surat Keluar</span>
             </a>
@@ -67,7 +67,7 @@
               active-tab
           @endif
            ">
-            <a href="/spo/index" class="sidebar-link">
+            <a href="/spo/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
               <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i>
               <span>SPO</span>
             </a>
@@ -235,9 +235,9 @@
                 <li class="nav-item">
                   <a class="nav-link text-center fs-6
                   @if ($active == "surat keluar")
-                      fw-bold
+                      fw-bold 
                   @endif
-                   " href="/surat-keluar/index">Surat Keluar</a>
+                   " href="/surat-keluar/index?tahun={{ config('app.tahun') }}">Surat Keluar</a>
                 </li>
               </ul>
 

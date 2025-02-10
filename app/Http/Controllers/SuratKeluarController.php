@@ -65,6 +65,10 @@ class SuratKeluarController extends Controller
             $suratKeluar->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
+        if (request('tahun')) {
+            $suratKeluar->where('tahun', request('tahun'));
+        }
+
         return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with(['jenisSurat', 'direksi'])->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
     }
 
@@ -122,7 +126,7 @@ class SuratKeluarController extends Controller
         $suratKeluar->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/surat-keluar/index')
+        return redirect('/surat-keluar/index?tahun=' . config('app.tahun'))
             ->with('success', 'Berhasil Menambahkan Surat Keluar');
     }
 
@@ -175,7 +179,7 @@ class SuratKeluarController extends Controller
         $suratKeluar->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/surat-keluar/index')
+        return redirect('/surat-keluar/index?tahun=' . config('app.tahun'))
             ->with('success', 'Berhasil Mengedit Surat Keluar');
     }
 

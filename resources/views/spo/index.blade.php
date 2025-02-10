@@ -1,16 +1,15 @@
-
 @extends('layouts.main')
 
 @section('container')
 <div class="div">
   @section('container')
-<div>
-  @if (session()->has('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-@endif  
+  <div>
+    @if (session()->has('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ session('success') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
     <div class="d-flex justify-content-between my-2">
       <div class="mb-2">
       </div>
@@ -18,8 +17,8 @@
         <h3 class="fw-bold fs-4 mb-3">{{ $judul }}</h3>
       </div>
       <div class="mb-2">
-      <a href="/spo/tambah" class="btn btn-primary d-none d-md-block d-lg-block d-xl-block d-xxl-block">Tambah</a>
-      <a href="/spo/tambah" class="btn btn-primary btn-sm d-md-none d-lg-none d-xl-none d-xxl-none"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></a>
+        <a href="/spo/tambah" class="btn btn-primary d-none d-md-block d-lg-block d-xl-block d-xxl-block">Tambah</a>
+        <a href="/spo/tambah" class="btn btn-primary btn-sm d-md-none d-lg-none d-xl-none d-xxl-none"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></a>
       </div>
     </div>
 
@@ -43,14 +42,14 @@
               @csrf
               <div class="mb-3">
                 <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
-                <input type="month" id="bulanRekap" name="bulanRekap"  class="form-control" required>
+                <input type="month" id="bulanRekap" name="bulanRekap" class="form-control" required>
               </div>
-                <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
-            </div>
-            </form>
+              <button type="submit" class="btn btn-success container-fluid">Unduh Rekap</button>
           </div>
+          </form>
         </div>
       </div>
+    </div>
 
     {{-- end of modal --}}
 
@@ -58,17 +57,20 @@
       <form class="row g-3" action="/spo/index">
         <div class="row g-3">
           <div class="col-auto">
+            <input name="tahun" type="number" class="form-control form-control-sm" placeholder="Tahun" value="{{ request('tahun') }}">
+          </div>
+          <div class="col-auto">
             <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
           </div>
           <div class="col-auto">
-              <input name="tanggalAwal" type="date" id="tanggalAwal" class="form-control form-control-sm" value="{{ request('tanggalAwal') }}">
-          </div> 
+            <input name="tanggalAwal" type="date" id="tanggalAwal" class="form-control form-control-sm" value="{{ request('tanggalAwal') }}">
+          </div>
 
           <div class="col-auto ms-3">
-              <label for="tanggalAkhir" class="col-form-label"><small>Tanggal Akhir :</small></label>
-            </div>
+            <label for="tanggalAkhir" class="col-form-label"><small>Tanggal Akhir :</small></label>
+          </div>
           <div class="col-auto">
-              <input name="tanggalAkhir" type="date" id="tanggalAkhir" class="form-control form-control-sm" value="{{ request('tanggalAkhir') }}">
+            <input name="tanggalAkhir" type="date" id="tanggalAkhir" class="form-control form-control-sm" value="{{ request('tanggalAkhir') }}">
           </div>
         </div>
 
@@ -102,103 +104,103 @@
 
     @if ($spo->isEmpty())
 
-        <p class="text-center fs-6 my-5">Anda Tidak Memiliki {{ $judul }}</p>
+    <p class="text-center fs-6 my-5">Anda Tidak Memiliki {{ $judul }}</p>
 
     @else
-    
+
     <div>
-        <table class="table table-striped  d-none d-md-table d-lg-table d-xl-table d-xxl-table">
-            <thead>
-              <tr>
-                <th scope="col">Indeks</th>
-                <th scope="col">Tanggal</th>
-                <th scope="col">Tujuan</th>
-                <th scope="col">Perihal</th>
-                <th scope="col">Direktorat</th>
-                <th scope="col">Keterangan</th>
-                <th scope="col">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              
-              @foreach ($spo as $s)
-                  
-              <tr>
-                <th scope="row">{{ $s->index }}</th>
-                <td>{{ $s->tanggalSurat }}</td>
-                <td>{{ $s->tujuan }}</td>
-                <td>{{ $s->perihal }}</td>
-                <td>{{ $s->direksi->namaDireksi }}</td>
-                @php
-                    $arr = explode(' ', $s->keterangan);
-                    
-                @endphp
-                <td>
-                  @if (count($arr) > 2)
-                  {{ $arr[0] . ' ' . $arr[1] . '...' }}
-                  @else
-                  {{ $s->keterangan }}
-                  @endif
-                </td>
-                <td>
-                  
-                  <a href="/spo/edit/{{ $s->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-                  <a href="{{ asset('storage/' . $s->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
-                </td>
-              </tr>
+      <table class="table table-striped  d-none d-md-table d-lg-table d-xl-table d-xxl-table">
+        <thead>
+          <tr>
+            <th scope="col">Indeks</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Tujuan</th>
+            <th scope="col">Perihal</th>
+            <th scope="col">Direktorat</th>
+            <th scope="col">Keterangan</th>
+            <th scope="col">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
 
-              @endforeach
-              
-            </tbody>
-          </table>
-
-          {{-- Tampilan SPO pada mobile device --}}
           @foreach ($spo as $s)
-    <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mt-3 mb-5">
-      <div class="card shadow">
-        <table class="table table-bordered">
+
           <tr>
-            <th>Indeks</th>
-            <td>{{ $s->index }}</td>
-          </tr>
-          <tr>
-            <th>Tanggal</th>
+            <th scope="row">{{ $s->index }}</th>
             <td>{{ $s->tanggalSurat }}</td>
-          </tr>
-          <tr>
-            <th>Tujuan</th>
             <td>{{ $s->tujuan }}</td>
-          </tr>
-          <tr>
-            <th>Perihal</th>
             <td>{{ $s->perihal }}</td>
-          </tr>
-          <tr>
-            <th>Direktorat</th>
             <td>{{ $s->direksi->namaDireksi }}</td>
-          </tr>
-          <tr>
-            <th>Keterangan</th>
-            <td>{{ $s->keterangan }}</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="text-center">
+            @php
+            $arr = explode(' ', $s->keterangan);
+
+            @endphp
+            <td>
+              @if (count($arr) > 2)
+              {{ $arr[0] . ' ' . $arr[1] . '...' }}
+              @else
+              {{ $s->keterangan }}
+              @endif
+            </td>
+            <td>
+
               <a href="/spo/edit/{{ $s->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-              <a href="{{ asset('storage/' . $s->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $s->fileName }}'><i class="fa-solid fa-download" style="color: #ffffff;"></i></a>
+              <a href="{{ asset('storage/' . $s->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
             </td>
           </tr>
-        </table>
+
+          @endforeach
+
+        </tbody>
+      </table>
+
+      {{-- Tampilan SPO pada mobile device --}}
+      @foreach ($spo as $s)
+      <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mt-3 mb-5">
+        <div class="card shadow">
+          <table class="table table-bordered">
+            <tr>
+              <th>Indeks</th>
+              <td>{{ $s->index }}</td>
+            </tr>
+            <tr>
+              <th>Tanggal</th>
+              <td>{{ $s->tanggalSurat }}</td>
+            </tr>
+            <tr>
+              <th>Tujuan</th>
+              <td>{{ $s->tujuan }}</td>
+            </tr>
+            <tr>
+              <th>Perihal</th>
+              <td>{{ $s->perihal }}</td>
+            </tr>
+            <tr>
+              <th>Direktorat</th>
+              <td>{{ $s->direksi->namaDireksi }}</td>
+            </tr>
+            <tr>
+              <th>Keterangan</th>
+              <td>{{ $s->keterangan }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center">
+                <a href="/spo/edit/{{ $s->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
+                <a href="{{ asset('storage/' . $s->filePath) }}" class="mt-1 btn btn-sm btn-success" download='{{ $s->fileName }}'><i class="fa-solid fa-download" style="color: #ffffff;"></i></a>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
-    </div>        
-    @endforeach
+      @endforeach
 
-        </div>
+    </div>
 
-        <div class="d-flex justify-content-center">
-          <div>
-            {{ $spo->appends(request()->input())->links() }}
-          </div>
-        </div>
-@endif
-</div>
-@endsection
+    <div class="d-flex justify-content-center">
+      <div>
+        {{ $spo->appends(request()->input())->links() }}
+      </div>
+    </div>
+    @endif
+  </div>
+  @endsection

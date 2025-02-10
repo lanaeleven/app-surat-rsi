@@ -48,6 +48,10 @@ class SpoController extends Controller
             $spo->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
+        if (request('tahun')) {
+            $spo->where('tahun', request('tahun'));
+        }
+
         return view('spo.index', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 
@@ -95,7 +99,7 @@ class SpoController extends Controller
         $spo->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/spo/index')
+        return redirect('/spo/index?tahun=' . config('app.tahun'))
             ->with('success', 'Berhasil Menambahkan Standar Prosedur Operasional');
     }
 
@@ -152,7 +156,7 @@ class SpoController extends Controller
         $spo->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/spo/index')
+        return redirect('/spo/index?tahun=' . config('app.tahun'))
             ->with('success', 'Berhasil Mengedit SPO');
     }
 
