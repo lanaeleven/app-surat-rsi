@@ -144,6 +144,14 @@ class SuratKeluarController extends Controller
 
     public function save(Request $request): RedirectResponse
     {
+        if (auth()->user()->id == 1) {
+            $redirect = '/surat-keluar/index'
+                    . '?tahun=' . urlencode(session('search_tahun', ''))
+            ;
+        } else {
+            $redirect = '/';
+        } 
+        session()->forget('search_tahun');
         // Validate the incoming file. Refuses anything bigger than 5 Mb
         $request->validate([
             'jenisSurat' => 'required',
@@ -191,7 +199,7 @@ class SuratKeluarController extends Controller
         $suratKeluar->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/surat-keluar/index?tahun=' . config('app.tahun'))
+        return redirect($redirect)
             ->with('success', 'Berhasil Mengedit Surat Keluar');
     }
 
