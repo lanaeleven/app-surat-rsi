@@ -69,6 +69,10 @@ class SuratKeluarController extends Controller
             $suratKeluar->where('tahun', request('tahun'));
         }
 
+        session([
+            'search_tahun' => request('tahun')
+        ]);
+
         return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with(['jenisSurat', 'direksi'])->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
     }
 
@@ -88,6 +92,14 @@ class SuratKeluarController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        if (auth()->user()->id == 1) {
+            $redirect = '/surat-keluar/index'
+                    . '?tahun=' . urlencode(session('search_tahun', ''))
+            ;
+        } else {
+            $redirect = '/';
+        } 
+        session()->forget('search_tahun');
         // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
         $request->validate([
             'jenisSurat' => 'required',
@@ -126,7 +138,7 @@ class SuratKeluarController extends Controller
         $suratKeluar->save();
 
         // Redirect back to the index page with a success message
-        return redirect('/surat-keluar/index?tahun=' . config('app.tahun'))
+        return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Surat Keluar');
     }
 
