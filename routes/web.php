@@ -101,6 +101,7 @@ Route::post('/user/updatePasswordNs', [UserController::class, 'updatePasswordNs'
 Route::post('/user/updatePassword', [UserController::class, 'updatePassword']);
 Route::post('/user/jadikanKhusus', [UserController::class, 'jadikanKhusus']);
 Route::post('/user/batalkanKhusus', [UserController::class, 'batalkanKhusus']);
+Route::post('/user/update-lingkup-unit', [UserController::class, 'updateLingkupUnit']);
 Route::post('/akun-khusus/tambah-pengirim', [UserController::class, 'tambahPengirim']);
 Route::post('/akun-khusus/tambah-penerima', [UserController::class, 'tambahPenerima']);
 

@@ -10,6 +10,7 @@ use App\Models\DistribusiSurat;
 use App\Models\TujuanDisposisi;
 use Illuminate\Database\Seeder;
 use App\Models\StrukturOrganisasi;
+use App\Models\Unit;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -676,6 +677,14 @@ class DatabaseSeeder extends Seeder
             'idAtasan' => 3,
             'levelJabatan' => 3
         ]);
+
+
+
+        // SEEDER UNIT
+
+        Unit::create(['nama' => 'Unit A']);
+        Unit::create(['nama' => 'Unit B']);
+        Unit::create(['nama' => 'Unit C']);
 
     }
 }

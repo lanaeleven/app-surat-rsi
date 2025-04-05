@@ -10,11 +10,13 @@ use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\Unit;
 use Illuminate\Http\RedirectResponse;
 
 class SpoController extends Controller
 {
-    public function create() {
+    public function create()
+    {
 
         $spo = Spo::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $direksi = Direksi::all();
@@ -30,7 +32,7 @@ class SpoController extends Controller
 
         if (request('tanggalAkhir')) {
             $spo = $spo->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }       
+        }
 
         if (request('direksi')) {
             $spo->where('idDireksi', request('direksi'));
@@ -55,10 +57,12 @@ class SpoController extends Controller
         return view('spo.index', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 
-    public function tambah() {
+    public function tambah()
+    {
         $direksi = Direksi::all();
+        $units = Unit::all();
 
-        return view('spo.tambah', ['title' => 'Tambah Surat Prosedur Operasional', 'active' => 'spo', 'direksi' => $direksi]);
+        return view('spo.tambah', ['title' => 'Tambah Surat Prosedur Operasional', 'active' => 'spo', 'direksi' => $direksi, 'units' => $units]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -69,9 +73,10 @@ class SpoController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
+            'units' => 'required|array',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:5120'
         ]);
-        
+
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         // Get the maximum id for the given year
@@ -98,15 +103,20 @@ class SpoController extends Controller
         $spo->filePath = $filePath;
         $spo->save();
 
+        $spo->units()->attach($request->input('units'));
+
         // Redirect back to the index page with a success message
         return redirect('/spo/index?tahun=' . config('app.tahun'))
             ->with('success', 'Berhasil Menambahkan Standar Prosedur Operasional');
     }
 
-    public function edit(Spo $spo) {
+    public function edit(Spo $spo)
+    {
         $direksi = Direksi::all();
+        $spo = SPO::with('units')->findOrFail($spo->id);
+        $units = Unit::all();
 
-        return view('spo.edit', ['title' => 'Edit Standar Prosedur Operasional', 'active' => 'spo', 'spo' => $spo, 'direksi' => $direksi]);
+        return view('spo.edit', ['title' => 'Edit Standar Prosedur Operasional', 'active' => 'spo', 'spo' => $spo, 'direksi' => $direksi, 'units' => $units]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -117,7 +127,8 @@ class SpoController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'fileSurat' => 'mimes:pdf,jpg,png|max:5120'
+            'fileSurat' => 'mimes:pdf,jpg,png|max:5120',
+            'units' => 'required|array',
         ]);
 
         $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
@@ -143,7 +154,7 @@ class SpoController extends Controller
             $spo->fileName = $fileName;
             $spo->filePath = $filePath;
         }
-        
+
         if ($tahunInput != $request->input('tahun')) {
             // Get the maximum id for the given year
             $maxIndex = Spo::where('tahun', $tahunInput)->max('index');
@@ -151,23 +162,26 @@ class SpoController extends Controller
             $newIndex = $maxIndex ? $maxIndex + 1 : 1;
 
             $spo->tahun = $tahunInput;
-            $spo->index = $newIndex;         
+            $spo->index = $newIndex;
         }
         $spo->save();
+
+        $spo->units()->sync($request->input('units'));
 
         // Redirect back to the index page with a success message
         return redirect('/spo/index?tahun=' . config('app.tahun'))
             ->with('success', 'Berhasil Mengedit SPO');
     }
 
-    public function rekapSpo(Request $request) {
+    public function rekapSpo(Request $request)
+    {
         $tanggal = $request->input('bulanRekap');
         $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
         $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
         $spo = Spo::whereMonth('tanggalSurat', '=', $bulan)->whereYear('tanggalSurat', '=', $tahun)->get();
 
         $zip = new ZipArchive();
-        $zipFilePath = storage_path('app/' . 'rekap_spo_' . $tahun . '_' . $bulan . '.zip') ;
+        $zipFilePath = storage_path('app/' . 'rekap_spo_' . $tahun . '_' . $bulan . '.zip');
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
             foreach ($spo as $s) {
@@ -179,7 +193,5 @@ class SpoController extends Controller
         } else {
             dd('gagal membuka file zip');
         }
-        
-    }   
-
+    }
 }

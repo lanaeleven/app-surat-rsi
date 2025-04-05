@@ -8,13 +8,15 @@ use Illuminate\Http\Request;
 use App\Models\PenerimaKhusus;
 use App\Models\PengirimKhusus;
 use App\Models\StrukturOrganisasi;
+use App\Models\Unit;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-    public function create() {
+    public function create()
+    {
         // mengambil id kepala dalam bentuk array
         $idKepala = UserKepala::select('idUser')->get();
         $arrIdKepala = [];
@@ -28,7 +30,8 @@ class UserController extends Controller
         return view('user.index', ['title' => 'User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala]);
     }
 
-    public function tambah() {
+    public function tambah()
+    {
         return view('user.tambah', ['title' => 'Tambah User', 'active' => 'data master']);
     }
 
@@ -56,7 +59,8 @@ class UserController extends Controller
         return redirect('/user/index')->with('success', 'Berhasil Menambahkan Tujuan Disposisi');
     }
 
-    public function edit(User $user) {
+    public function edit(User $user)
+    {
         // mengambil id kepala dalam bentuk array
         $idKepala = UserKepala::select('idUser')->get();
         $arrIdKepala = [];
@@ -65,15 +69,15 @@ class UserController extends Controller
         }
 
         $atasan = User::where('id', '<>', 1)->where('id', '<>', 2)->with(['strukturOrganisasi'])->get();
+        $units = Unit::all();
 
-        return view('user.edit', ['title' => 'Edit User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala, 'atasan' => $atasan]);
+        $user = User::with('units')->findOrFail($user->id);
+
+        return view('user.edit', ['title' => 'Edit User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala, 'atasan' => $atasan, 'units' => $units]);
     }
 
     public function save(Request $request): RedirectResponse
     {
-        // Validate the incoming file. 
-        // dd($request->input());
-        
         $request->validate([
             'namaJabatan' => 'required',
             'nama' => 'required',
@@ -82,7 +86,7 @@ class UserController extends Controller
             // 'isKepala' => 'required'
         ]);
 
-        
+
 
         $user = User::find($request->input('id'));
 
@@ -130,14 +134,15 @@ class UserController extends Controller
         return redirect('/user/index')->with('success', 'Berhasil Mengedit Tujuan Disposisi');
     }
 
-    public function akunNs() {
+    public function akunNs()
+    {
         return view('user.akun-ns', ['title' => 'Akun User', 'active' => 'akun']);
     }
 
     public function updateInfoProfil(Request $request): RedirectResponse
     {
         // Validate the incoming file. 
-        
+
         $request->validate([
             'username' => 'required',
             'nama' => 'required',
@@ -165,7 +170,7 @@ class UserController extends Controller
     public function updatePasswordNs(Request $request): RedirectResponse
     {
         // Validate the incoming file. 
-        
+
         $request->validate([
             'passwordSaatIni' => 'required|current_password',
             'passwordBaru' => ['required', Password::min(8)->mixedCase()->numbers()->symbols()]
@@ -184,7 +189,7 @@ class UserController extends Controller
     public function updatePassword(Request $request): RedirectResponse
     {
         // Validate the incoming file. 
-        
+
         $request->validate([
             'passwordBaru' => ['required', Password::min(8)->mixedCase()->numbers()->symbols()]
         ]);
@@ -199,7 +204,8 @@ class UserController extends Controller
         return redirect('/user/index')->with('success', 'Berhasil Mengubah Password');
     }
 
-    public function jadikanKhusus(Request $request) {
+    public function jadikanKhusus(Request $request)
+    {
 
         $request->validate([
             'id' => 'required',
@@ -208,11 +214,12 @@ class UserController extends Controller
         $user = User::find($request->input('id'));
         $user->isKhusus = true;
         $user->save();
-        
+
         return redirect()->back()->with('success', "Berhasil Menjadikan Akun Khusus");
     }
 
-    public function batalkanKhusus(Request $request) {
+    public function batalkanKhusus(Request $request)
+    {
 
         $request->validate([
             'id' => 'required',
@@ -221,17 +228,18 @@ class UserController extends Controller
         $user = User::find($request->input('id'));
         $user->isKhusus = false;
         $user->save();
-        
+
         return redirect()->back()->with('success', "Berhasil Membatalkan Akun Khusus");
     }
 
-    public function kelolaKhusus(User $user) {
+    public function kelolaKhusus(User $user)
+    {
         $daftarPengirim = PenerimaKhusus::where('idUser', $user->id)->get();
         $daftarBukanPengirim = User::whereNotIn('id', $daftarPengirim->select('bisaMenerimaDari'))->where('isKhusus', false)->get();
 
         $daftarPenerima = PengirimKhusus::where('idUser', $user->id)->get();
         $daftarBukanPenerima = User::whereNotIn('id', $daftarPenerima->select('bisaMengirimKe'))->where('isKhusus', false)->get();
-        
+
         return view('user.kelola-khusus', [
             'title' => 'Kelola Akun Khusus',
             'active' => 'data master',
@@ -243,7 +251,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function tambahPengirim(Request $request) {
+    public function tambahPengirim(Request $request)
+    {
         $request->validate([
             'idUser' => 'required',
             'idPengirim' => 'required'
@@ -257,7 +266,8 @@ class UserController extends Controller
         return redirect('/user/kelola-khusus/' . $request->input('idUser'))->with('success', 'Berhasil Menambah Pengirim');
     }
 
-    public function hapusPengirim($id) {
+    public function hapusPengirim($id)
+    {
         $penerimaKhusus = PenerimaKhusus::findOrFail($id);
         $idUser = $penerimaKhusus->idUser;
         $penerimaKhusus->delete();
@@ -265,7 +275,8 @@ class UserController extends Controller
         return redirect('/user/kelola-khusus/' . $idUser)->with('success', 'Berhasil Menghapus Pengirim');
     }
 
-    public function tambahPenerima(Request $request) {
+    public function tambahPenerima(Request $request)
+    {
         $request->validate([
             'idUser' => 'required',
             'idPenerima' => 'required'
@@ -279,11 +290,26 @@ class UserController extends Controller
         return redirect('/user/kelola-khusus/' . $request->input('idUser'))->with('success', 'Berhasil Menambah Penerima');
     }
 
-    public function hapusPenerima($id) {
+    public function hapusPenerima($id)
+    {
         $pengirimKhusus = PengirimKhusus::findOrFail($id);
         $idUser = $pengirimKhusus->idUser;
         $pengirimKhusus->delete();
 
         return redirect('/user/kelola-khusus/' . $idUser)->with('success', 'Berhasil Menghapus Penerima');
+    }
+
+    public function updateLingkupUnit(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required',
+            'units' => 'required|array',
+        ]);
+
+        $user = User::findOrFail($request->input('id'));
+        $user->units()->sync($request->input('units'));
+
+        return redirect()->back()->with('success', "Berhasil Mengupdate Lingkup Unit");
     }
 }

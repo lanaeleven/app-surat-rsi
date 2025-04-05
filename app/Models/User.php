@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -41,42 +42,53 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function mengirimDS(): HasMany {
+    public function mengirimDS(): HasMany
+    {
         return $this->hasMany(DistribusiSurat::class, 'idPengirimDisposisi');
     }
 
-    public function menerimaDS(): HasMany {
+    public function menerimaDS(): HasMany
+    {
         return $this->hasMany(DistribusiSurat::class, 'idTujuanDisposisi');
     }
 
-    public function senderPengirimKhusus(): HasMany {
+    public function senderPengirimKhusus(): HasMany
+    {
         return $this->hasMany(PengirimKhusus::class, 'idUser');
     }
 
-    public function receiverPengirimKhusus(): HasMany {
+    public function receiverPengirimKhusus(): HasMany
+    {
         return $this->hasMany(PengirimKhusus::class, 'bisaMengirimKe');
     }
 
-    public function receiverPenerimaKhusus(): HasMany {
+    public function receiverPenerimaKhusus(): HasMany
+    {
         return $this->hasMany(PenerimaKhusus::class, 'idUser');
     }
 
-    public function senderPenerimaKhusus(): HasMany {
+    public function senderPenerimaKhusus(): HasMany
+    {
         return $this->hasMany(PenerimaKhusus::class, 'bisaMenerimaDari');
     }
-    
+
     public function isKepala(): HasOne
     {
         return $this->hasOne(UserKepala::class);
     }
-    
+
     public function strukturOrganisasi()
     {
         return $this->hasOne(StrukturOrganisasi::class, 'idUser', 'id');
     }
 
-    public function suratMasuk(): HasMany {
+    public function suratMasuk(): HasMany
+    {
         return $this->hasMany(SuratMasuk::class, 'idPengirim');
     }
 
+    public function units(): BelongsToMany
+    {
+        return $this->belongsToMany(Unit::class);
+    }
 }
