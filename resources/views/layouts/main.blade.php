@@ -24,7 +24,7 @@
             <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
           </button>
           <div class="sidebar-logo">
-            <a href="/" style="text-decoration: none;">Aplikasi Surat</a>
+            <a href="/" style="text-decoration: none;">E-Disposisi</a>
           </div>
         </div>
         <ul class="sidebar-nav">
@@ -201,7 +201,103 @@
               <li class="sidebar-item">
                 <a href="/user/index" class="sidebar-link">Tujuan Disposisi</a>
               </li>
+              <li class="sidebar-item">
+                <a href="/unit/index" class="sidebar-link">Unit</a>
+              </li>
             </ul>
+          </li>
+        </ul>
+      </aside>
+      @endcan
+
+      @can('dashboard-not-sekre')
+      <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
+        <div class="d-flex">
+          <button class="toggle-btn" type="button" id="toggle-btnnn">
+            <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
+          </button>
+          <div class="sidebar-logo">
+            <a href="/" style="text-decoration: none;">E-Disposisi</a>
+          </div>
+        </div>
+        <ul class="sidebar-nav">
+          
+          <li class="sidebar-item
+          @if ($active == "dashboard")
+              active-tab
+          @endif
+           ">
+            <a href="/" class="sidebar-link">
+              <i class="fa-solid fa-house" style="color: #ffffff;"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          {{-- NAVBAR ADMIN --}}       
+
+          <li class="sidebar-item @if ($active == "surat masuk")
+          active-tab
+          @endif
+          ">
+            <a
+              href="#"
+              class="sidebar-link collapsed has-dropdown"
+              data-bs-toggle="collapse"
+              data-bs-target="#auth"
+              aria-expanded="false"
+              aria-controls="auth"
+            >
+            <i class="fa-solid fa-folder-closed" style="color: #ffffff;"></i>
+              <span>Surat Masuk</span>
+            </a>
+            <ul
+              id="auth"
+              class="sidebar-dropdown list-unstyled collapse"
+              data-bs-parent="#sidebar"
+            >
+              <li class="sidebar-item">
+                <a href="/surat-masuk/ns/belum-diteruskan" class="sidebar-link">Belum Diteruskan</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="/surat-masuk/ns/sudah-diteruskan" class="sidebar-link">Sudah Diteruskan</a>
+              </li>
+              <li class="sidebar-item">
+                <a href="/surat-masuk/ns/sudah-diarsipkan" class="sidebar-link">Sudah Diarsipkan</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="sidebar-item
+          @if ($active == "surat keluar")
+              active-tab
+          @endif
+           ">
+            <a href="/surat-masuk/ns/dikirim" class="sidebar-link">
+              <i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>
+              <span>Surat Keluar</span>
+            </a>
+          </li>
+
+          <li class="sidebar-item
+          @if ($active == "spo")
+              active-tab
+          @endif
+           ">
+            <a href="/spo/index/ns/" class="sidebar-link">
+              <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i>
+              <span>SPO</span>
+            </a>
+          </li>
+
+          <li class="sidebar-item
+          @if ($active == "akun")
+              active-tab
+          @endif
+           ">
+            <a href="/user/akun-ns" class="sidebar-link">
+              <i class="fa-solid fa-user" style="color: #ffffff;"></i>
+              <span>Akun</span>
+            </a>
           </li>
         </ul>
       </aside>

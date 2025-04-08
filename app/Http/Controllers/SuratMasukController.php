@@ -976,7 +976,7 @@ class SuratMasukController extends Controller
         if (request('status')) {
             $suratMasuk = $suratMasuk->where('status', 'like', '%' . request('status') . '%');
         }
-        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'belum diteruskan', 'suratMasuk' => $suratMasuk->get()]);
+        return view('surat-masuk.surat-disposisi-belum-diteruskan', ['title' => 'Surat Masuk Belum Diteruskan', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk->get()]);
     }
 
     public function nonSekreDikirim() {
@@ -1003,7 +1003,7 @@ class SuratMasukController extends Controller
         if (request('status')) {
             $suratMasuk = $suratMasuk->where('status', 'like', '%' . request('status') . '%');
         }
-        return view('surat-masuk.surat-disposisi-dikirim', ['title' => 'Surat Masuk Dikirim', 'active' => 'dikirim', 'suratMasuk' => $suratMasuk->get()]);
+        return view('surat-masuk.surat-disposisi-dikirim', ['title' => 'Surat Masuk Dikirim', 'active' => 'surat keluar', 'suratMasuk' => $suratMasuk->get()]);
     }
 
     public function nonSekreSudahDiteruskan() {
@@ -1081,7 +1081,7 @@ class SuratMasukController extends Controller
 
         return view('surat-masuk.surat-disposisi-sudah-diteruskan', [
             'title' => 'Surat Masuk Sudah Diteruskan',
-            'active' => 'sudah diteruskan',
+            'active' => 'surat masuk',
             'suratMasuk' => $paginatedItems
         ]);
     }
@@ -1153,7 +1153,7 @@ class SuratMasukController extends Controller
 
         return view('surat-masuk.surat-disposisi-sudah-diarsipkan', [
             'title' => 'Surat Masuk Sudah Diarsipkan',
-            'active' => 'sudah diarsipkan',
+            'active' => 'surat masuk',
             'suratMasuk' => $paginatedItems
         ]);
     }

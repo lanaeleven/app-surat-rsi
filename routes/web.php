@@ -9,6 +9,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DireksiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\StrukturOrganisasiController;
@@ -66,6 +67,7 @@ Route::get('/td', [SuratKeluarController::class, 'testDownload']);
 Route::get('/spo/index', [SpoController::class, 'create'])->middleware('sekre');
 Route::get('/spo/tambah', [SpoController::class, 'tambah'])->middleware('sekre');
 Route::get('/spo/edit/{spo}', [SpoController::class, 'edit'])->middleware('sekre');
+Route::get('/spo/index/ns/', [SpoController::class, 'listSpoNs'])->middleware('notSekre');
 Route::post('/spo/tambah', [SpoController::class, 'store']);
 Route::post('/spo/save', [SpoController::class, 'save']);
 Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
@@ -86,6 +88,13 @@ Route::get('/jenis-surat/tambah', [JenisSuratController::class, 'tambah'])->midd
 Route::get('/jenis-surat/edit/{jenisSurat}', [JenisSuratController::class, 'edit'])->middleware('sekre');
 Route::post('/jenis-surat/tambah', [JenisSuratController::class, 'store']);
 Route::post('/jenis-surat/save', [JenisSuratController::class, 'save']);
+
+Route::get('/unit/index', [UnitController::class, 'index'])->middleware('sekre');
+Route::get('/unit/tambah', [UnitController::class, 'tambah'])->middleware('sekre');
+Route::get('/unit/edit/{unit}', [UnitController::class, 'edit'])->middleware('sekre');
+Route::post('/unit/tambah', [UnitController::class, 'store']);
+Route::post('/unit/save', [UnitController::class, 'save']);
+Route::post('/unit/hapus/{id}', [UnitController::class, 'delete']);
 
 Route::get('/user/index', [UserController::class, 'create'])->middleware('sekre');
 Route::get('/user/tambah', [UserController::class, 'tambah'])->middleware('sekre');

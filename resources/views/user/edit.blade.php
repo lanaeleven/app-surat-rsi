@@ -291,7 +291,8 @@
                             <label for="units" class="col-sm-3 col-form-label">Pilih Unit (bisa lebih dari
                                 satu)</label>
                             <div class="col-sm-9">
-                                <select name="units[]" multiple class="form-select select2" required>
+                                <select name="units[]" id="units" multiple class="form-select select2" required>
+                                    <option value="all">Seluruh Unit</option>
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->id }}"
                                             @if ($user->units->contains($unit->id)) selected @endif>{{ $unit->nama }}</option>
@@ -349,12 +350,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
+    <script src="/js/multiple-select.js"></script>
 
     <script>
         function myFunction() {

@@ -7,7 +7,7 @@
         <a href="/" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
       </div>
       <div>
-        <h3 class="fw-bold fs-4 text-center">Surat Masuk yang Dikirim</h3>
+        <h3 class="fw-bold fs-4 text-center">Surat Keluar</h3>
       </div>
       <div>
       </div>

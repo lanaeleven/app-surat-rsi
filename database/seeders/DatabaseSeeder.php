@@ -161,7 +161,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'username' => 'kabag sdi dan keuangan',
+            'username' => 'sdi dan keu',
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Bagian SDI dan Keuangan',
@@ -169,7 +169,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'username' => 'kasubag sdi dan administrasi',
+            'username' => 'sdi',
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian SDI dan Administrasi',
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'username' => 'kasubag akuntansi dan keuangan',
+            'username' => 'keu',
             'nama' => 'Mr. X',
             'email' => 'maulanaelvn@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Akuntansi dan Keuangan',
@@ -682,9 +682,9 @@ class DatabaseSeeder extends Seeder
 
         // SEEDER UNIT
 
-        Unit::create(['nama' => 'Unit A']);
-        Unit::create(['nama' => 'Unit B']);
-        Unit::create(['nama' => 'Unit C']);
+        // Unit::create(['nama' => 'Unit A']);
+        // Unit::create(['nama' => 'Unit B']);
+        // Unit::create(['nama' => 'Unit C']);
 
     }
 }

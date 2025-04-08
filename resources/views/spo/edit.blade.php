@@ -58,7 +58,8 @@
                     <div class="row mb-3">
                         <label for="units" class="col-sm-3 col-form-label">Pilih Unit (bisa lebih dari satu)</label>
                         <div class="col-sm-9">
-                            <select name="units[]" multiple class="form-select select2" required>
+                            <select name="units[]" id="units" multiple class="form-select select2" required>
+                                <option value="all">Seluruh Unit</option>
                                 @foreach ($units as $unit)
                                     <option value="{{ $unit->id }}" @if ($spo->units->contains($unit->id)) selected @endif>
                                         {{ $unit->nama }}</option>
@@ -97,6 +98,19 @@
                             <textarea name="keterangan" class="form-control" name="keterangan" id="keterangan" rows="3">{{ $spo->keterangan }}</textarea>
                         </div>
                     </div>
+
+                    <div class="row mb-3">
+                        <label for="revisi" class="col-sm-3 col-form-label">Tambah Revisi (Opsional)</label>
+                        <div class="col-sm-9">
+                            <input name="revisi" class="form-control @error('revisi') is-invalid @enderror" type="file" id="revisi">
+                            @error('revisi')
+                            <div id="revisi" class="invalid-feedback">
+                              {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-success mt-3">Simpan
                             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"
@@ -112,12 +126,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
+    <script src="/js/multiple-select.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // spinner tombol edit
