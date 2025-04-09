@@ -118,7 +118,7 @@ class SpoController extends Controller
             'perihal' => 'required',
             'direksi' => 'required',
             'units' => 'required|array',
-            'fileSurat' => 'required|mimes:pdf,jpg,png|max:5120'
+            'fileSurat' => 'required|mimes:pdf|max:5120'
         ]);
 
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
@@ -172,9 +172,9 @@ class SpoController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'fileSurat' => 'mimes:pdf,jpg,png|max:5120',
+            'fileSurat' => 'mimes:pdf|max:5120',
             'units' => 'required|array',
-            'revisi' => 'mimes:pdf,jpg,png|max:5120'
+            'revisi' => 'mimes:pdf|max:5120'
         ]);
         
 
