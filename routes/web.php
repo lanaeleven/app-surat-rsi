@@ -8,6 +8,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DireksiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JenisRegulasiController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\SuratMasukController;
@@ -88,6 +89,12 @@ Route::get('/jenis-surat/tambah', [JenisSuratController::class, 'tambah'])->midd
 Route::get('/jenis-surat/edit/{jenisSurat}', [JenisSuratController::class, 'edit'])->middleware('sekre');
 Route::post('/jenis-surat/tambah', [JenisSuratController::class, 'store']);
 Route::post('/jenis-surat/save', [JenisSuratController::class, 'save']);
+
+Route::get('/jenis-regulasi/index', [JenisRegulasiController::class, 'create'])->middleware('sekre');
+Route::get('/jenis-regulasi/tambah', [JenisRegulasiController::class, 'tambah'])->middleware('sekre');
+Route::get('/jenis-regulasi/edit/{jenisRegulasi}', [JenisRegulasiController::class, 'edit'])->middleware('sekre');
+Route::post('/jenis-regulasi/tambah', [JenisRegulasiController::class, 'store']);
+Route::post('/jenis-regulasi/save', [JenisRegulasiController::class, 'save']);
 
 Route::get('/unit/index', [UnitController::class, 'index'])->middleware('sekre');
 Route::get('/unit/tambah', [UnitController::class, 'tambah'])->middleware('sekre');
