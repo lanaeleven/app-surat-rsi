@@ -21,12 +21,6 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-end">
-      <div>
-        <button class="btn btn-success btn-sm py-2 fs-6 mx-auto" data-bs-toggle="modal" data-bs-target="#unduhRekapModal">Unduh Rekap</button>
-      </div>
-    </div>
-
     {{-- Modal Unduh Rekap --}}
     <div class="modal fade" id="unduhRekapModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="unduhRekapModalLabel" aria-hidden="true">
       <div class="modal-dialog">
