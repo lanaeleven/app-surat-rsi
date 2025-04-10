@@ -77,7 +77,7 @@ Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
 Route::get('/regulasi/index', [RegulasiController::class, 'create'])->middleware('sekre');
 Route::get('/regulasi/tambah', [RegulasiController::class, 'tambah'])->middleware('sekre');
 Route::get('/regulasi/edit/{regulasi}', [RegulasiController::class, 'edit'])->middleware('sekre');
-// Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])->middleware('notSekre');
+Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])->middleware('notSekre');
 Route::post('/regulasi/tambah', [RegulasiController::class, 'store']);
 Route::post('/regulasi/save', [RegulasiController::class, 'save']);
 // Route::post('/unduh-rekap-regulasi', [RegulasiController::class, 'rekapRegulasi']);

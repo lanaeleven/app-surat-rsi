@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Direksi;
 use App\Models\JenisSurat;
 use App\Models\DistribusiSurat;
+use App\Models\JenisRegulasi;
 use App\Models\TujuanDisposisi;
 use Illuminate\Database\Seeder;
 use App\Models\StrukturOrganisasi;
@@ -682,9 +683,14 @@ class DatabaseSeeder extends Seeder
 
         // SEEDER UNIT
 
-        // Unit::create(['nama' => 'Unit A']);
-        // Unit::create(['nama' => 'Unit B']);
-        // Unit::create(['nama' => 'Unit C']);
+        Unit::create(['nama' => 'SDI & Administrasi']);
+        Unit::create(['nama' => 'Keuangan & Akuntansi']);
+        Unit::create(['nama' => 'Umum']);
 
+
+        // SEEDER REGULASI
+
+        JenisRegulasi::create(['kodeJenisRegulasi' => 'KPTS', 'keterangan' => 'Keputusan']);
+        JenisRegulasi::create(['kodeJenisRegulasi' => 'PER', 'keterangan' => 'Persetujuan']);
     }
 }

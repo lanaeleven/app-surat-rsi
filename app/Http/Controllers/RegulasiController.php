@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Direksi;
 use App\Models\JenisRegulasi;
 use App\Models\Regulasi;
+use App\Models\Unit;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -61,11 +62,50 @@ class RegulasiController extends Controller
         return view('regulasi.index', ['title' => $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with(['jenisRegulasi', 'direksi'])->paginate(15), 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi, 'judul' => $judul]);
     }
 
+    public function listRegulasiNs()
+    {
+        $userUnitIds = auth()->user()->units->pluck('id');
+
+        $regulasi = Regulasi::whereHas('units', function ($query) use ($userUnitIds) {
+            $query->whereIn('unit.id', $userUnitIds);
+        });
+
+        $direksi = Direksi::all();
+        $judul = "Regulasi";
+
+        if (request('index')) {
+            $regulasi->where('index', '=', request('index'));
+        }
+
+        if (request('tanggalAwal')) {
+            $regulasi = $regulasi->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+        }
+
+        if (request('tanggalAkhir')) {
+            $regulasi = $regulasi->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }
+
+        if (request('tujuan')) {
+            $regulasi->where('tujuan', 'like', '%' . request('tujuan') . '%');
+        }
+
+        if (request('perihal')) {
+            $regulasi->where('perihal', 'like', '%' . request('perihal') . '%');
+        }
+
+        if (request('keterangan')) {
+            $regulasi->where('keterangan', 'like', '%' . request('keterangan') . '%');
+        }
+
+        return view('regulasi.index-ns', ['title' =>  $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+    }
+
     public function tambah() {
         $jenisRegulasi = JenisRegulasi::all();
         $direksi = Direksi::all();
+        $units = Unit::all();
 
-        return view('regulasi.tambah', ['title' => 'Tambah Regulasi', 'active' => 'regulasi', 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi]);
+        return view('regulasi.tambah', ['title' => 'Tambah Regulasi', 'active' => 'regulasi', 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi, 'units' => $units]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -85,6 +125,7 @@ class RegulasiController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
+            'units' => 'required|array',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
         
@@ -111,6 +152,8 @@ class RegulasiController extends Controller
         $regulasi->filePath = $filePath;
         $regulasi->save();
 
+        $regulasi->units()->attach($request->input('units'));
+
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Regulasi');
     }
@@ -118,8 +161,9 @@ class RegulasiController extends Controller
     public function edit(Regulasi $regulasi) {
         $jenisRegulasi = JenisRegulasi::all();
         $direksi = Direksi::all();
+        $units = Unit::all();
 
-        return view('regulasi.edit', ['title' => 'Edit Regulasi', 'active' => 'regulasi', 'regulasi' => $regulasi, 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi]);
+        return view('regulasi.edit', ['title' => 'Edit Regulasi', 'active' => 'regulasi', 'regulasi' => $regulasi, 'jenisRegulasi' => $jenisRegulasi, 'direksi' => $direksi, 'units' => $units]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -139,6 +183,7 @@ class RegulasiController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
+            'units' => 'required|array',
             'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
         ]);
 
@@ -174,6 +219,8 @@ class RegulasiController extends Controller
             $regulasi->index = $newIndex;         
         }
         $regulasi->save();
+
+        $regulasi->units()->sync($request->input('units'));
 
         return redirect($redirect)
             ->with('success', 'Berhasil Mengedit Regulasi');

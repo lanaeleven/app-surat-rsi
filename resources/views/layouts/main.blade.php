@@ -66,7 +66,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item
-          @if ($active == 'spo') active-tab @endif
+          @if ($active == 'regulasi') active-tab @endif
            ">
                         <a href="/regulasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
                             <i class="fa-solid fa-gavel" style="color: #ffffff;"></i>
@@ -222,6 +222,15 @@
                         <a href="/spo/index/ns/" class="sidebar-link">
                             <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i>
                             <span>SPO</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item
+          @if ($active == 'regulasi') active-tab @endif
+           ">
+                        <a href="/regulasi/index/ns/" class="sidebar-link">
+                            <i class="fa-solid fa-gavel" style="color: #ffffff;"></i>
+                            <span>Regulasi</span>
                         </a>
                     </li>
 
