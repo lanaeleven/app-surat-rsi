@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('idJenisRegulasi')->references('id')->on('jenis_regulasi');
             $table->unsignedInteger('idDireksi');
             $table->foreign('idDireksi')->references('id')->on('direksi');
-            $table->date('tanggalRegulasi');
+            $table->date('tanggalSurat');
             $table->string('tujuan');
             $table->string('perihal');
             $table->string('keterangan')->nullable();

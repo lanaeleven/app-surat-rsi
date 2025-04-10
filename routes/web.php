@@ -10,6 +10,7 @@ use App\Http\Controllers\DireksiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisRegulasiController;
 use App\Http\Controllers\JenisSuratController;
+use App\Http\Controllers\RegulasiController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
@@ -72,6 +73,14 @@ Route::get('/spo/index/ns/', [SpoController::class, 'listSpoNs'])->middleware('n
 Route::post('/spo/tambah', [SpoController::class, 'store']);
 Route::post('/spo/save', [SpoController::class, 'save']);
 Route::post('/unduh-rekap-spo', [SpoController::class, 'rekapSpo']);
+
+Route::get('/regulasi/index', [RegulasiController::class, 'create'])->middleware('sekre');
+Route::get('/regulasi/tambah', [RegulasiController::class, 'tambah'])->middleware('sekre');
+Route::get('/regulasi/edit/{regulasi}', [RegulasiController::class, 'edit'])->middleware('sekre');
+// Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])->middleware('notSekre');
+Route::post('/regulasi/tambah', [RegulasiController::class, 'store']);
+Route::post('/regulasi/save', [RegulasiController::class, 'save']);
+// Route::post('/unduh-rekap-regulasi', [RegulasiController::class, 'rekapRegulasi']);
 
 Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
