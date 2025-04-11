@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessNotifRegulasiBaru;
 use App\Models\Direksi;
 use App\Models\JenisRegulasi;
 use App\Models\Regulasi;
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -128,6 +130,8 @@ class RegulasiController extends Controller
             'units' => 'required|array',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
+
+        
         
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
@@ -153,6 +157,15 @@ class RegulasiController extends Controller
         $regulasi->save();
 
         $regulasi->units()->attach($request->input('units'));
+
+        $userUnit = User::whereHas('units', function ($query) use ($request) {
+            $query->whereIn('unit_id', $request->input('units'));
+        })->get();
+
+        foreach ($userUnit as $un) {
+            $job = new ProcessNotifRegulasiBaru($un->email, $un->namaJabatan, $request->input('perihal'));
+            dispatch($job);
+        }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Regulasi');
