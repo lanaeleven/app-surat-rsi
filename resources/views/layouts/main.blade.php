@@ -297,7 +297,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
-                  @if ($active == 'dikirim') fw-bold @endif
+                  @if ($active == 'surat keluar') fw-bold @endif
                    "
                                         href="/surat-masuk/ns/dikirim">Dikirim</a>
                                 </li>
@@ -318,6 +318,18 @@
                   @if ($active == 'sudah diarsipkan') fw-bold @endif
                    "
                                         href="/surat-masuk/ns/sudah-diarsipkan">Sudah Diarsipkan</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-center fs-6
+                  @if ($active == 'spo') fw-bold @endif
+                   "
+                                        href="/spo/index/ns">SPO</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-center fs-6
+                  @if ($active == 'regulasi') fw-bold @endif
+                   "
+                                        href="/regulasi/index/ns">Regulasi</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
