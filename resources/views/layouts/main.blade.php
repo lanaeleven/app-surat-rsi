@@ -65,7 +65,7 @@
                             <span>SPO</span>
                         </a>
                     </li>
-                    <li class="sidebar-item
+                    {{-- <li class="sidebar-item
           @if ($active == 'regulasi') active-tab @endif
            ">
                         <a href="/regulasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
@@ -73,6 +73,14 @@
                             <span>Regulasi</span>
                         </a>
                     </li>
+                    <li class="sidebar-item
+          @if ($active == 'pks') active-tab @endif
+           ">
+                        <a href="/pks/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                            <i class="fa-solid fa-handshake-simple" style="color: #ffffff;"></i>
+                            <span>PKS</span>
+                        </a>
+                    </li> --}}
                     <li class="sidebar-item
           @if ($active == 'laporan') active-tab @endif">
                         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
@@ -110,7 +118,8 @@
                             </li>
                             <li class="sidebar-item">
                                 <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
-                                    data-bs-target="#distribusisurat" aria-expanded="false" aria-controls="distribusisurat">
+                                    data-bs-target="#distribusisurat" aria-expanded="false"
+                                    aria-controls="distribusisurat">
                                     Laporan Distribusi Surat
                                 </a>
                                 <ul id="distribusisurat" class="sidebar-dropdown list-unstyled collapse"
@@ -164,7 +173,7 @@
             </aside>
         @endcan
 
-        @can('dashboard-not-sekre')
+        {{-- @can('dashboard-not-sekre')
             <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
                 <div class="d-flex">
                     <button class="toggle-btn" type="button" id="toggle-btnnn">
@@ -184,8 +193,6 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-
-                    {{-- NAVBAR ADMIN --}}
 
                     <li class="sidebar-item @if ($active == 'surat masuk') active-tab @endif
           ">
@@ -244,7 +251,7 @@
                     </li>
                 </ul>
             </aside>
-        @endcan
+        @endcan --}}
 
         <div class="main">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -319,7 +326,7 @@
                    "
                                         href="/surat-masuk/ns/sudah-diarsipkan">Sudah Diarsipkan</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'spo') fw-bold @endif
                    "
@@ -330,7 +337,7 @@
                   @if ($active == 'regulasi') fw-bold @endif
                    "
                                         href="/regulasi/index/ns">Regulasi</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'akun') fw-bold @endif
