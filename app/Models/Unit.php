@@ -21,8 +21,18 @@ class Unit extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function spos(): BelongsToMany
+    public function spo(): BelongsToMany
     {
         return $this->belongsToMany(SPO::class);
+    }
+
+    public function regulasi(): BelongsToMany
+    {
+        return $this->belongsToMany(Regulasi::class);
+    }
+
+    public function pks(): BelongsToMany
+    {
+        return $this->belongsToMany(PerjanjianKerjaSama::class);
     }
 }
