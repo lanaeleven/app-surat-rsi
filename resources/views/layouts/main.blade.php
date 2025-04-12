@@ -65,7 +65,7 @@
                             <span>SPO</span>
                         </a>
                     </li>
-                    {{-- <li class="sidebar-item
+                    <li class="sidebar-item
           @if ($active == 'regulasi') active-tab @endif
            ">
                         <a href="/regulasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
@@ -80,7 +80,7 @@
                             <i class="fa-solid fa-handshake-simple" style="color: #ffffff;"></i>
                             <span>PKS</span>
                         </a>
-                    </li> --}}
+                    </li>
                     <li class="sidebar-item
           @if ($active == 'laporan') active-tab @endif">
                         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"

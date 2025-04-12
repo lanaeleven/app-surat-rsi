@@ -84,10 +84,10 @@ Route::post('/regulasi/save', [RegulasiController::class, 'save']);
 
 Route::get('/pks/index', [PerjanjianKerjaSamaController::class, 'create'])->middleware('sekre');
 Route::get('/pks/tambah', [PerjanjianKerjaSamaController::class, 'tambah'])->middleware('sekre');
-// Route::get('/pks/edit/{regulasi}', [PerjanjianKerjaSamaController::class, 'edit'])->middleware('sekre');
+Route::get('/pks/edit/{pks}', [PerjanjianKerjaSamaController::class, 'edit'])->middleware('sekre');
 // Route::get('/pks/index/ns/', [PerjanjianKerjaSamaController::class, 'listRegulasiNs'])->middleware('notSekre');
 Route::post('/pks/tambah', [PerjanjianKerjaSamaController::class, 'store']);
-// Route::post('/pks/save', [PerjanjianKerjaSamaController::class, 'save']);
+Route::post('/pks/save', [PerjanjianKerjaSamaController::class, 'save']);
 
 Route::get('/login', [LoginController::class, 'create'])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);

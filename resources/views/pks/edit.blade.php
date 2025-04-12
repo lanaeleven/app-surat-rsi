@@ -5,11 +5,11 @@
 
         <div class="d-flex justify-content-between align-items-center my-4">
             <div>
-                <a href="/regulasi/index?tahun={{ config('app.tahun') }}" class="btn btn-warning btn-sm"><i
+                <a href="/pks/index?tahun={{ config('app.tahun') }}" class="btn btn-warning btn-sm"><i
                         class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
             </div>
             <div>
-                <h3 class="fw-bold fs-4 text-center">Edit Regulasi</h3>
+                <h3 class="fw-bold fs-4 text-center">Edit Perjanjian Kerja Sama</h3>
             </div>
             <div>
             </div>
@@ -17,41 +17,29 @@
 
         <div class="d-flex justify-content-center">
             <div class="col-12 col-md-6">
-                <form method="post" id="formEdit" action="/regulasi/save" enctype="multipart/form-data">
+                <form method="post" id="formEdit" action="/pks/save" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id" value="{{ $regulasi->id }}">
-                    <input type="hidden" name="index" value="{{ $regulasi->index }}">
-                    <input type="hidden" name="tahun" value="{{ $regulasi->tahun }}">
-                    <div class="row mb-3">
-                        <label for="jenisRegulasi" class="col-sm-3 col-form-label">Jenis Regulasi</label>
-                        <div class="col-sm-9">
-                            <select name="jenisRegulasi" class="form-select" id="jenisRegulasi" required>
-                                <option value="">Pilih Jenis Regulasi</option>
-                                @foreach ($jenisRegulasi as $jr)
-                                    <option value="{{ $jr->id }}" @if ($regulasi->idJenisRegulasi == $jr->id) selected @endif>
-                                        {{ $jr->kodeJenisRegulasi . '-' . $jr->keterangan }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                    <input type="hidden" name="id" value="{{ $pks->id }}">
+                    <input type="hidden" name="index" value="{{ $pks->index }}">
+                    <input type="hidden" name="tahun" value="{{ $pks->tahun }}">
                     <div class="row mb-3">
                         <label for="tanggalSurat" class="col-sm-3 col-form-label">Tanggal Surat</label>
                         <div class="col-sm-9">
                             <input name="tanggalSurat" type="date" class="form-control" id="tanggalSurat"
-                                value="{{ $regulasi->tanggalSurat }}" required>
+                                value="{{ $pks->tanggalSurat }}" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="tujuan" class="col-sm-3 col-form-label">Tujuan</label>
                         <div class="col-sm-9">
                             <input name="tujuan" type="text" class="form-control" id="tujuan"
-                                value="{{ $regulasi->tujuan }}" required>
+                                value="{{ $pks->tujuan }}" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="perihal" class="col-sm-3 col-form-label">Perihal</label>
                         <div class="col-sm-9">
-                            <textarea class="form-control" name="perihal" id="perihal" rows="3" required>{{ $regulasi->perihal }}</textarea>
+                            <textarea class="form-control" name="perihal" id="perihal" rows="3" required>{{ $pks->perihal }}</textarea>
                         </div>
                     </div>
 
@@ -61,7 +49,7 @@
                             <select name="direksi" class="form-select" id="direktorat" required>
                                 <option value="">Pilih Direksi</option>
                                 @foreach ($direksi as $d)
-                                    <option value="{{ $d->id }}" @if ($regulasi->idDireksi == $d->id) selected @endif>
+                                    <option value="{{ $d->id }}" @if ($pks->idDireksi == $d->id) selected @endif>
                                         {{ $d->namaDireksi }}</option>
                                 @endforeach
                             </select>
@@ -74,7 +62,7 @@
                             <select name="units[]" id="units" multiple class="form-select select2" required>
                                 <option value="all">Seluruh Unit</option>
                                 @foreach ($units as $unit)
-                                    <option value="{{ $unit->id }}" @if ($regulasi->units->contains($unit->id)) selected @endif>
+                                    <option value="{{ $unit->id }}" @if ($pks->units->contains($unit->id)) selected @endif>
                                         {{ $unit->nama }}</option>
                                 @endforeach
                             </select>
@@ -86,14 +74,14 @@
                         <div class="col-sm-9">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col">
-                                    {{ $regulasi->fileName }}
+                                    {{ $pks->fileName }}
                                 </div>
                                 <div class="col">
-                                    <a href="{{ asset('storage/' . $regulasi->filePath) }}"
+                                    <a href="{{ asset('storage/' . $pks->filePath) }}"
                                         class="mt-1 btn btn-success btn-sm" target="_blank">view</a>
-                                    <a href="{{ asset('storage/' . $regulasi->filePath) }}"
+                                    <a href="{{ asset('storage/' . $pks->filePath) }}"
                                         class="mt-1 btn btn-primary btn-sm"
-                                        download='{{ $regulasi->fileName }}'>download</a>
+                                        download='{{ $pks->fileName }}'>download</a>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +97,7 @@
                     <div class="row mb-3">
                         <label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
                         <div class="col-sm-9">
-                            <textarea name="keterangan" class="form-control" name="keterangan" id="keterangan" rows="3">{{ $regulasi->keterangan }}</textarea>
+                            <textarea name="keterangan" class="form-control" name="keterangan" id="keterangan" rows="3">{{ $pks->keterangan }}</textarea>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">

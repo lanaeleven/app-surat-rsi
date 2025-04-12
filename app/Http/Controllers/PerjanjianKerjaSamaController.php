@@ -12,7 +12,8 @@ use Illuminate\Support\Carbon;
 
 class PerjanjianKerjaSamaController extends Controller
 {
-    public function create() {
+    public function create()
+    {
 
         $pks = PerjanjianKerjaSama::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         $direksi = Direksi::all();
@@ -28,7 +29,7 @@ class PerjanjianKerjaSamaController extends Controller
 
         if (request('tanggalAkhir')) {
             $pks = $pks->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
 
         if (request('direksi')) {
             $pks->where('idDireksi', request('direksi'));
@@ -57,7 +58,8 @@ class PerjanjianKerjaSamaController extends Controller
         return view('pks.index', ['title' => $judul, 'active' => 'pks', 'pks' => $pks->with(['direksi'])->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 
-    public function tambah() {
+    public function tambah()
+    {
         $direksi = Direksi::all();
         $units = Unit::all();
 
@@ -68,13 +70,12 @@ class PerjanjianKerjaSamaController extends Controller
     {
         if (auth()->user()->id == 1) {
             $redirect = '/pks/index'
-                    . '?tahun=' . urlencode(session('search_tahun', ''))
-            ;
+                . '?tahun=' . urlencode(session('search_tahun', ''));
         } else {
             $redirect = '/';
-        } 
+        }
         session()->forget('search_tahun');
-        
+
         $request->validate([
             'tanggalSurat' => 'required',
             'tujuan' => 'required',
@@ -84,8 +85,8 @@ class PerjanjianKerjaSamaController extends Controller
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
 
-        
-        
+
+
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         $maxIndex = PerjanjianKerjaSama::where('tahun', $tahun)->max('index');
@@ -121,5 +122,70 @@ class PerjanjianKerjaSamaController extends Controller
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Perjanjian Kerja Sama');
+    }
+
+    public function edit(PerjanjianKerjaSama $pks)
+    {
+        $direksi = Direksi::all();
+        $units = Unit::all();
+
+        return view('pks.edit', ['title' => 'Edit Perjanjian Kerja Sama', 'active' => 'pks', 'pks' => $pks, 'direksi' => $direksi, 'units' => $units]);
+    }
+
+    public function save(Request $request): RedirectResponse
+    {
+        if (auth()->user()->id == 1) {
+            $redirect = '/pks/index'
+                . '?tahun=' . urlencode(session('search_tahun', ''));
+        } else {
+            $redirect = '/';
+        }
+        session()->forget('search_tahun');
+
+        $request->validate([
+            'tanggalSurat' => 'required',
+            'tujuan' => 'required',
+            'perihal' => 'required',
+            'direksi' => 'required',
+            'units' => 'required|array',
+            'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
+        ]);
+
+        $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
+        $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
+
+        if ($request->file('fileSurat')) {
+            $file = $request->file('fileSurat');
+            $fileName = $file->getClientOriginalName();
+            $filePath = $file->store('uploads/pks/' . $tahunInput . '/' . $bulan, 'public');
+        }
+
+
+        // Store file information in the database
+        $pks = PerjanjianKerjaSama::find($request->input('id'));
+
+        $pks->idDireksi = $request->input('direksi');
+        $pks->tanggalSurat = $request->input('tanggalSurat');
+        $pks->tujuan = $request->input('tujuan');
+        $pks->perihal = $request->input('perihal');
+        $pks->keterangan = $request->input('keterangan');
+        if ($request->file('fileSurat')) {
+            $pks->fileName = $fileName;
+            $pks->filePath = $filePath;
+        }
+
+        if ($tahunInput != $request->input('tahun')) {
+            $maxIndex = PerjanjianKerjaSama::where('tahun', $tahunInput)->max('index');
+            $newIndex = $maxIndex ? $maxIndex + 1 : 1;
+
+            $pks->tahun = $tahunInput;
+            $pks->index = $newIndex;
+        }
+        $pks->save();
+
+        $pks->units()->sync($request->input('units'));
+
+        return redirect($redirect)
+            ->with('success', 'Berhasil Mengedit Perjanjian Kerja Sama');
     }
 }
