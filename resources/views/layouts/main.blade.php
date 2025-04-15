@@ -162,6 +162,9 @@
                                 <a href="/jenis-regulasi/index" class="sidebar-link">Jenis Regulasi</a>
                             </li>
                             <li class="sidebar-item">
+                                <a href="/jenis-informasi/index" class="sidebar-link">Jenis Informasi</a>
+                            </li>
+                            <li class="sidebar-item">
                                 <a href="/user/index" class="sidebar-link">Tujuan Disposisi</a>
                             </li>
                             <li class="sidebar-item">
