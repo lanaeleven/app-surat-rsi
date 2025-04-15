@@ -73,7 +73,6 @@
                                 <th scope="col">Perihal</th>
                                 <th scope="col">Direktorat</th>
                                 <th scope="col">Keterangan</th>
-                                <th scope="col">Jenis</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>

@@ -340,6 +340,12 @@
                                 </li> --}}
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
+                  @if ($active == 'pks') fw-bold @endif
+                   "
+                                        href="/pks/index/ns">PKS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-center fs-6
                   @if ($active == 'akun') fw-bold @endif
                    "
                                         href="/user/akun-ns">Akun</a>

@@ -189,4 +189,42 @@ class PerjanjianKerjaSamaController extends Controller
         return redirect($redirect)
             ->with('success', 'Berhasil Mengedit Perjanjian Kerja Sama');
     }
+
+    public function listPerjanjianKerjaSamaNs()
+    {
+        $userUnitIds = auth()->user()->units->pluck('id');
+
+        $pks = PerjanjianKerjaSama::whereHas('units', function ($query) use ($userUnitIds) {
+            $query->whereIn('unit.id', $userUnitIds);
+        });
+
+        $direksi = Direksi::all();
+        $judul = "Perjanjian Kerja Sama";
+
+        if (request('index')) {
+            $pks->where('index', '=', request('index'));
+        }
+
+        if (request('tanggalAwal')) {
+            $pks = $pks->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+        }
+
+        if (request('tanggalAkhir')) {
+            $pks = $pks->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }
+
+        if (request('tujuan')) {
+            $pks->where('tujuan', 'like', '%' . request('tujuan') . '%');
+        }
+
+        if (request('perihal')) {
+            $pks->where('perihal', 'like', '%' . request('perihal') . '%');
+        }
+
+        if (request('keterangan')) {
+            $pks->where('keterangan', 'like', '%' . request('keterangan') . '%');
+        }
+
+        return view('pks.index-ns', ['title' =>  $judul, 'active' => 'pks', 'pks' => $pks->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+    }
 }
