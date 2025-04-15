@@ -35,4 +35,9 @@ class Unit extends Model
     {
         return $this->belongsToMany(PerjanjianKerjaSama::class);
     }
+
+    public function informasi(): BelongsToMany
+    {
+        return $this->belongsToMany(Informasi::class);
+    }
 }

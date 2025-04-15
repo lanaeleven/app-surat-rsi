@@ -8,6 +8,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DireksiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InformasiController;
 use App\Http\Controllers\JenisInformasiController;
 use App\Http\Controllers\JenisRegulasiController;
 use App\Http\Controllers\JenisSuratController;
@@ -82,6 +83,13 @@ Route::get('/regulasi/edit/{regulasi}', [RegulasiController::class, 'edit'])->mi
 Route::get('/regulasi/index/ns/', [RegulasiController::class, 'listRegulasiNs'])->middleware('notSekre');
 Route::post('/regulasi/tambah', [RegulasiController::class, 'store']);
 Route::post('/regulasi/save', [RegulasiController::class, 'save']);
+
+Route::get('/informasi/index', [InformasiController::class, 'create'])->middleware('sekre');
+Route::get('/informasi/tambah', [InformasiController::class, 'tambah'])->middleware('sekre');
+Route::get('/informasi/edit/{informasi}', [InformasiController::class, 'edit'])->middleware('sekre');
+// Route::get('/informasi/index/ns/', [InformasiController::class, 'listRegulasiNs'])->middleware('notSekre');
+Route::post('/informasi/tambah', [InformasiController::class, 'store']);
+Route::post('/informasi/save', [InformasiController::class, 'save']);
 
 Route::get('/pks/index', [PerjanjianKerjaSamaController::class, 'create'])->middleware('sekre');
 Route::get('/pks/tambah', [PerjanjianKerjaSamaController::class, 'tambah'])->middleware('sekre');

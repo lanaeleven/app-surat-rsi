@@ -16,7 +16,7 @@ class JenisInformasi extends Model
 
     protected $table = 'jenis_informasi';
 
-    // public function regulasi(): HasMany {
-    //     return $this->hasMany(JenisRegulasi::class, 'idJenisRegulasi');
-    // }
+    public function informasi(): HasMany {
+        return $this->hasMany(JenisInformasi::class, 'idJenisInformasi');
+    }
 }

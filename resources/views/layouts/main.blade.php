@@ -82,6 +82,14 @@
                         </a>
                     </li>
                     <li class="sidebar-item
+          @if ($active == 'informasi') active-tab @endif
+           ">
+                        <a href="/informasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                            <i class="fa-solid fa-scroll" style="color: #ffffff;"></i>
+                            <span>Informasi</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item
           @if ($active == 'laporan') active-tab @endif">
                         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
