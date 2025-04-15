@@ -225,6 +225,6 @@ class PerjanjianKerjaSamaController extends Controller
             $pks->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('pks.index-ns', ['title' =>  $judul, 'active' => 'pks', 'pks' => $pks->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('pks.index-ns', ['title' =>  $judul, 'active' => 'pks', 'pks' => $pks->with('direksi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 }

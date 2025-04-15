@@ -337,7 +337,7 @@
                    "
                                         href="/surat-masuk/ns/sudah-diarsipkan">Sudah Diarsipkan</a>
                                 </li>
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'spo') fw-bold @endif
                    "
@@ -348,12 +348,18 @@
                   @if ($active == 'regulasi') fw-bold @endif
                    "
                                         href="/regulasi/index/ns">Regulasi</a>
-                                </li> --}}
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'pks') fw-bold @endif
                    "
                                         href="/pks/index/ns">PKS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-center fs-6
+                  @if ($active == 'informasi') fw-bold @endif
+                   "
+                                        href="/informasi/index/ns">Informasi</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6

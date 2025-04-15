@@ -98,7 +98,7 @@ class SpoController extends Controller
             $spo->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('spo.index-ns', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('spo.index-ns', ['title' =>  $judul, 'active' => 'spo', 'spo' => $spo->with('direksi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 
     public function tambah()

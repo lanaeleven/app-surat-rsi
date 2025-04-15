@@ -50,6 +50,35 @@ class InformasiController extends Controller
         return view('informasi.index', ['title' => $judul, 'active' => 'informasi', 'informasi' => $informasi->with(['jenisInformasi'])->paginate(15), 'jenisInformasi' => $jenisInformasi, 'judul' => $judul]);
     }
 
+    public function listInformasiNs()
+    {
+        $userUnitIds = auth()->user()->units->pluck('id');
+
+        $informasi = Informasi::whereHas('units', function ($query) use ($userUnitIds) {
+            $query->whereIn('unit.id', $userUnitIds);
+        });
+
+        $judul = "Informasi";
+
+        if (request('index')) {
+            $informasi->where('index', '=', request('index'));
+        }
+
+        if (request('tanggalAwal')) {
+            $informasi = $informasi->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
+        }
+
+        if (request('tanggalAkhir')) {
+            $informasi = $informasi->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
+        }
+
+        if (request('judul')) {
+            $informasi->where('judul', 'like', '%' . request('judul') . '%');
+        }
+
+        return view('informasi.index-ns', ['title' =>  $judul, 'active' => 'informasi', 'informasi' => $informasi->with('jenisInformasi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'judul' => $judul]);
+    }
+
     public function tambah() {
         $jenisInformasi = JenisInformasi::all();
         $units = Unit::all();

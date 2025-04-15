@@ -15,7 +15,7 @@
             </div>
 
             <div>
-                <form class="row g-3" action="/regulasi/index/ns">
+                <form class="row g-3" action="/informasi/index/ns">
                     <div class="row g-3">
                         <div class="col-auto">
                             <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
@@ -40,16 +40,8 @@
                                 value="{{ request('index') }}">
                         </div>
                         <div class="col-auto">
-                            <input name="tujuan" type="text" class="form-control form-control-sm" placeholder="Tujuan"
-                                value="{{ request('tujuan') }}">
-                        </div>
-                        <div class="col-auto">
-                            <input name="perihal" type="text" class="form-control form-control-sm" placeholder="Perihal"
-                                value="{{ request('perihal') }}">
-                        </div>
-                        <div class="col-auto">
-                            <input name="keterangan" type="text" class="form-control form-control-sm"
-                                placeholder="Keterangan" value="{{ request('keterangan') }}">
+                            <input name="judul" type="text" class="form-control form-control-sm" placeholder="Judul"
+                                value="{{ request('judul') }}">
                         </div>
                         <div class="col-auto">
                             <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass"
@@ -59,7 +51,7 @@
                 </form>
             </div>
 
-            @if ($regulasi->isEmpty())
+            @if ($informasi->isEmpty())
 
                 <p class="text-center fs-6 my-5">Anda Tidak Memiliki {{ $judul }}</p>
             @else
@@ -68,38 +60,22 @@
                         <thead>
                             <tr>
                                 <th scope="col">Indeks</th>
-                                <th scope="col">Tanggal</th>
-                                <th scope="col">Tujuan</th>
-                                <th scope="col">Perihal</th>
-                                <th scope="col">Direktorat</th>
-                                <th scope="col">Keterangan</th>
+                                <th scope="col">Judul</th>
                                 <th scope="col">Jenis</th>
+                                <th scope="col">Tanggal</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            @foreach ($regulasi as $r)
+                            @foreach ($informasi as $i)
                                 <tr>
-                                    <th scope="row">{{ $r->index }}</th>
-                                    <td>{{ $r->tanggalSurat }}</td>
-                                    <td>{{ $r->tujuan }}</td>
-                                    <td>{{ $r->perihal }}</td>
-                                    <td>{{ $r->direksi->namaDireksi }}</td>
-                                    @php
-                                        $arr = explode(' ', $r->keterangan);
-
-                                    @endphp
+                                    <th scope="row">{{ $i->index }}</th>
+                                    <td>{{ $i->judul }}</td>
+                                    <td>{{ $i->jenisinformasi->nama }}</td>
+                                    <td>{{ $i->tanggalSurat }}</td>
                                     <td>
-                                        @if (count($arr) > 2)
-                                            {{ $arr[0] . ' ' . $arr[1] . '...' }}
-                                        @else
-                                            {{ $r->keterangan }}
-                                        @endif
-                                    </td>
-                                    <td>{{ $r->jenisRegulasi->keterangan }}</td>
-                                    <td>
-                                        <a href="{{ asset('storage/' . $r->filePath) }}"
+                                        <a href="{{ asset('storage/' . $i->filePath) }}"
                                             class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye"
                                                 style="color: #ffffff;"></i></a>
                                     </td>
@@ -110,41 +86,33 @@
                     </table>
 
                     {{-- Tampilan SPO pada mobile device --}}
-                    @foreach ($regulasi as $r)
+                    @foreach ($informasi as $i)
                         <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mt-3 mb-5">
                             <div class="card shadow">
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>Indeks</th>
-                                        <td>{{ $r->index }}</td>
+                                        <td>{{ $i->index }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Judul</th>
+                                        <td>{{ $i->judul }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jenis</th>
+                                        <td>{{ $i->jenisinformasi->nama }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tanggal</th>
-                                        <td>{{ $r->tanggalSurat }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tujuan</th>
-                                        <td>{{ $r->tujuan }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Perihal</th>
-                                        <td>{{ $r->perihal }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Direktorat</th>
-                                        <td>{{ $r->direksi->namaDireksi }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Keterangan</th>
-                                        <td>{{ $r->keterangan }}</td>
+                                        <td>{{ $i->tanggalSurat }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="text-center">
-                                            <a href="/regulasi/edit/{{ $r->id }}"
+                                            <a href="/informasi/edit/{{ $i->id }}"
                                                 class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil"
                                                     style="color: #ffffff;"></i></a>
-                                            <a href="{{ asset('storage/' . $r->filePath) }}"
-                                                class="mt-1 btn btn-sm btn-success" download='{{ $r->fileName }}'><i
+                                            <a href="{{ asset('storage/' . $i->filePath) }}"
+                                                class="mt-1 btn btn-sm btn-success" download='{{ $i->fileName }}'><i
                                                     class="fa-solid fa-download" style="color: #ffffff;"></i></a>
                                         </td>
                                     </tr>
@@ -157,7 +125,7 @@
 
                 <div class="d-flex justify-content-center">
                     <div>
-                        {{ $regulasi->appends(request()->input())->links() }}
+                        {{ $informasi->appends(request()->input())->links() }}
                     </div>
                 </div>
             @endif

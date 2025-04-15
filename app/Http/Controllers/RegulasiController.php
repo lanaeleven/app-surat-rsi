@@ -99,7 +99,7 @@ class RegulasiController extends Controller
             $regulasi->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
 
-        return view('regulasi.index-ns', ['title' =>  $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with('direksi')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
+        return view('regulasi.index-ns', ['title' =>  $judul, 'active' => 'regulasi', 'regulasi' => $regulasi->with(['direksi', 'jenisRegulasi'])->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'direksi' => $direksi, 'judul' => $judul]);
     }
 
     public function tambah() {
