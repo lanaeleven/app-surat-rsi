@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessNotifInformasiBaru;
 use App\Models\Informasi;
 use App\Models\JenisInformasi;
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
@@ -98,14 +100,16 @@ class InformasiController extends Controller
 
         $informasi->units()->attach($request->input('units'));
 
-        // $userUnit = User::whereHas('units', function ($query) use ($request) {
-        //     $query->whereIn('unit_id', $request->input('units'));
-        // })->get();
+        $userUnit = User::whereHas('units', function ($query) use ($request) {
+            $query->whereIn('unit_id', $request->input('units'));
+        })->get();
+        
+        $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
 
-        // foreach ($userUnit as $un) {
-        //     $job = new ProcessNotifRegulasiBaru($un->email, $un->namaJabatan, $request->input('perihal'));
-        //     dispatch($job);
-        // }
+        foreach ($userUnit as $un) {
+            $job = new ProcessNotifInformasiBaru($un->email, $un->namaJabatan, $namaJenisInformasi, $request->input('judul'));
+            dispatch($job);
+        }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Informasi');
