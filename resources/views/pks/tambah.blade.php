@@ -55,12 +55,12 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="units" class="col-sm-3 col-form-label">Pilih Unit (bisa lebih dari satu)</label>
+                        <label for="users" class="col-sm-3 col-form-label">Pilih User (bisa lebih dari satu)</label>
                         <div class="col-sm-9">
-                            <select name="units[]" id="units" multiple class="form-select select2" required>
-                                <option value="all">Seluruh Unit</option>
-                                @foreach ($units as $unit)
-                                    <option value="{{ $unit->id }}">{{ $unit->nama }}</option>
+                            <select name="users[]" id="users" multiple class="form-select select2" required>
+                                <option value="all">Seluruh User</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->namaJabatan }}</option>
                                 @endforeach
                             </select>
                         </div>

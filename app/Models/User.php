@@ -91,4 +91,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Unit::class);
     }
+
+    public function informasi(): BelongsToMany
+    {
+        return $this->belongsToMany(Informasi::class);
+    }
+
+    public function pks(): BelongsToMany
+    {
+        return $this->belongsToMany(PerjanjianKerjaSama::class);
+    }
 }

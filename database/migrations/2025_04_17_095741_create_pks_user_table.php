@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('perjanjian_kerja_sama_unit', function (Blueprint $table) {
+        Schema::create('perjanjian_kerja_sama_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('perjanjian_kerja_sama_id')->constrained('perjanjian_kerja_sama')->onDelete('cascade');
-            $table->foreignId('unit_id')->constrained('unit')->onDelete('cascade');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('perjanjian_kerja_sama_unit');
+        Schema::dropIfExists('perjanjian_kerja_sama_user');
     }
 };

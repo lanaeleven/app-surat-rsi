@@ -184,7 +184,7 @@
             </aside>
         @endcan
 
-        {{-- @can('dashboard-not-sekre')
+        @can('dashboard-not-sekre')
             <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
                 <div class="d-flex">
                     <button class="toggle-btn" type="button" id="toggle-btnnn">
@@ -253,6 +253,24 @@
                     </li>
 
                     <li class="sidebar-item
+          @if ($active == 'pks') active-tab @endif
+           ">
+                        <a href="/pks/index/ns/" class="sidebar-link">
+                            <i class="fa-solid fa-handshake-simple" style="color: #ffffff;"></i>
+                            <span>PKS</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item
+          @if ($active == 'informasi') active-tab @endif
+           ">
+                        <a href="/informasi/index/ns/" class="sidebar-link">
+                            <i class="fa-solid fa-scroll" style="color: #ffffff;"></i>
+                            <span>Informasi</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item
           @if ($active == 'akun') active-tab @endif
            ">
                         <a href="/user/akun-ns" class="sidebar-link">
@@ -262,7 +280,7 @@
                     </li>
                 </ul>
             </aside>
-        @endcan --}}
+        @endcan
 
         <div class="main">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">

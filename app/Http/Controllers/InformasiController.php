@@ -13,10 +13,11 @@ use Illuminate\Support\Carbon;
 
 class InformasiController extends Controller
 {
-    public function create() {
+    public function create()
+    {
 
         $informasi = Informasi::orderBy('tahun', 'desc')->orderBy('index', 'desc');
-        $jenisInformasi = JenisInformasi::all();  
+        $jenisInformasi = JenisInformasi::all();
         $judul = "Informasi";
 
         if (request('index')) {
@@ -29,7 +30,7 @@ class InformasiController extends Controller
 
         if (request('tanggalAkhir')) {
             $informasi = $informasi->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
 
         if (request('jenisInformasi')) {
             $informasi->where('idJenisInformasi', request('jenisInformasi'));
@@ -52,10 +53,10 @@ class InformasiController extends Controller
 
     public function listInformasiNs()
     {
-        $userUnitIds = auth()->user()->units->pluck('id');
+        $userId = auth()->user()->id;
 
-        $informasi = Informasi::whereHas('units', function ($query) use ($userUnitIds) {
-            $query->whereIn('unit.id', $userUnitIds);
+        $informasi = Informasi::whereHas('users', function ($query) use ($userId) {
+            $query->where('users.id', $userId);
         });
 
         $judul = "Informasi";
@@ -79,34 +80,39 @@ class InformasiController extends Controller
         return view('informasi.index-ns', ['title' =>  $judul, 'active' => 'informasi', 'informasi' => $informasi->with('jenisInformasi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'judul' => $judul]);
     }
 
-    public function tambah() {
+    public function tambah()
+    {
         $jenisInformasi = JenisInformasi::all();
-        $units = Unit::all();
+        $users = User::where('id', '<>', 2)->get();
 
-        return view('informasi.tambah', ['title' => 'Tambah Informasi', 'active' => 'informasi', 'jenisInformasi' => $jenisInformasi, 'units' => $units]);
+        return view('informasi.tambah', [
+            'title' => 'Tambah Informasi',
+            'active' => 'informasi',
+            'jenisInformasi' => $jenisInformasi,
+            'users' => $users
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         if (auth()->user()->id == 1) {
             $redirect = '/informasi/index'
-                    . '?tahun=' . urlencode(session('search_tahun', ''))
-            ;
+                . '?tahun=' . urlencode(session('search_tahun', ''));
         } else {
             $redirect = '/';
-        } 
+        }
         session()->forget('search_tahun');
-        
+
         $request->validate([
             'jenisInformasi' => 'required',
             'tanggalSurat' => 'required',
             'judul' => 'required',
-            'units' => 'required|array',
+            'users' => 'required|array',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
 
-        
-        
+
+
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         $maxIndex = Informasi::where('tahun', $tahun)->max('index');
@@ -127,16 +133,14 @@ class InformasiController extends Controller
         $informasi->filePath = $filePath;
         $informasi->save();
 
-        $informasi->units()->attach($request->input('units'));
+        $informasi->users()->attach($request->input('users'));
 
-        $userUnit = User::whereHas('units', function ($query) use ($request) {
-            $query->whereIn('unit_id', $request->input('units'));
-        })->get();
-        
+        $recipientUser = User::whereIn('id', $request->input('users'))->get();
+
         $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
 
-        foreach ($userUnit as $un) {
-            $job = new ProcessNotifInformasiBaru($un->email, $un->namaJabatan, $namaJenisInformasi, $request->input('judul'));
+        foreach ($recipientUser as $ru) {
+            $job = new ProcessNotifInformasiBaru($ru->email, $ru->namaJabatan, $namaJenisInformasi, $request->input('judul'));
             dispatch($job);
         }
 
@@ -144,29 +148,35 @@ class InformasiController extends Controller
             ->with('success', 'Berhasil Menambahkan Informasi');
     }
 
-    public function edit(Informasi $informasi) {
+    public function edit(Informasi $informasi)
+    {
         $jenisInformasi = JenisInformasi::all();
-        $units = Unit::all();
+        $users = User::where('id', '<>', 2)->get();
 
-        return view('informasi.edit', ['title' => 'Edit Informasi', 'active' => 'informasi', 'informasi' => $informasi, 'jenisInformasi' => $jenisInformasi, 'units' => $units]);
+        return view('informasi.edit', [
+            'title' => 'Edit Informasi',
+            'active' => 'informasi',
+            'informasi' => $informasi,
+            'jenisInformasi' => $jenisInformasi,
+            'users' => $users
+        ]);
     }
-    
+
     public function save(Request $request): RedirectResponse
     {
         if (auth()->user()->id == 1) {
             $redirect = '/informasi/index'
-                    . '?tahun=' . urlencode(session('search_tahun', ''))
-            ;
+                . '?tahun=' . urlencode(session('search_tahun', ''));
         } else {
             $redirect = '/';
-        } 
+        }
         session()->forget('search_tahun');
-        
+
         $request->validate([
             'jenisInformasi' => 'required',
             'judul' => 'required',
             'tanggalSurat' => 'required',
-            'units' => 'required|array',
+            'users' => 'required|array',
             'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
         ]);
 
@@ -189,21 +199,19 @@ class InformasiController extends Controller
         if ($request->file('fileSurat')) {
             $informasi->fileName = $fileName;
             $informasi->filePath = $filePath;
-        }        
+        }
         if ($tahunInput != $request->input('tahun')) {
             $maxIndex = Informasi::where('tahun', $tahunInput)->max('index');
             $newIndex = $maxIndex ? $maxIndex + 1 : 1;
 
             $informasi->tahun = $tahunInput;
-            $informasi->index = $newIndex;         
+            $informasi->index = $newIndex;
         }
         $informasi->save();
 
-        $informasi->units()->sync($request->input('units'));
+        $informasi->users()->sync($request->input('users'));
 
         return redirect($redirect)
             ->with('success', 'Berhasil Mengedit Informasi');
     }
-
-    
 }

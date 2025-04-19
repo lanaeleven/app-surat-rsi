@@ -62,9 +62,14 @@ class PerjanjianKerjaSamaController extends Controller
     public function tambah()
     {
         $direksi = Direksi::all();
-        $units = Unit::all();
+        $users = User::where('id', '<>', 2)->get();
 
-        return view('pks.tambah', ['title' => 'Tambah Perjanjian Kerja Sama', 'active' => 'pks', 'direksi' => $direksi, 'units' => $units]);
+        return view('pks.tambah', [
+            'title' => 'Tambah Perjanjian Kerja Sama',
+            'active' => 'pks',
+            'direksi' => $direksi,
+            'users' => $users
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -82,7 +87,7 @@ class PerjanjianKerjaSamaController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'units' => 'required|array',
+            'users' => 'required|array',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
 
@@ -110,14 +115,23 @@ class PerjanjianKerjaSamaController extends Controller
         $pks->filePath = $filePath;
         $pks->save();
 
-        $pks->units()->attach($request->input('units'));
+        // $pks->units()->attach($request->input('units'));
 
-        $userUnit = User::whereHas('units', function ($query) use ($request) {
-            $query->whereIn('unit_id', $request->input('units'));
-        })->get();
+        // $userUnit = User::whereHas('units', function ($query) use ($request) {
+        //     $query->whereIn('unit_id', $request->input('units'));
+        // })->get();
 
-        foreach ($userUnit as $un) {
-            $job = new ProcessNotifPerjanjianKerjaSamaBaru($un->email, $un->namaJabatan, $request->input('perihal'));
+        // foreach ($userUnit as $un) {
+        //     $job = new ProcessNotifPerjanjianKerjaSamaBaru($un->email, $un->namaJabatan, $request->input('perihal'));
+        //     dispatch($job);
+        // }
+
+        $pks->users()->attach($request->input('users'));
+
+        $recipientUser = User::whereIn('id', $request->input('users'))->get();
+
+        foreach ($recipientUser as $ru) {
+            $job = new ProcessNotifPerjanjianKerjaSamaBaru($ru->email, $ru->namaJabatan, $request->input('perihal'));
             dispatch($job);
         }
 
@@ -128,9 +142,11 @@ class PerjanjianKerjaSamaController extends Controller
     public function edit(PerjanjianKerjaSama $pks)
     {
         $direksi = Direksi::all();
-        $units = Unit::all();
+        $users = User::where('id', '<>', 2)->get();
 
-        return view('pks.edit', ['title' => 'Edit Perjanjian Kerja Sama', 'active' => 'pks', 'pks' => $pks, 'direksi' => $direksi, 'units' => $units]);
+        return view('pks.edit', ['title' => 'Edit Perjanjian Kerja Sama', 'active' => 'pks', 'pks' => $pks, 'direksi' => $direksi, 
+        'users' => $users
+    ]);
     }
 
     public function save(Request $request): RedirectResponse
@@ -148,7 +164,7 @@ class PerjanjianKerjaSamaController extends Controller
             'tujuan' => 'required',
             'perihal' => 'required',
             'direksi' => 'required',
-            'units' => 'required|array',
+            'users' => 'required|array',
             'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
         ]);
 
@@ -184,7 +200,7 @@ class PerjanjianKerjaSamaController extends Controller
         }
         $pks->save();
 
-        $pks->units()->sync($request->input('units'));
+        $pks->users()->sync($request->input('users'));
 
         return redirect($redirect)
             ->with('success', 'Berhasil Mengedit Perjanjian Kerja Sama');
@@ -192,11 +208,12 @@ class PerjanjianKerjaSamaController extends Controller
 
     public function listPerjanjianKerjaSamaNs()
     {
-        $userUnitIds = auth()->user()->units->pluck('id');
+        $userId = auth()->user()->id;
 
-        $pks = PerjanjianKerjaSama::whereHas('units', function ($query) use ($userUnitIds) {
-            $query->whereIn('unit.id', $userUnitIds);
+        $pks = PerjanjianKerjaSama::whereHas('users', function ($query) use ($userId) {
+            $query->where('users.id', $userId);
         });
+
 
         $direksi = Direksi::all();
         $judul = "Perjanjian Kerja Sama";

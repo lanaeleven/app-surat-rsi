@@ -26,4 +26,9 @@ class PerjanjianKerjaSama extends Model
     {
         return $this->belongsToMany(Unit::class);
     }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

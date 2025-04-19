@@ -172,7 +172,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'username' => 'sdi',
             'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
+            'email' => 'akunlana11@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian SDI dan Administrasi',
             'password' => Hash::make('1')
         ]);
@@ -180,7 +180,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'username' => 'keu',
             'nama' => 'Mr. X',
-            'email' => 'maulanaelvn@gmail.com',
+            'email' => 'vuulaan@gmail.com',
             'namaJabatan' => 'Kepala Sub Bagian Akuntansi dan Keuangan',
             'password' => Hash::make('1')
         ]);
