@@ -18,6 +18,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\SuratMasukController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\StrukturOrganisasiController;
+use App\Http\Controllers\UndanganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,13 @@ Route::get('/informasi/edit/{informasi}', [InformasiController::class, 'edit'])-
 Route::get('/informasi/index/ns/', [InformasiController::class, 'listInformasiNs'])->middleware('notSekre');
 Route::post('/informasi/tambah', [InformasiController::class, 'store']);
 Route::post('/informasi/save', [InformasiController::class, 'save']);
+
+Route::get('/undangan/index', [UndanganController::class, 'create'])->middleware('sekre');
+Route::get('/undangan/tambah', [UndanganController::class, 'tambah'])->middleware('sekre');
+Route::get('/undangan/edit/{undangan}', [UndanganController::class, 'edit'])->middleware('sekre');
+// Route::get('/undangan/index/ns/', [UndanganController::class, 'listInformasiNs'])->middleware('notSekre');
+Route::post('/undangan/tambah', [UndanganController::class, 'store']);
+Route::post('/undangan/save', [UndanganController::class, 'save']);
 
 Route::get('/pks/index', [PerjanjianKerjaSamaController::class, 'create'])->middleware('sekre');
 Route::get('/pks/tambah', [PerjanjianKerjaSamaController::class, 'tambah'])->middleware('sekre');

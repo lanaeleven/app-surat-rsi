@@ -97,6 +97,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Informasi::class);
     }
 
+    public function undangan(): BelongsToMany
+    {
+        return $this->belongsToMany(Undangan::class);
+    }
+
     public function pks(): BelongsToMany
     {
         return $this->belongsToMany(PerjanjianKerjaSama::class);

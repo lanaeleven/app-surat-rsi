@@ -10,6 +10,17 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="icon" type="image/x-icon" href={{ asset('favicon-rsi.png') }}>
+
+
+    <link rel="stylesheet" type="text/css" href="/css/trix.css">
+    <script type="text/javascript" src="/js/trix.js"></script>
+
+    <style>
+        ul { list-style-type: disc !important;}
+    </style>
+
+
+
     {{-- <link rel="icon" type="image/ico" sizes="32x32" href="/favicon.ico"> --}}
     {{-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"> --}}
 
@@ -90,6 +101,14 @@
                         </a>
                     </li>
                     <li class="sidebar-item
+          @if ($active == 'undangan') active-tab @endif
+           ">
+                        <a href="/undangan/index" class="sidebar-link">
+                            <i class="fa-solid fa-envelope" style="color: #ffffff;"></i>
+                            <span>Undangan</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item
           @if ($active == 'laporan') active-tab @endif">
                         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
@@ -120,7 +139,8 @@
                                             Surat</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="/laporan/surat-keluar/per-direksi" class="sidebar-link">Per Direktorat</a>
+                                        <a href="/laporan/surat-keluar/per-direksi" class="sidebar-link">Per
+                                            Direktorat</a>
                                     </li>
                                 </ul>
                             </li>
@@ -169,9 +189,9 @@
                             <li class="sidebar-item">
                                 <a href="/jenis-regulasi/index" class="sidebar-link">Jenis Regulasi</a>
                             </li>
-                            <li class="sidebar-item">
+                            {{-- <li class="sidebar-item">
                                 <a href="/jenis-informasi/index" class="sidebar-link">Jenis Informasi</a>
-                            </li>
+                            </li> --}}
                             <li class="sidebar-item">
                                 <a href="/user/index" class="sidebar-link">Tujuan Disposisi</a>
                             </li>
