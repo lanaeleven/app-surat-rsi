@@ -29,7 +29,9 @@
             @else
                 <div>
                     <table
-                        class="table table-striped table-bordered d-none d-md-table d-lg-table d-xl-table d-xxl-table mt-2">
+                        class="table table-striped table-bordered d-none d-md-table d-lg-table d-xl-table d-xxl-table mt-2"
+                        id="table-with-datatable">
+
                         <thead>
                             <tr>
                                 <th scope="col">Index</th>
@@ -37,6 +39,13 @@
                                 <th scope="col">Tempat Kegiatan</th>
                                 <th scope="col">Waktu Kegiatan</th>
                                 <th scope="col">Aksi</th>
+                            </tr>
+                            <tr>
+                                <th><input type="text" placeholder="Cari Index" class="form-control" /></th>
+                                <th><input type="text" placeholder="Cari Judul" class="form-control" /></th>
+                                <th><input type="text" placeholder="Cari Tempat" class="form-control" /></th>
+                                <th><input type="text" placeholder="Cari Waktu" class="form-control" /></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,11 +58,12 @@
                                     <td>
                                         <a href="/undangan/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary"><i
                                                 class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-                                        
-                                        <button class="mt-1 btn btn-sm btn-warning" data-isi="{!! htmlspecialchars($u->isi, ENT_QUOTES) !!}"
-                                            onclick="liatData(this)"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></button>
 
-                                            @if ($u->filePath)
+                                        <button class="mt-1 btn btn-sm btn-warning" data-isi="{!! htmlspecialchars($u->isi, ENT_QUOTES) !!}"
+                                            onclick="liatData(this)"><i class="fa-solid fa-eye"
+                                                style="color: #ffffff;"></i></button>
+
+                                        @if ($u->filePath)
                                             <a href="{{ asset('storage/' . $u->filePath) }}"
                                                 class="mt-1 btn btn-sm btn-secondary" target="_blank"><i
                                                     class="fa-solid fa-file" style="color: #ffffff;"></i></a>
@@ -111,9 +121,11 @@
                         </div>
                     </div>
 
-
-
                 </div>
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+                <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
                 <script>
                     function liatData(el) {
@@ -121,14 +133,27 @@
                         document.getElementById('isiContainer').innerHTML = isi;
                         new bootstrap.Modal(document.getElementById('isiModal')).show();
                     }
+
+
+                    $(document).ready(function() {
+                        $('#table-with-datatable thead tr:eq(1) th').each(function(i) {
+                            $('input', this).on('keyup change', function() {
+                                if ($('#table-with-datatable').DataTable().column(i).search() !== this.value) {
+                                    $('#table-with-datatable').DataTable()
+                                        .column(i)
+                                        .search(this.value)
+                                        .draw();
+                                }
+                            });
+                        });
+
+                        $('#table-with-datatable').DataTable({
+                            orderCellsTop: true,
+                            fixedHeader: true,
+                            order: [[3, 'desc']]
+                        });
+                    });
                 </script>
-
-
-                <div class="d-flex justify-content-center">
-                    <div>
-                        {{ $undangan->appends(request()->input())->links() }}
-                    </div>
-                </div>
             @endif
         </div>
     @endsection

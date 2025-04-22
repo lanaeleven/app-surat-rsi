@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessNotifUndanganBaru;
 use App\Models\Undangan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -74,14 +75,13 @@ class UndanganController extends Controller
 
         $undangan->users()->attach($request->input('users'));
 
-        // $recipientUser = User::whereIn('id', $request->input('users'))->get();
+        $recipientUser = User::whereIn('id', $request->input('users'))->get();
+        // dd($recipientUser);
 
-        // $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
-
-        // foreach ($recipientUser as $ru) {
-        //     $job = new ProcessNotifInformasiBaru($ru->email, $ru->namaJabatan, $namaJenisInformasi, $request->input('judul'));
-        //     dispatch($job);
-        // }
+        foreach ($recipientUser as $ru) {
+            $job = new ProcessNotifUndanganBaru($ru->email, $ru->namaJabatan, $request->input('judul'));
+            dispatch($job);
+        }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Undangan');
