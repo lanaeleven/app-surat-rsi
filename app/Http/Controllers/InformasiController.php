@@ -58,6 +58,7 @@ class InformasiController extends Controller
         $informasi = Informasi::whereHas('users', function ($query) use ($userId) {
             $query->where('users.id', $userId);
         });
+        $jenisInformasi = JenisInformasi::all();
 
         $judul = "Informasi";
 
@@ -73,11 +74,15 @@ class InformasiController extends Controller
             $informasi = $informasi->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
         }
 
+        if (request('jenisInformasi')) {
+            $informasi->where('idJenisInformasi', request('jenisInformasi'));
+        }
+
         if (request('judul')) {
             $informasi->where('judul', 'like', '%' . request('judul') . '%');
         }
 
-        return view('informasi.index-ns', ['title' =>  $judul, 'active' => 'informasi', 'informasi' => $informasi->with('jenisInformasi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'judul' => $judul]);
+        return view('informasi.index-ns', ['title' =>  $judul, 'active' => 'informasi', 'informasi' => $informasi->with('jenisInformasi')->orderBy('tahun', 'desc')->orderBy('index', 'desc')->paginate(15), 'judul' => $judul, 'jenisInformasi' => $jenisInformasi]);
     }
 
     public function tambah()
@@ -135,14 +140,14 @@ class InformasiController extends Controller
 
         $informasi->users()->attach($request->input('users'));
 
-        $recipientUser = User::whereIn('id', $request->input('users'))->get();
+        // $recipientUser = User::whereIn('id', $request->input('users'))->get();
 
-        $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
+        // $namaJenisInformasi = JenisInformasi::find($request->input('jenisInformasi'))->nama;
 
-        foreach ($recipientUser as $ru) {
-            $job = new ProcessNotifInformasiBaru($ru->email, $ru->namaJabatan, $namaJenisInformasi, $request->input('judul'));
-            dispatch($job);
-        }
+        // foreach ($recipientUser as $ru) {
+        //     $job = new ProcessNotifInformasiBaru($ru->email, $ru->namaJabatan, $namaJenisInformasi, $request->input('judul'));
+        //     dispatch($job);
+        // }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Informasi');

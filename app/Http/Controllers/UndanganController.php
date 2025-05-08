@@ -13,10 +13,25 @@ class UndanganController extends Controller
 {
     public function create()
     {
-        $undangan = Undangan::orderBy('waktuKegiatan', 'desc');
+        $undangan = Undangan::orderBy('waktuKegiatan', 'desc')->get();
         $judul = "Undangan";
 
-        return view('undangan.index', ['title' => $judul, 'active' => 'undangan', 'undangan' => $undangan->paginate(15), 'judul' => $judul]);
+        return view('undangan.index', ['title' => $judul, 'active' => 'undangan', 'undangan' => $undangan, 'judul' => $judul]);
+    }
+
+    public function listUndanganNs()
+    {
+        $userId = auth()->user()->id;
+
+        $undangan = Undangan::whereHas('users', function ($query) use ($userId) {
+            $query->where('users.id', $userId);
+        })->get();
+
+        $waktuSekarang = Carbon::today()->setTime(00, 00);
+
+        $judul = "Undangan";
+
+        return view('undangan.index-ns', ['title' =>  $judul, 'active' => 'undangan', 'undangan' => $undangan, 'judul' => $judul, 'waktuSekarang' => $waktuSekarang]);
     }
 
     public function tambah()
@@ -75,13 +90,12 @@ class UndanganController extends Controller
 
         $undangan->users()->attach($request->input('users'));
 
-        $recipientUser = User::whereIn('id', $request->input('users'))->get();
-        // dd($recipientUser);
+        // $recipientUser = User::whereIn('id', $request->input('users'))->get();
 
-        foreach ($recipientUser as $ru) {
-            $job = new ProcessNotifUndanganBaru($ru->email, $ru->namaJabatan, $request->input('judul'));
-            dispatch($job);
-        }
+        // foreach ($recipientUser as $ru) {
+        //     $job = new ProcessNotifUndanganBaru($ru->email, $ru->namaJabatan, $request->input('judul'));
+        //     dispatch($job);
+        // }
 
         return redirect($redirect)
             ->with('success', 'Berhasil Menambahkan Undangan');

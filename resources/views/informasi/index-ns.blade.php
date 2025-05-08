@@ -40,6 +40,17 @@
                                 value="{{ request('index') }}">
                         </div>
                         <div class="col-auto">
+                            <select name="jenisInformasi" class="form-select form-select-sm"
+                                value="{{ request('jenisInformasi') }}">
+                                <option value="">Semua Jenis Informasi</option>
+                                @foreach ($jenisInformasi as $ji)
+                                    <option value="{{ $ji->id }}"
+                                        {{ request('jenisInformasi') == $ji->id ? 'selected' : '' }}>{{ $ji->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-auto">
                             <input name="judul" type="text" class="form-control form-control-sm" placeholder="Judul"
                                 value="{{ request('judul') }}">
                         </div>

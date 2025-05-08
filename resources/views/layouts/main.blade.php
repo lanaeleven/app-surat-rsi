@@ -16,7 +16,13 @@
     <script type="text/javascript" src="/js/trix.js"></script>
 
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+
+    <style>
+        
+
+        
+    </style>
 
 
 
@@ -29,7 +35,7 @@
 
     <div class="wrapper">
         @can('dashboard-sekre')
-            <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
+            <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block expand">
                 <div class="d-flex">
                     <button class="toggle-btn" type="button" id="toggle-btnnn">
                         <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
@@ -43,7 +49,7 @@
                     <li class="sidebar-item
           @if ($active == 'dashboard') active-tab @endif
            ">
-                        <a href="/" class="sidebar-link">
+                        <a href="/" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-house" style="color: #ffffff;"></i>
                             <span>Dashboard</span>
                         </a>
@@ -54,7 +60,7 @@
                     <li class="sidebar-item
           @if ($active == 'surat masuk') active-tab @endif
            ">
-                        <a href="/surat-masuk/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                        <a href="/surat-masuk/index?tahun={{ config('app.tahun') }}" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-folder-closed" style="color: #ffffff;"></i>
                             <span>Surat Masuk</span>
                         </a>
@@ -62,7 +68,7 @@
                     <li class="sidebar-item
           @if ($active == 'surat keluar') active-tab @endif
            ">
-                        <a href="/surat-keluar/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                        <a href="/surat-keluar/index?tahun={{ config('app.tahun') }}" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>
                             <span>Surat Keluar</span>
                         </a>
@@ -70,7 +76,7 @@
                     <li class="sidebar-item
           @if ($active == 'spo') active-tab @endif
            ">
-                        <a href="/spo/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                        <a href="/spo/index?tahun={{ config('app.tahun') }}" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i>
                             <span>SPO</span>
                         </a>
@@ -78,7 +84,7 @@
                     <li class="sidebar-item
           @if ($active == 'regulasi') active-tab @endif
            ">
-                        <a href="/regulasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                        <a href="/regulasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-gavel" style="color: #ffffff;"></i>
                             <span>Regulasi</span>
                         </a>
@@ -86,7 +92,7 @@
                     <li class="sidebar-item
           @if ($active == 'pks') active-tab @endif
            ">
-                        <a href="/pks/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                        <a href="/pks/index?tahun={{ config('app.tahun') }}" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-handshake-simple" style="color: #ffffff;"></i>
                             <span>PKS</span>
                         </a>
@@ -94,7 +100,7 @@
                     <li class="sidebar-item
           @if ($active == 'informasi') active-tab @endif
            ">
-                        <a href="/informasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link">
+                        <a href="/informasi/index?tahun={{ config('app.tahun') }}" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-scroll" style="color: #ffffff;"></i>
                             <span>Informasi</span>
                         </a>
@@ -102,49 +108,49 @@
                     <li class="sidebar-item
           @if ($active == 'undangan') active-tab @endif
            ">
-                        <a href="/undangan/index" class="sidebar-link">
+                        <a href="/undangan/index" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-envelope" style="color: #ffffff;"></i>
                             <span>Undangan</span>
                         </a>
                     </li>
                     <li class="sidebar-item
           @if ($active == 'laporan') active-tab @endif">
-                        <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        <a href="#" class="sidebar-link text-wrap collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
                             <i class="fa-solid fa-file-lines" style="color: #ffffff;"></i>
                             <span>Laporan</span>
                         </a>
                         <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="#" id="toggle-btnnn" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                <a href="#" id="toggle-btnnn" class="sidebar-link text-wrap collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#suratmasuk" aria-expanded="false" aria-controls="suratmasuk">
                                     Laporan Surat Masuk
                                 </a>
                                 <ul id="suratmasuk" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#multi">
                                     <li class="sidebar-item">
-                                        <a href="/laporan/surat-masuk/per-direksi" class="sidebar-link">Per Direksi</a>
+                                        <a href="/laporan/surat-masuk/per-direksi" class="sidebar-link text-wrap">Per Direksi</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                <a href="#" class="sidebar-link text-wrap collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#suratkeluar" aria-expanded="false" aria-controls="suratkeluar">
                                     Laporan Surat Keluar
                                 </a>
                                 <ul id="suratkeluar" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#multi">
                                     <li class="sidebar-item">
-                                        <a href="/laporan/surat-keluar/per-jenis-surat" class="sidebar-link">Per Jenis
+                                        <a href="/laporan/surat-keluar/per-jenis-surat" class="sidebar-link text-wrap">Per Jenis
                                             Surat</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="/laporan/surat-keluar/per-direksi" class="sidebar-link">Per
+                                        <a href="/laporan/surat-keluar/per-direksi" class="sidebar-link text-wrap">Per
                                             Direktorat</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                                <a href="#" class="sidebar-link text-wrap collapsed" data-bs-toggle="collapse"
                                     data-bs-target="#distribusisurat" aria-expanded="false"
                                     aria-controls="distribusisurat">
                                     Laporan Distribusi Surat
@@ -152,19 +158,19 @@
                                 <ul id="distribusisurat" class="sidebar-dropdown list-unstyled collapse"
                                     data-bs-parent="#multi">
                                     <li class="sidebar-item">
-                                        <a href="/laporan/distribusi-surat/posisi-terakhir" class="sidebar-link">Posisi
+                                        <a href="/laporan/distribusi-surat/posisi-terakhir" class="sidebar-link text-wrap">Posisi
                                             Distribusi Terakhir</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="/laporan/distribusi-surat/rekap/per-tujuan" class="sidebar-link">Rekap
+                                        <a href="/laporan/distribusi-surat/rekap/per-tujuan" class="sidebar-link text-wrap">Rekap
                                             Posisi Distribusi Terakhir</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="/laporan/distribusi-surat/sudah-selesai" class="sidebar-link">Distribusi
+                                        <a href="/laporan/distribusi-surat/sudah-selesai" class="sidebar-link text-wrap">Distribusi
                                             Surat Sudah Selesai</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="/laporan/distribusi-surat/pernah-distribusi" class="sidebar-link">Yang
+                                        <a href="/laporan/distribusi-surat/pernah-distribusi" class="sidebar-link text-wrap">Yang
                                             Pernah Didistribusikan</a>
                                     </li>
                                 </ul>
@@ -173,29 +179,29 @@
                     </li>
                     <li class="sidebar-item @if ($active == 'data master') active-tab @endif
           ">
-                        <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        <a href="#" class="sidebar-link text-wrap collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                             <i class="fa-solid fa-database" style="color: #ffffff;"></i>
                             <span>Data Master</span>
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="/direksi/index" class="sidebar-link">Direksi</a>
+                                <a href="/direksi/index" class="sidebar-link text-wrap">Direksi</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/jenis-surat/index" class="sidebar-link">Jenis Surat</a>
+                                <a href="/jenis-surat/index" class="sidebar-link text-wrap">Jenis Surat</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/jenis-regulasi/index" class="sidebar-link">Jenis Regulasi</a>
-                            </li>
-                            {{-- <li class="sidebar-item">
-                                <a href="/jenis-informasi/index" class="sidebar-link">Jenis Informasi</a>
-                            </li> --}}
-                            <li class="sidebar-item">
-                                <a href="/user/index" class="sidebar-link">Tujuan Disposisi</a>
+                                <a href="/jenis-regulasi/index" class="sidebar-link text-wrap">Jenis Regulasi</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/unit/index" class="sidebar-link">Unit</a>
+                                <a href="/jenis-informasi/index" class="sidebar-link text-wrap">Jenis Informasi</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="/user/index" class="sidebar-link text-wrap">Tujuan Disposisi</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="/unit/index" class="sidebar-link text-wrap">Unit</a>
                             </li>
                         </ul>
                     </li>
@@ -203,8 +209,8 @@
             </aside>
         @endcan
 
-        @can('dashboard-not-sekre')
-            <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block">
+        {{-- @can('dashboard-not-sekre')
+            <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block expand">
                 <div class="d-flex">
                     <button class="toggle-btn" type="button" id="toggle-btnnn">
                         <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
@@ -218,7 +224,7 @@
                     <li class="sidebar-item
           @if ($active == 'dashboard') active-tab @endif
            ">
-                        <a href="/" class="sidebar-link">
+                        <a href="/" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-house" style="color: #ffffff;"></i>
                             <span>Dashboard</span>
                         </a>
@@ -226,20 +232,20 @@
 
                     <li class="sidebar-item @if ($active == 'surat masuk') active-tab @endif
           ">
-                        <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                        <a href="#" class="sidebar-link text-wrap collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
                             <i class="fa-solid fa-folder-closed" style="color: #ffffff;"></i>
                             <span>Surat Masuk</span>
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="/surat-masuk/ns/belum-diteruskan" class="sidebar-link">Belum Diteruskan</a>
+                                <a href="/surat-masuk/ns/belum-diteruskan" class="sidebar-link text-wrap">Belum Diteruskan</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/surat-masuk/ns/sudah-diteruskan" class="sidebar-link">Sudah Diteruskan</a>
+                                <a href="/surat-masuk/ns/sudah-diteruskan" class="sidebar-link text-wrap">Sudah Diteruskan</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="/surat-masuk/ns/sudah-diarsipkan" class="sidebar-link">Sudah Diarsipkan</a>
+                                <a href="/surat-masuk/ns/sudah-diarsipkan" class="sidebar-link text-wrap">Sudah Diarsipkan</a>
                             </li>
                         </ul>
                     </li>
@@ -247,7 +253,7 @@
                     <li class="sidebar-item
           @if ($active == 'surat keluar') active-tab @endif
            ">
-                        <a href="/surat-masuk/ns/dikirim" class="sidebar-link">
+                        <a href="/surat-masuk/ns/dikirim" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-paper-plane" style="color: #ffffff;"></i>
                             <span>Surat Keluar</span>
                         </a>
@@ -256,7 +262,7 @@
                     <li class="sidebar-item
           @if ($active == 'spo') active-tab @endif
            ">
-                        <a href="/spo/index/ns/" class="sidebar-link">
+                        <a href="/spo/index/ns/" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i>
                             <span>SPO</span>
                         </a>
@@ -265,7 +271,7 @@
                     <li class="sidebar-item
           @if ($active == 'regulasi') active-tab @endif
            ">
-                        <a href="/regulasi/index/ns/" class="sidebar-link">
+                        <a href="/regulasi/index/ns/" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-gavel" style="color: #ffffff;"></i>
                             <span>Regulasi</span>
                         </a>
@@ -274,7 +280,7 @@
                     <li class="sidebar-item
           @if ($active == 'pks') active-tab @endif
            ">
-                        <a href="/pks/index/ns/" class="sidebar-link">
+                        <a href="/pks/index/ns/" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-handshake-simple" style="color: #ffffff;"></i>
                             <span>PKS</span>
                         </a>
@@ -283,23 +289,32 @@
                     <li class="sidebar-item
           @if ($active == 'informasi') active-tab @endif
            ">
-                        <a href="/informasi/index/ns/" class="sidebar-link">
+                        <a href="/informasi/index/ns/" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-scroll" style="color: #ffffff;"></i>
                             <span>Informasi</span>
                         </a>
                     </li>
 
                     <li class="sidebar-item
+          @if ($active == 'undangan') active-tab @endif
+           ">
+                        <a href="/undangan/index/ns" class="sidebar-link text-wrap">
+                            <i class="fa-solid fa-envelope" style="color: #ffffff;"></i>
+                            <span>Undangan</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item
           @if ($active == 'akun') active-tab @endif
            ">
-                        <a href="/user/akun-ns" class="sidebar-link">
+                        <a href="/user/akun-ns" class="sidebar-link text-wrap">
                             <i class="fa-solid fa-user" style="color: #ffffff;"></i>
                             <span>Akun</span>
                         </a>
                     </li>
                 </ul>
             </aside>
-        @endcan
+        @endcan --}}
 
         <div class="main">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -374,7 +389,7 @@
                    "
                                         href="/surat-masuk/ns/sudah-diarsipkan">Sudah Diarsipkan</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'spo') fw-bold @endif
                    "
@@ -397,7 +412,7 @@
                   @if ($active == 'informasi') fw-bold @endif
                    "
                                         href="/informasi/index/ns">Informasi</a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'akun') fw-bold @endif

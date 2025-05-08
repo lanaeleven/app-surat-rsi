@@ -54,7 +54,7 @@
                                     <td>{{ $u->index }}</td>
                                     <td>{{ $u->judul }}</td>
                                     <td>{{ $u->tempatKegiatan }}</td>
-                                    <td>{{ $u->waktuKegiatan }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($u->waktuKegiatan)->format('Y-m-d H:i') }}</td>
                                     <td>
                                         <a href="/undangan/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary"><i
                                                 class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
@@ -86,8 +86,12 @@
                                         <td>{{ $u->judul }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Tempat Kegiatan</th>
+                                        <td>{{ $u->tempatKegiatan }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Waktu Kegiatan</th>
-                                        <td>{{ $u->waktuKegiatan }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($u->waktuKegiatan)->format('Y-m-d H:i') }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="text-center">

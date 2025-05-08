@@ -59,8 +59,8 @@ body {
 }
 
 #sidebar.expand {
-    width: 260px;
-    min-width: 260px;
+    width: 200px;
+    min-width: 200px;
 }
 
 .toggle-btn {
@@ -195,3 +195,15 @@ a.sidebar-link:hover {
 
 
 @media (min-width: 768px) {}
+
+/* BILNK ANIMATION */
+
+.blink {
+    animation: blink-animation 1s steps(2, start) infinite;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}

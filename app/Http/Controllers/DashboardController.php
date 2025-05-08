@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Informasi;
 use App\Models\User;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
 use App\Models\TujuanDisposisi;
+use App\Models\Undangan;
 
 class DashboardController extends Controller
 {
-    public function create() {
+    public function create()
+    {
         $belumDiteruskan = 0;
         $sudahDiteruskan = 0;
         $arsip = 0;
@@ -19,6 +22,9 @@ class DashboardController extends Controller
         $suratKeluarHariIni = 0;
         $suratKeluarBulanIni = 0;
         $dikirim = 0;
+        $undangan = 0;
+        $pengumuman = 0;
+        $edaran = 0;
 
         if (auth()->user()->id == 1 || auth()->user()->id == 2) {
             $suratMasukHariIni = SuratMasuk::whereDate('tanggalSurat', '=', now())->count();
@@ -38,13 +44,26 @@ class DashboardController extends Controller
             $sudahDiteruskan = $suratDiteruskan->where('status', '<>', 'Diarsipkan')->count();
             $arsip = $suratDiteruskan->where('status', 'Diarsipkan')->count();
             $dikirim = SuratMasuk::where('idPengirim', '=', auth()->user()->id)->count();
-            
+            $userId = auth()->user()->id;
+            $undangan = Undangan::whereHas('users', function ($query) use ($userId) {
+                $query->where('users.id', $userId);
+            })->count();
+            $pengumuman = Informasi::whereHas('users', function ($query) use ($userId) {
+                $query->where('users.id', $userId);
+            })
+                ->where('idJenisInformasi', 1)
+                ->count();
+            $edaran = Informasi::whereHas('users', function ($query) use ($userId) {
+                $query->where('users.id', $userId);
+            })
+                ->where('idJenisInformasi', 2)
+                ->count();
         }
 
         return view('dashboard', [
-            'title' => 'Dashboard', 
-            'active' => 'dashboard', 
-            'belumDiteruskan' => $belumDiteruskan, 
+            'title' => 'Dashboard',
+            'active' => 'dashboard',
+            'belumDiteruskan' => $belumDiteruskan,
             'sudahDiteruskan' => $sudahDiteruskan,
             'arsip' => $arsip,
             'suratMasukHariIni' => $suratMasukHariIni,
@@ -52,10 +71,11 @@ class DashboardController extends Controller
             'suratKeluarHariIni' => $suratKeluarHariIni,
             'suratKeluarBulanIni' => $suratKeluarBulanIni,
             'dikirim' => $dikirim,
+            'undangan' => $undangan,
+            'pengumuman' => $pengumuman,
+            'edaran' => $edaran,
         ]);
-    } 
-
-    public function dashboardLaporan() {
-        
     }
+
+    public function dashboardLaporan() {}
 }
