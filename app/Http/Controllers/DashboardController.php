@@ -39,6 +39,9 @@ class DashboardController extends Controller
             $suratKeluarHariIni = SuratKeluar::whereDate('tanggalSurat', '=', now())->count();
             $suratKeluarBulanIni = SuratKeluar::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
             $spoBulanIni = Spo::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
+            $undangan = Undangan::where('waktuKegiatan', '>', $waktuSekarang)->count();
+            $pengumuman = Informasi::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->where('idJenisInformasi', 1)->count();
+            $edaran = Informasi::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->where('idJenisInformasi', 2)->count();
         }
 
         if (auth()->user()->id != 1 && auth()->user()->id != 2) {

@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="wi<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $title }}</title>
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.min.css') }}">
@@ -266,8 +272,8 @@
             </aside>
         @endcan
 
-        @can('dashboard-not-sekre')
-            {{-- <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block expand">
+        {{-- @can('dashboard-not-sekre')
+            <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block expand">
                 <div class="d-flex">
                     <button class="toggle-btn" type="button" id="toggle-btnnn">
                         <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
@@ -373,13 +379,13 @@
                         </a>
                     </li>
                 </ul>
-            </aside> --}}
-        @endcan
+            </aside>
+        @endcan --}}
 
         <div class="main">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid mx-3">
-                    <a class="navbar-brand" href="#"><img src="/img/logorsi.png" width="100"
+                    <a class="navbar-brand" href="#"><img src="/img/logorsi.png" width="150"
                             alt="Logo RSI"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
