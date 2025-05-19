@@ -7,11 +7,14 @@ use App\Models\User;
 use App\Models\Direksi;
 use App\Models\JenisSurat;
 use App\Models\DistribusiSurat;
+use App\Models\JenisInformasi;
 use App\Models\JenisRegulasi;
 use App\Models\TujuanDisposisi;
 use Illuminate\Database\Seeder;
 use App\Models\StrukturOrganisasi;
 use App\Models\Unit;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -28,9 +31,9 @@ class DatabaseSeeder extends Seeder
         // 'email' => 'test@example.com',
         // ]);
 
-        
 
-        
+
+
 
 
         // SEEDING UNTUK TABEL JENIS SURAT 
@@ -136,7 +139,7 @@ class DatabaseSeeder extends Seeder
             'namaJabatan' => 'Kepala Seksi Pelayanan Medik',
             'password' => Hash::make('1')
         ]);
-        
+
         User::create([
             'username' => 'kasi penunjang medik',
             'nama' => 'Mr. X',
@@ -416,7 +419,23 @@ class DatabaseSeeder extends Seeder
             'namaDireksi' => 'Direktur'
         ]);
 
-        // \App\Models\SuratKeluar::factory(50)->create();
+        \App\Models\SuratKeluar::factory(100)->create();
+        \App\Models\Spo::factory(100)->create();
+
+
+        // \App\Models\SuratMasuk::factory(100)->create();
+
+        $total = 50; // misalnya ingin membuat 20 data
+        $setengah = $total / 2;
+
+        for ($i = 0; $i < $total; $i++) {
+            \App\Models\SuratMasuk::factory()->create([
+                'status' => $i < $setengah
+                    ? 'Diarsipkan'
+                    : 'Diteruskan ke Kepala Instalasi PSRS'
+            ]);
+        }
+
 
         // \App\Models\SuratMasuk::factory(30)->create();
 
@@ -430,7 +449,7 @@ class DatabaseSeeder extends Seeder
         //         'status' => 'Diteruskan ke Direktur Rumah Sakit',
         //         'instruksi' => 'dadadadadada' 
         //     ]);
-    
+
         //     DistribusiSurat::create([
         //         'idSuratMasuk' => $i,
         //         'idTujuanDisposisi' => 18,
@@ -692,5 +711,76 @@ class DatabaseSeeder extends Seeder
 
         JenisRegulasi::create(['kodeJenisRegulasi' => 'KPTS', 'keterangan' => 'Keputusan']);
         JenisRegulasi::create(['kodeJenisRegulasi' => 'PER', 'keterangan' => 'Persetujuan']);
+        \App\Models\Regulasi::factory(100)->create();
+        DB::table('unit_user')->insert([
+            'user_id' => 10,
+            'unit_id' => 1,
+        ]);
+
+        $dataSpoUnit = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $dataSpoUnit[] = [
+                'spo_id' => $i,
+                'unit_id' => 1,
+            ];
+        }
+        DB::table('spo_unit')->insert($dataSpoUnit);
+
+        $dataRegulasiUnit = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $dataRegulasiUnit[] = [
+                'regulasi_id' => $i,
+                'unit_id' => 1,
+            ];
+        }
+        DB::table('regulasi_unit')->insert($dataRegulasiUnit);
+
+        $dataSudahDiteruskan = [];
+        for ($i = 1; $i <= 50; $i++) {
+            $dataSudahDiteruskan[] = [
+                'idSuratMasuk' => $i,
+                'idTujuanDisposisi' => 11,
+                'idPengirimDisposisi' => 10,
+                'tanggalDiteruskan' => Carbon::now(),
+                'status' => 'Diteruskan ke Kepala Sub Bagian Akuntansi dan Keuangan',
+                'instruksi' => 'tes'
+            ];
+        }
+        DB::table('distribusi_surat')->insert($dataSudahDiteruskan);
+
+
+        
+        \App\Models\PerjanjianKerjaSama::factory(100)->create();
+        $dataPksUser = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $dataPksUser[] = [
+                'perjanjian_kerja_sama_id' => $i,
+                'user_id' => 10,
+            ];
+        }
+        DB::table('perjanjian_kerja_sama_user')->insert($dataPksUser);
+        
+        \App\Models\Undangan::factory(100)->create();
+        $dataUndanganUser = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $dataUndanganUser[] = [
+                'undangan_id' => $i,
+                'user_id' => 10,
+            ];
+        }
+        DB::table('undangan_user')->insert($dataUndanganUser);
+        
+        JenisInformasi::create(['nama' => 'Pengumuman/Himbauan']);
+        JenisInformasi::create(['nama' => 'Edaran']);
+        
+        \App\Models\Informasi::factory(100)->create();
+        $dataInformasiUser = [];
+        for ($i = 1; $i <= 100; $i++) {
+            $dataInformasiUser[] = [
+                'informasi_id' => $i,
+                'user_id' => 10,
+            ];
+        }
+        DB::table('informasi_user')->insert($dataInformasiUser);
     }
 }

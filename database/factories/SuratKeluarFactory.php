@@ -19,9 +19,8 @@ class SuratKeluarFactory extends Factory
         return [
             'idJenisSurat' => fake()->numberBetween(1, 11),
             'idDireksi' => 1,
-            'tahun' => 2024,
+            'tahun' => 2025,
             'index' => fake()->unique()->randomNumber(3),
-            // 'tanggalSurat' => fake()->dateTimeInInterval('-2 years', '+2 years'),
             'tanggalSurat' => fake()->dateTimeThisYear(),
             'tujuan' => fake()->word(),
             'perihal' => fake()->words(3, true),

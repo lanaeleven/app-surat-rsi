@@ -13,13 +13,14 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use App\Jobs\ProcessRekapSuratKeluar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\QueryHelper;
 
 class SuratKeluarController extends Controller
 {
-    public function create(?string $ket = null) {
-
+    public function create(?string $ket = null)
+    {
         $suratKeluar = SuratKeluar::orderBy('tahun', 'desc')->orderBy('index', 'desc');
-        $jenisSurat = JenisSurat::all();  
+        $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
         $judul = "Surat Keluar";
 
@@ -33,41 +34,47 @@ class SuratKeluarController extends Controller
             $judul = "Surat Keluar Bulan Ini";
         }
 
+        // $filters = [
+        //     'index'        => 'index',
+        //     'tanggalSurat' => ['date>=', 'tanggalAwal'],
+        //     'tanggalSurat' => ['date<=', 'tanggalAkhir'],
+        //     'idJenisSurat' => 'jenisSurat',
+        //     'idDireksi'    => 'direksi',
+        //     'tujuan'       => ['like', 'tujuan'],
+        //     'perihal'      => ['like', 'perihal'],
+        //     'keterangan'   => ['like', 'keterangan'],
+        //     'tahun'        => 'tahun',
+        // ];
+
         if (request('index')) {
             $suratKeluar->where('index', '=', request('index'));
         }
-
         if (request('tanggalAwal')) {
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '>=', request('tanggalAwal'));
         }
-
         if (request('tanggalAkhir')) {
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
         }        
-
         if (request('jenisSurat')) {
             $suratKeluar->where('idJenisSurat', request('jenisSurat'));
         }
-
         if (request('direksi')) {
             $suratKeluar->where('idDireksi', request('direksi'));
         }
-
         if (request('tujuan')) {
             $suratKeluar->where('tujuan', 'like', '%' . request('tujuan') . '%');
         }
-
         if (request('perihal')) {
             $suratKeluar->where('perihal', 'like', '%' . request('perihal') . '%');
         }
-
         if (request('keterangan')) {
             $suratKeluar->where('keterangan', 'like', '%' . request('keterangan') . '%');
         }
-
         if (request('tahun')) {
             $suratKeluar->where('tahun', request('tahun'));
         }
+
+        // $suratKeluar = QueryHelper::applyFilters($suratKeluar, $filters);
 
         session([
             'search_tahun' => request('tahun')
@@ -76,14 +83,16 @@ class SuratKeluarController extends Controller
         return view('surat-keluar.index', ['title' => $judul, 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar->with(['jenisSurat', 'direksi'])->paginate(15), 'jenisSurat' => $jenisSurat, 'direksi' => $direksi, 'ket' => $ket, 'judul' => $judul]);
     }
 
-    public function edit(SuratKeluar $suratKeluar) {
+    public function edit(SuratKeluar $suratKeluar)
+    {
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
 
         return view('surat-keluar.edit', ['title' => 'Edit Surat Keluar', 'active' => 'surat keluar', 'suratKeluar' => $suratKeluar, 'jenisSurat' => $jenisSurat, 'direksi' => $direksi]);
     }
 
-    public function tambah() {
+    public function tambah()
+    {
         $jenisSurat = JenisSurat::all();
         $direksi = Direksi::all();
 
@@ -94,11 +103,10 @@ class SuratKeluarController extends Controller
     {
         if (auth()->user()->id == 1) {
             $redirect = '/surat-keluar/index'
-                    . '?tahun=' . urlencode(session('search_tahun', ''))
-            ;
+                . '?tahun=' . urlencode(session('search_tahun', ''));
         } else {
             $redirect = '/';
-        } 
+        }
         session()->forget('search_tahun');
         // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
         $request->validate([
@@ -109,7 +117,7 @@ class SuratKeluarController extends Controller
             'direksi' => 'required',
             'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
         ]);
-        
+
         $tahun = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');
         $bulan = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('m');
         // Get the maximum id for the given year
@@ -146,11 +154,10 @@ class SuratKeluarController extends Controller
     {
         if (auth()->user()->id == 1) {
             $redirect = '/surat-keluar/index'
-                    . '?tahun=' . urlencode(session('search_tahun', ''))
-            ;
+                . '?tahun=' . urlencode(session('search_tahun', ''));
         } else {
             $redirect = '/';
-        } 
+        }
         session()->forget('search_tahun');
         // Validate the incoming file. Refuses anything bigger than 5 Mb
         $request->validate([
@@ -186,7 +193,7 @@ class SuratKeluarController extends Controller
             $suratKeluar->fileName = $fileName;
             $suratKeluar->filePath = $filePath;
         }
-        
+
         if ($tahunInput != $request->input('tahun')) {
             // Get the maximum id for the given year
             $maxIndex = SuratKeluar::where('tahun', $tahunInput)->max('index');
@@ -194,7 +201,7 @@ class SuratKeluarController extends Controller
             $newIndex = $maxIndex ? $maxIndex + 1 : 1;
 
             $suratKeluar->tahun = $tahunInput;
-            $suratKeluar->index = $newIndex;         
+            $suratKeluar->index = $newIndex;
         }
         $suratKeluar->save();
 
@@ -203,7 +210,8 @@ class SuratKeluarController extends Controller
             ->with('success', 'Berhasil Mengedit Surat Keluar');
     }
 
-    public function laporanPerJenisSurat() {
+    public function laporanPerJenisSurat()
+    {
         $suratKeluar = SuratKeluar::orderBy('idJenisSurat', 'asc');
         $suratKeluar->select('idJenisSurat', SuratKeluar::raw('COUNT(idJenisSurat) as total_surat'))->groupBy('idJenisSurat');
 
@@ -213,12 +221,13 @@ class SuratKeluarController extends Controller
 
         if (request('tanggalAkhir')) {
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
 
         return view('surat-keluar.laporan-per-jenis-surat', ['title' => 'Surat Keluar Per Jenis Surat', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
     }
 
-    public function laporanPerDireksi() {
+    public function laporanPerDireksi()
+    {
         $suratKeluar = SuratKeluar::orderBy('idDireksi', 'asc');
         $suratKeluar->select('idDireksi', SuratKeluar::raw('COUNT(idDireksi) as total_surat'))->groupBy('idDireksi');
 
@@ -228,16 +237,17 @@ class SuratKeluarController extends Controller
 
         if (request('tanggalAkhir')) {
             $suratKeluar = $suratKeluar->whereDate('tanggalSurat', '<=', request('tanggalAkhir'));
-        }        
+        }
 
         return view('surat-keluar.laporan-per-direksi', ['title' => 'Surat Keluar Per Direksi', 'active' => 'laporan', 'suratKeluar' => $suratKeluar->get()]);
     }
 
-    public function exportLaporan(Request $request) {
+    public function exportLaporan(Request $request)
+    {
 
         $jsonStrings = $request->input('koleksi');
 
-        $koleksi = collect($jsonStrings)->map(function($item) {
+        $koleksi = collect($jsonStrings)->map(function ($item) {
             return json_decode($item, true);
         });
 
@@ -245,10 +255,10 @@ class SuratKeluarController extends Controller
         $jenisSurat = JenisSurat::all()->keyBy('id');
 
         $jumlahKeseluruhan = $koleksi->sum('total_surat');
-        
-        $koleksi = $koleksi->map(function($item) use ($jenisSurat) {
+
+        $koleksi = $koleksi->map(function ($item) use ($jenisSurat) {
             // Mendapatkan nama jenis surat
-            $namaJenisSurat = $jenisSurat[$item['idJenisSurat']]->kodeJenisSurat . '-' . $jenisSurat[$item['idJenisSurat']]->keterangan ?? 'Unknown'; 
+            $namaJenisSurat = $jenisSurat[$item['idJenisSurat']]->kodeJenisSurat . '-' . $jenisSurat[$item['idJenisSurat']]->keterangan ?? 'Unknown';
 
             // Membuat array dengan urutan field yang diinginkan
             $result = [
@@ -269,7 +279,8 @@ class SuratKeluarController extends Controller
         return (new FastExcel($koleksi))->download('Rekap Surat Keluar Per Jenis Surat.xlsx');
     }
 
-    public function rekapSuratKeluar(Request $request) {
+    public function rekapSuratKeluar(Request $request)
+    {
         // $tanggal = $request->input('bulanRekap');
         // $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
         // $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
@@ -291,25 +302,24 @@ class SuratKeluarController extends Controller
 
         $awal = $request->input('awal');
         $akhir = $request->input('akhir');
-        
+
         // $tanggal = $request->input('bulanRekap');
         // $tahun = Carbon::createFromFormat('Y-m', $tanggal)->format('Y');
         // $bulan = Carbon::createFromFormat('Y-m', $tanggal)->format('m');
-        
+
         // $job = new jenisSuratJob();
         $job = new ProcessRekapSuratKeluar($awal, $akhir);
         dispatch($job);
 
         return redirect('/surat-keluar/index')
             ->with('success', 'Anda akan menerima email ketika unduhan sudah siap');
-        
     }
 
     public function downloadZip(String $fileName)
     {
         // dd('tes');
         set_time_limit(0);
-        
+
         $zipFilePath = storage_path('app/' . $fileName . '.zip');
 
         if (file_exists($zipFilePath)) {

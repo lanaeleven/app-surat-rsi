@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\QueryHelper;
 use App\Jobs\ProcessNotifUndanganBaru;
 use App\Models\Undangan;
 use App\Models\User;
@@ -13,25 +14,86 @@ class UndanganController extends Controller
 {
     public function create()
     {
-        $undangan = Undangan::orderBy('waktuKegiatan', 'desc')->get();
         $judul = "Undangan";
+        $waktuSekarang = Carbon::today()->setTime(0, 0);
+        $undangan = Undangan::where('waktuKegiatan', '>', $waktuSekarang)->orderBy('waktuKegiatan', 'asc');
 
-        return view('undangan.index', ['title' => $judul, 'active' => 'undangan', 'undangan' => $undangan, 'judul' => $judul]);
+        // Tambahkan filter dinamis
+        $filters = [
+            'index'           => 'index',
+            'waktuKegiatan'   => ['date>=', 'tanggalAwal'],
+            'waktuKegiatan'   => ['date<=', 'tanggalAkhir'],
+            'judul'           => ['like', 'judul'],
+            'tempatKegiatan'  => ['like', 'tempatKegiatan'],
+            'tahun'           => 'tahun',
+        ];
+        $undangan = \App\Helpers\QueryHelper::applyFilters($undangan, $filters);
+
+        return view('undangan.index', [
+            'title' => $judul,
+            'active' => 'undangan',
+            'undangan' => $undangan->paginate(15),
+            'judul' => $judul,
+            'waktuSekarang' => $waktuSekarang
+        ]);
+    }
+
+    public function undanganTerlalu()
+    {
+        $judul = "Undangan Terlewat";
+        $waktuSekarang = Carbon::today()->setTime(0, 0);
+        $undanganTerlalu = Undangan::where('waktuKegiatan', '<=', $waktuSekarang)->orderBy('waktuKegiatan', 'desc');
+
+        // Tambahkan filter dinamis jika ingin
+        $filters = [
+            'index'           => 'index',
+            'waktuKegiatan'   => ['date>=', 'tanggalAwal'],
+            'waktuKegiatan'   => ['date<=', 'tanggalAkhir'],
+            'judul'           => ['like', 'judul'],
+            'tempatKegiatan'  => ['like', 'tempatKegiatan'],
+            'tahun'           => 'tahun',
+        ];
+        $undanganTerlalu = \App\Helpers\QueryHelper::applyFilters($undanganTerlalu, $filters);
+
+        return view('undangan.terlalu', [
+            'title' => $judul,
+            'active' => 'undangan',
+            'undanganTerlalu' => $undanganTerlalu->paginate(15),
+            'judul' => $judul,
+            'waktuSekarang' => $waktuSekarang
+        ]);
     }
 
     public function listUndanganNs()
     {
         $userId = auth()->user()->id;
+        $judul = "Undangan";
+        $waktuSekarang = Carbon::today()->setTime(0, 0);
 
+        // Ambil undangan yang user-nya adalah user login, dan waktuKegiatan > hari ini
         $undangan = Undangan::whereHas('users', function ($query) use ($userId) {
             $query->where('users.id', $userId);
-        })->get();
+        })->where('waktuKegiatan', '>', $waktuSekarang)
+          ->orderBy('waktuKegiatan', 'asc');
 
-        $waktuSekarang = Carbon::today()->setTime(00, 00);
+        // Filter dinamis
+        $filters = [
+            'index'           => 'index',
+            'waktuKegiatan'   => ['date>=', 'tanggalAwal'],
+            'waktuKegiatan'   => ['date<=', 'tanggalAkhir'],
+            'judul'           => ['like', 'judul'],
+            'tempatKegiatan'  => ['like', 'tempatKegiatan'],
+            'tahun'           => 'tahun',
+        ];
+        $undangan = QueryHelper::applyFilters($undangan, $filters);
 
-        $judul = "Undangan";
-
-        return view('undangan.index-ns', ['title' =>  $judul, 'active' => 'undangan', 'undangan' => $undangan, 'judul' => $judul, 'waktuSekarang' => $waktuSekarang]);
+        return view('undangan.index-ns', [
+            'title' => $judul,
+            'active' => 'undangan',
+            'undangan' => $undangan->paginate(15),
+            'judul' => $judul,
+            'waktuSekarang' => $waktuSekarang
+        ]);
     }
 
     public function tambah()

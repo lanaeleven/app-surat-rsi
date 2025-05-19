@@ -128,7 +128,7 @@ class RegulasiController extends Controller
             'perihal' => 'required',
             'direksi' => 'required',
             'units' => 'required|array',
-            'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
+            'fileSurat' => 'required|mimes:pdf,jpg,png'
         ]);
 
         
@@ -197,7 +197,7 @@ class RegulasiController extends Controller
             'perihal' => 'required',
             'direksi' => 'required',
             'units' => 'required|array',
-            'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
+            'fileSurat' => 'mimes:pdf,jpg,png'
         ]);
 
         $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');

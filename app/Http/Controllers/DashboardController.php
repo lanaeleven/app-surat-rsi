@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Informasi;
+use App\Models\Spo;
 use App\Models\User;
 use App\Models\SuratMasuk;
 use App\Models\SuratKeluar;
 use Illuminate\Http\Request;
 use App\Models\TujuanDisposisi;
 use App\Models\Undangan;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -25,12 +27,18 @@ class DashboardController extends Controller
         $undangan = 0;
         $pengumuman = 0;
         $edaran = 0;
+        $spoBulanIni = 0;
+        $bulanSekarang = Carbon::now()->translatedFormat('F');
+
+        $waktuSekarang = Carbon::today()->setTime(00, 00);
+        // dd($waktuSekarang->year);
 
         if (auth()->user()->id == 1 || auth()->user()->id == 2) {
             $suratMasukHariIni = SuratMasuk::whereDate('tanggalSurat', '=', now())->count();
             $suratMasukBulanIni = SuratMasuk::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
             $suratKeluarHariIni = SuratKeluar::whereDate('tanggalSurat', '=', now())->count();
             $suratKeluarBulanIni = SuratKeluar::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
+            $spoBulanIni = Spo::whereMonth('tanggalSurat', '=', now()->format('m'))->whereYear('tanggalSurat', '=', now()->format('Y'))->count();
         }
 
         if (auth()->user()->id != 1 && auth()->user()->id != 2) {
@@ -47,7 +55,7 @@ class DashboardController extends Controller
             $userId = auth()->user()->id;
             $undangan = Undangan::whereHas('users', function ($query) use ($userId) {
                 $query->where('users.id', $userId);
-            })->count();
+            })->where('waktuKegiatan', '>', $waktuSekarang)->count();
             $pengumuman = Informasi::whereHas('users', function ($query) use ($userId) {
                 $query->where('users.id', $userId);
             })
@@ -74,6 +82,8 @@ class DashboardController extends Controller
             'undangan' => $undangan,
             'pengumuman' => $pengumuman,
             'edaran' => $edaran,
+            'bulanSekarang' => $bulanSekarang,
+            'spoBulanIni' => $spoBulanIni
         ]);
     }
 

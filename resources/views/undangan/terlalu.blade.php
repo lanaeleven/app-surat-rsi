@@ -12,11 +12,9 @@
                 <h3 class="fw-semibold fs-4 text-center">{{ strtoupper($judul) }}</h3>
             </div>
             <div>
-                <a href="/undangan/tambah" class="btn btn-primary btn-sm">Tambah</a>
-                <a href="/undangan/terlalu" class="btn btn-sm btn-outline-danger">Undangan Terlewat</a>
+                <a href="/undangan/index" class="btn btn-sm btn-outline-primary">Coming Soon</a>
             </div>
         </div>
-
 
         <div>
             <form class="row g-3" action="">
@@ -29,13 +27,13 @@
             </form>
         </div>
 
-        @if ($undangan->isEmpty())
+        @if ($undanganTerlalu->isEmpty())
             <x-empty-data data='{{ $judul }}' />
         @else
             @php
                 $tableHeader = ['Index', 'Judul Kegiatan', 'Tempat Kegiatan', 'Waktu Kegiatan', 'Aksi'];
                 $rows = [];
-                foreach ($undangan as $u) {
+                foreach ($undanganTerlalu as $u) {
                     $waktu = \Carbon\Carbon::parse($u->waktuKegiatan);
                     $rows[] = [
                         $u->index,
@@ -66,7 +64,7 @@
             </x-mobile-table-container>
 
             <x-pagination-links-container>
-                {{ $undangan->appends(request()->input())->links() }}
+                {{ $undanganTerlalu->appends(request()->input())->links() }}
             </x-pagination-links-container>
 
             <!-- Modal -->

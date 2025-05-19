@@ -98,6 +98,7 @@ Route::get('/undangan/edit/{undangan}', [UndanganController::class, 'edit'])->mi
 Route::get('/undangan/index/ns/', [UndanganController::class, 'listUndanganNs'])->middleware('notSekre');
 Route::post('/undangan/tambah', [UndanganController::class, 'store']);
 Route::post('/undangan/save', [UndanganController::class, 'save']);
+Route::get('/undangan/terlalu', [UndanganController::class, 'undanganTerlalu'])->middleware('sekre');
 
 Route::get('/pks/index', [PerjanjianKerjaSamaController::class, 'create'])->middleware('sekre');
 Route::get('/pks/tambah', [PerjanjianKerjaSamaController::class, 'tambah'])->middleware('sekre');

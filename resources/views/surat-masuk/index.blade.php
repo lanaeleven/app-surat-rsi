@@ -1,248 +1,122 @@
-
 @extends('layouts.main')
 
 @section('container')
-<div>
-@if (session()->has('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-@endif  
+    <div>
+        <x-default-notif />
 
-@if (session()->has('error'))
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-@endif  
+        <x-title-with-add-button title="{{ $judul }}" addUrl="/surat-masuk/tambah" />
 
-    <div class="d-flex justify-content-between my-2">
-      <div class="mb-2">
-      @if (!is_null($keterangan))
-      <a href="/" class="btn btn-warning btn-sm"><i class="fa-solid fa-arrow-left" style="color: #000;"></i></a>
-      @endif
-      </div>
-      <div>
-        <h3 class="fw-bold fs-4">{{ $judul }}</h3>
-      </div>
-      <div class="mb-2">
-      @if (is_null($keterangan))
-        <a href="/surat-masuk/tambah" class="btn btn-primary d-none d-md-block d-lg-block d-xl-block d-xxl-block">Tambah</a>
-        <a href="/surat-masuk/tambah" class="btn btn-primary btn-sm d-md-none d-lg-none d-xl-none d-xxl-none"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></a>
+        <div>
+            <form class="row g-3" action="/surat-masuk/index">
+                <x-input-field-filter :isLabel="false" name="tahun" type="number" placeholder="Tahun" :isSmall="true" />
+                <x-input-field-filter :isLabel="true" label="Tgl Awal" name="tanggalAwal" type="date" />
+                <x-input-field-filter :isLabel="true" label="Tgl Akhir" name="tanggalAkhir" type="date" />
+                <x-input-field-filter :isLabel="false" name="index" type="number" placeholder="Index"
+                    :isSmall="true" />
+                <x-input-field-filter :isLabel="false" name="pengirim" type="text" placeholder="Pengirim" />
+                <x-input-field-filter :isLabel="false" name="nomorSurat" type="text" placeholder="Nomor Surat" />
+                <x-input-field-filter :isLabel="false" name="perihal" type="text" placeholder="Perihal" />
+                <x-input-field-filter :isLabel="false" name="status" type="text" placeholder="Status" />
+                <x-filter-submit-button />
+            </form>
+        </div>
+
+        @if ($suratMasuk->isEmpty())
+            <x-empty-data data='{{ $judul }}' />
+        @else
+            {{-- start set data table --}}
+            @php
+                $tableHeader = ['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi'];
+            @endphp
+            @foreach ($suratMasuk as $sm)
+                @php
+                    $rows[] = [
+                        $sm->index,
+                        $sm->pengirim,
+                        $sm->tanggalSurat,
+                        $sm->nomorSurat,
+                        $sm->perihal,
+                        $sm->status,
+                        '
+                        <a href="/surat-masuk/edit/' .
+                        $sm->id .
+                        '" class="mt-1 btn btn-sm btn-primary"><i
+                                class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
+                        <a href="' .
+                        asset('storage/' . $sm->filePath) .
+                        '" class="mt-1 btn btn-sm btn-secondary"
+                            target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
+                        <a href="/surat-masuk/lacak-distribusi/' .
+                        $sm->id .
+                        '"
+                            class="mt-1 btn btn-sm btn-info"><i class="fa-solid fa-shoe-prints fa-rotate-270"
+                                style="color: #000000;"></i></a>
+                        <a href="/surat-masuk/disposisi/' .
+                        $sm->id .
+                        '"
+                            class="mt-1 btn btn-sm btn-warning"><i class="fa-solid fa-share"
+                                style="color: #000000;"></i></a>
+                        ',
+                    ];
+                @endphp
+            @endforeach
+            {{-- end set data table --}}
+
+            <x-default-table-container>
+                <x-default-table :tableHeader="$tableHeader" :rows="$rows" />
+            </x-default-table-container>
+
+            <x-mobile-table-container>
+                <x-mobile-table :tableHeader="$tableHeader" :rows="$rows" />
+            </x-mobile-table-container>
+
+            <x-pagination-links-container>
+                {{ $suratMasuk->appends(request()->input())->links() }}
+            </x-pagination-links-container>
         @endif
-      </div>
     </div>
-
-    @if (is_null($keterangan))
-      <div class="d-flex justify-content-end">
-      <div>
-        <button class="btn btn-success btn-sm py-2 fs-6 mx-auto" data-bs-toggle="modal" data-bs-target="#unduhRekapModal">Unduh Rekap</button>
-      </div>
-    </div>
-    @endif
 
     {{-- Modal Unduh Rekap --}}
-    <div class="modal fade" id="unduhRekapModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="unduhRekapModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="unduhRekapModalLabel">Rekap File Surat Masuk</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
+    <div class="modal fade" id="unduhRekapModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="unduhRekapModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="unduhRekapModalLabel">Rekap File Surat Masuk</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
-            <form method="POST" id="formRekap" action="/unduh-rekap-suratmasuk">
-              @csrf
-              {{-- <div class="mb-3">
+                    <form method="POST" id="formRekap" action="/unduh-rekap-suratmasuk">
+                        @csrf
+                        {{-- <div class="mb-3">
                 <label for="bulanRekap" class="col-form-label">Pilih Bulan</label>
                 <input type="month" id="bulanRekap" name="bulanRekap"  class="form-control" required>
               </div> --}}
-                <div class="col-auto">
-                  <label for="awal" class="col-form-label"><small>Awal</small></label>
+                        <div class="col-auto">
+                            <label for="awal" class="col-form-label"><small>Awal</small></label>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <input name="awal" type="date" id="awal" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-auto">
+                            <label for="akhir" class="col-form-label"><small>Akhir</small></label>
+                        </div>
+                        <div class="col-auto mb-3">
+                            <input name="akhir" type="date" id="akhir" class="form-control form-control-sm">
+                        </div>
+                        <button type="submit" class="btn btn-success container-fluid">Unduh Rekap
+                            {{-- <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerRekap"></span> --}}
+                        </button>
                 </div>
-                <div class="col-auto mb-3">
-                    <input name="awal" type="date" id="awal" class="form-control form-control-sm">
-                </div> 
-                <div class="col-auto">
-                    <label for="akhir" class="col-form-label"><small>Akhir</small></label>
-                </div>
-                <div class="col-auto mb-3">
-                    <input name="akhir" type="date" id="akhir" class="form-control form-control-sm">
-                </div>
-                <button type="submit" class="btn btn-success container-fluid">Unduh Rekap
-                  {{-- <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="spinnerRekap"></span> --}}
-                </button>
+                </form>
             </div>
-            </form>
-          </div>
         </div>
-      </div>
-
+    </div>
     {{-- end of modal --}}
 
-    <div>
-      <form class="row g-3" action="/surat-masuk/index">
-        @if (is_null($keterangan))
-        <div class="row g-3">
-          <div class="col-auto">
-            <input name="tahun" type="number" class="form-control form-control-sm" placeholder="Tahun" value="{{ request('tahun') }}">
-          </div>
-          <div class="col-auto">
-            <label for="tanggalAwal" class="col-form-label"><small>Tanggal Awal :</small></label>
-          </div>
-          <div class="col-auto me-3">
-              <input name="tanggalAwal" type="date" id="tanggalAwal" class="form-control form-control-sm" value="{{ request('tanggalAwal') }}">
-          </div> 
-          <div class="col-auto">
-              <label for="tanggalAkhir" class="col-form-label"><small>Tanggal Akhir :</small></label>
-            </div>
-          <div class="col-auto">
-              <input name="tanggalAkhir" type="date" id="tanggalAkhir" class="form-control form-control-sm" value="{{ request('tanggalAkhir') }}">
-          </div>
-        </div>
-        @endif
 
-        <div class="row g-3">
-          <div class="col-auto">
-            <input name="index" type="number" class="form-control form-control-sm" placeholder="Index" value="{{ request('index') }}">
-          </div>
-          <div class="col-auto">
-            <select name="direksi" class="form-select form-select-sm">
-              <option value="">Semua Direksi</option>
-              @foreach ($direksi as $d)
-              <option value="{{ $d->id }}" {{ request('direksi') == $d->id ? 'selected' : '' }}>{{ $d->namaDireksi }}</option>
-              @endforeach
-            </select>
-          </div>
-          {{-- <div class="col-auto">
-            <select name="idPengirim" class="form-select form-select-sm">
-              <option value="">Pengirim</option>
-              @foreach ($pengirim as $p)
-              <option value="{{ $p->id }}" {{ request('idPengirim') == $p->id ? 'selected' : '' }}>{{ $p->namaJabatan }}</option>
-              @endforeach
-            </select>
-          </div> --}}
-          <div class="col-auto">
-            <input name="pengirim" type="text" class="form-control form-control-sm" placeholder="Pengirim" value="{{ request('pengirim') }}">
-          </div>
-          <div class="col-auto">
-            <input name="nomorSurat" type="text" class="form-control form-control-sm" placeholder="Nomor Surat" value="{{ request('nomorSurat') }}">
-          </div>
-          <div class="col-auto">
-            <input name="perihal" type="text" class="form-control form-control-sm" placeholder="Perihal" value="{{ request('perihal') }}">
-          </div>
-          <div class="col-auto">
-            <input name="status" type="text" class="form-control form-control-sm" placeholder="Status" value="{{ request('status') }}">
-          </div>
-          
-          <div class="col-auto">
-            <button type="submit" class="btn btn-secondary btn-sm"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    @if ($suratMasuk->isEmpty())
-
-        <p class="text-center fs-6 my-5">Anda Tidak Memiliki {{ $judul }}</p>
-
-    @else
-
-    <div class="div">
-        <table class="table table-striped table-bordered d-none d-md-table d-lg-table d-xl-table d-xxl-table mt-2">
-            <thead>
-              <tr>
-                <th scope="col">Indeks</th>
-                <th scope="col">Direktorat</th>
-                <th scope="col">Dari</th>
-                <th scope="col">Tgl Surat</th>
-                <th scope="col">No Surat</th>
-                <th scope="col">Perihal</th>
-                <th scope="col">Status</th>
-                <th scope="col">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($suratMasuk as $sm)
-                  
-              <tr>
-                <th scope="row">{{ $sm->index }}</th>
-                <td>{{ $sm->direksi->namaDireksi }}</td>
-                <td>
-                    {{ $sm->pengirim }}
-                </td>
-                <td>{{ $sm->tanggalSurat }}</td>
-                <td>{{ $sm->nomorSurat }}</td>
-                <td>{{ $sm->perihal }}</td>
-                <td> {{ $sm->status }} </td>
-                <td>
-                  <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-                  <a href="{{ asset('storage/' . $sm->filePath) }}" class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>
-                  <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-info"><i class="fa-solid fa-shoe-prints fa-rotate-270" style="color: #000000;"></i></a>
-                  <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="fa-solid fa-share" style="color: #000000;"></i></a>
-                </td>
-              </tr>
-
-              @endforeach
-              
-            </tbody>
-          </table>
-
-          {{-- Tampilan Daftar Surat Masuk pada mobile device --}}
-          @foreach ($suratMasuk as $sm)
-    <div class="col-12 d-md-none d-lg-none d-xl-none d-xxl-none mt-3 mb-5">
-      <div class="card shadow">
-        <table class="table table-bordered">
-          <tr>
-            <th>Indeks</th>
-            <td>{{ $sm->index }}</td>
-          </tr>
-          <tr>
-            <th>Direktorat</th>
-            <td>{{ $sm->direksi->namaDireksi }}</td>
-          </tr>
-          <tr>
-            <th>Dari</th>
-            <td>{{ $sm->pengirim }}</td>
-          </tr>
-          <tr>
-            <th>Tgl Surat</th>
-            <td>{{ $sm->tanggalSurat }}</td>
-          </tr>
-          <tr>
-            <th>No Surat</th>
-            <td>{{ $sm->nomorSurat }}</td>
-          </tr>
-          <tr>
-            <th>Perihal</th>
-            <td>{{ $sm->perihal }}</td>
-          </tr>
-          <tr>
-            <th>Status</th>
-            <td>{{ $sm->status }}</td>
-          </tr>
-          <tr>
-            <td colspan="2" class="text-center">
-              <a href="/surat-masuk/edit/{{ $sm->id }}" class="mt-1 btn btn-sm btn-primary"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a>
-              <a href="/surat-masuk/lacak-distribusi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-info"><i class="fa-solid fa-shoe-prints fa-rotate-270" style="color: #000000;"></i></a>
-              <a href="/surat-masuk/disposisi/{{ $sm->id }}" class="mt-1 btn btn-sm btn-warning"><i class="fa-solid fa-share" style="color: #000000;"></i></a>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>        
-    @endforeach
-    </div>
-    <div class="d-flex justify-content-center">
-      <div>
-        {{ $suratMasuk->appends(request()->input())->links() }}
-      </div>
-    </div>
-    @endif
-</div>
-
-{{-- <script>
+    {{-- <script>
   document.addEventListener('DOMContentLoaded', function() {
     // spinner tombol rekap
     var formRekap = document.getElementById('formRekap'); 

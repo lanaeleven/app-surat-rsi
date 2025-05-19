@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Spo>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Regulasi>
  */
-class SpoFactory extends Factory
+class RegulasiFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,10 @@ class SpoFactory extends Factory
     public function definition(): array
     {
         return [
-            'idDireksi' => 1,
-            'tahun' => 2025,
             'index' => fake()->unique()->randomNumber(3),
+            'tahun' => 2025,
+            'idJenisRegulasi' => fake()->numberBetween(1, 2),
+            'idDireksi' => 1,
             'tanggalSurat' => fake()->dateTimeThisYear(),
             'tujuan' => fake()->word(),
             'perihal' => fake()->words(3, true),

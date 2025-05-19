@@ -37,8 +37,9 @@ class SuratMasukFactory extends Factory
 
         return [
             'idDireksi' => 1,
-            'idPosisiDisposisi' => 18,
-            'tahun' => 2024,
+            'idPosisiDisposisi' => 10,
+            'idPengirim' => 10,
+            'tahun' => 2025,
             'index' => fake()->unique()->randomNumber(3),
             'statusArsip' => 0,
             'nomorSurat' => fake()->word(),

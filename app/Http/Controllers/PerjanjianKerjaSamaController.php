@@ -88,7 +88,7 @@ class PerjanjianKerjaSamaController extends Controller
             'perihal' => 'required',
             'direksi' => 'required',
             'users' => 'required|array',
-            'fileSurat' => 'required|mimes:pdf,jpg,png|max:12288'
+            'fileSurat' => 'required|mimes:pdf,jpg,png'
         ]);
 
 
@@ -165,7 +165,7 @@ class PerjanjianKerjaSamaController extends Controller
             'perihal' => 'required',
             'direksi' => 'required',
             'users' => 'required|array',
-            'fileSurat' => 'mimes:pdf,jpg,png|max:12288'
+            'fileSurat' => 'mimes:pdf,jpg,png'
         ]);
 
         $tahunInput = Carbon::createFromFormat('Y-m-d', $request->input('tanggalSurat'))->format('Y');

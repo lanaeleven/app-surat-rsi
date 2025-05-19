@@ -207,3 +207,13 @@ a.sidebar-link:hover {
         visibility: hidden;
     }
 }
+
+.btn-blue-soft {
+    background-color: #6ec1e4 !important;
+    color: white !important;
+    border: none !important;
+  }
+  
+  .btn-blue-soft:hover {
+    background-color: #3498db !important;
+  }

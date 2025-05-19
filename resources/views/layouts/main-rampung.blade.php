@@ -267,7 +267,7 @@
         @endcan
 
         @can('dashboard-not-sekre')
-            {{-- <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block expand">
+            <aside id="sidebar" class="d-none d-md-block d-lg-block d-xl-block d-xxl-block expand">
                 <div class="d-flex">
                     <button class="toggle-btn" type="button" id="toggle-btnnn">
                         <i class="fa-solid fa-hospital" style="color: #ffffff;"></i>
@@ -373,13 +373,13 @@
                         </a>
                     </li>
                 </ul>
-            </aside> --}}
+            </aside>
         @endcan
 
         <div class="main">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid mx-3">
-                    <a class="navbar-brand" href="#"><img src="/img/logorsi.png" width="100"
+                    <a class="navbar-brand" href="#"><img src="/img/logorsi.png" width="150"
                             alt="Logo RSI"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -418,7 +418,7 @@
                         @endcan
 
                         @can('dashboard-not-sekre')
-                            <ul class="navbar-nav me-auto mb-lg-0">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-md-none d-lg-none d-xl-none d-xxl-none">
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'dashboard') fw-bold @endif
@@ -449,7 +449,7 @@
                    "
                                         href="/surat-masuk/ns/sudah-diarsipkan">Sudah Diarsipkan</a>
                                 </li>
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'spo') fw-bold @endif
                    "
@@ -472,7 +472,7 @@
                   @if ($active == 'informasi') fw-bold @endif
                    "
                                         href="/informasi/index/ns">Informasi</a>
-                                </li> --}}
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-center fs-6
                   @if ($active == 'akun') fw-bold @endif
