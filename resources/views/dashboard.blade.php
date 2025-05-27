@@ -69,21 +69,21 @@
                                     <div class="col-sm-3 mb-2">
                                         <x-card-dashboard url="/surat-masuk/index?tahun={{ config('app.tahun') }}"
                                             total="{{ $suratMasukBulanIni }}" :twoRowsTitle="true"
-                                            title="SURAT MASUK - {{ strtoupper($bulanSekarang) }}" headerColor='#d4edda'
+                                            title="SURAT MASUK" headerColor='#d4edda'
                                             bodyColor='#edf7ef' buttonColor='#81c784' buttonHoverColor='#66bb6a'>
                                         </x-card-dashboard>
                                     </div>
                                     <div class="col-sm-3 mb-2">
                                         <x-card-dashboard url="/surat-keluar/index?tahun={{ config('app.tahun') }}"
                                             total="{{ $suratKeluarBulanIni }}" :twoRowsTitle="true"
-                                            title="SURAT KELUAR - {{ strtoupper($bulanSekarang) }}" headerColor='#d4edda'
+                                            title="SURAT KELUAR" headerColor='#d4edda'
                                             bodyColor='#edf7ef' buttonColor='#81c784' buttonHoverColor='#66bb6a'>
                                         </x-card-dashboard>
                                     </div>
                                     <div class="col-sm-3 mb-2">
                                         <x-card-dashboard url="/spo/index?tahun={{ config('app.tahun') }}"
                                             total="{{ $spoBulanIni }}" :twoRowsTitle="true"
-                                            title="SPO - {{ strtoupper($bulanSekarang) }}" headerColor='#d4edda'
+                                            title="SPO" headerColor='#d4edda'
                                             bodyColor='#edf7ef' buttonColor='#81c784' buttonHoverColor='#66bb6a'>
                                         </x-card-dashboard>
                                     </div>
@@ -98,19 +98,19 @@
                                 <div class="row g-3">
                                     <div class="col-sm-3 mb-2 ">
                                         <x-card-dashboard url="/undangan/index" total="{{ $undangan }}" :twoRowsTitle="false"
-                                            title="UNDANGAN MENDATANG" headerColor='#f8d7da' bodyColor='#fbeaea' buttonColor='#e57373'
+                                            title="UNDANGAN" headerColor='#f8d7da' bodyColor='#fbeaea' buttonColor='#e57373'
                                             buttonHoverColor='#ef5350'>
                                         </x-card-dashboard>
                                     </div>
                                     <div class="col-sm-3 mb-2">
                                         <x-card-dashboard url="/informasi/index?jenisInformasi=1" total="{{ $pengumuman }}"
-                                            :twoRowsTitle="false" title="PENGUMUMAN/ HIMBAUAN - {{ strtoupper($bulanSekarang) }}" headerColor='#fff3cd'
+                                            :twoRowsTitle="false" title="PENGUMUMAN/ HIMBAUAN" headerColor='#fff3cd'
                                             bodyColor='#fff9e6' buttonColor='#ffd54f' buttonHoverColor='#ffca28'>
                                         </x-card-dashboard>
                                     </div>
                                     <div class="col-sm-3 mb-2">
                                         <x-card-dashboard url="/informasi/index?jenisInformasi=2" total="{{ $edaran }}"
-                                            :twoRowsTitle="false" title="EDARAN - {{ strtoupper($bulanSekarang) }}" headerColor='#fff3cd' bodyColor='#fff9e6'
+                                            :twoRowsTitle="false" title="EDARAN" headerColor='#fff3cd' bodyColor='#fff9e6'
                                             buttonColor='#ffd54f' buttonHoverColor='#ffca28'>
                                         </x-card-dashboard>
                                     </div>
