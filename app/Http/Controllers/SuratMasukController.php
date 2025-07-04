@@ -101,7 +101,7 @@ class SuratMasukController extends Controller
 
     public function tambah() {
         $direksi = Direksi::all();
-        $pengirim = User::whereNotIn('id', [1, 2, 3])->get();
+        $pengirim = User::whereNotIn('id', [1, 2, 3])->where('isAktif', true)->get();
         
         return view('surat-masuk.tambah', ['title' => 'Tambah Surat Masuk', 'active' => 'surat masuk', 'direksi' => $direksi, 'pengirim' => $pengirim]);
     }
@@ -323,7 +323,7 @@ class SuratMasukController extends Controller
             // 1 = Sekretariat
             // 2 = Direktur
             // 3 = Kabag/Kabid
-            // 4 = Kepala Bagian
+            // 4 = Kasubag
             // 5 = Komite/Tim
             //
             // Id User Spesial
@@ -345,7 +345,7 @@ class SuratMasukController extends Controller
 
             if ($levelJabatan) {
                 if ($levelJabatan == 1) {
-                    $terusan = User::where('id', '<>', $idUser)->where('id', '<>', 2)->where('isKhusus', false)->get();
+                    $terusan = User::where('id', '<>', $idUser)->where('id', '<>', 2)->where('isKhusus', false)->where('isAktif', true)->get();
                     if ($terusanKhusus->isNotEmpty()) {
                         $terusan = $terusan->merge($terusanKhusus);
                     }
@@ -358,7 +358,7 @@ class SuratMasukController extends Controller
                                 FROM struktur_organisasi
                                 WHERE levelJabatan = 3 OR levelJabatan = 5)
                                 -- OR id = 1
-                            ) AND isKhusus = false AND id != :idUser ;',
+                            ) AND isKhusus = false AND id != :idUser AND isAktif = true ;',
                             ['idUser' => $idUser]
                             );
                     if ($terusanKhusus->isNotEmpty()) {
@@ -376,7 +376,7 @@ class SuratMasukController extends Controller
                             -- OR id IN (1,3)
                             OR id = (3)
                             )
-                        AND isKhusus = false AND id != :idUser ;',
+                        AND isKhusus = false AND id != :idUser AND isAktif = true ;',
                         ['idAtasan' => $idUser,
                         'idUser' => $idUser]
                         );
@@ -402,7 +402,7 @@ class SuratMasukController extends Controller
                                 LIMIT 1)
                             -- OR id = 1
                             )
-                        AND isKhusus = false AND id != ? ;',
+                        AND isKhusus = false AND id != ? AND isAktif = true ;',
                         [$idUser, $idUser]
                         );
 
@@ -431,7 +431,7 @@ class SuratMasukController extends Controller
                                 id IN (SELECT idUser
                                 FROM struktur_organisasi
                                 WHERE levelJabatan IN (2,3,4,5))
-                            ) AND isKhusus = false AND id != :idUser ;',
+                            ) AND isKhusus = false AND id != :idUser AND isAktif = true ;',
                             ['idUser' => $idUser]
                             );
                     if ($terusanKhusus->isNotEmpty()) {
@@ -441,10 +441,6 @@ class SuratMasukController extends Controller
                     return ('Maaf, posisi Jabatan Akun Anda belum disetting oleh Sekretariat, Silakan hubungi Sekretariat');
                 }
             } 
-
-            
-            
-            
         }
 
         

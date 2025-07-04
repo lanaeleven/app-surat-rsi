@@ -326,7 +326,7 @@
                             <form action="/user/batalkanKhusus" method="post">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $user->id }}">
-                                <button type="submit" id="btnBatalkanKhusus" class="btn btn-danger mt-3">Batalkan
+                                <button type="submit" id="btnBatalkanKhusus" class="btn btn-secondary mt-3">Batalkan
                                     Khusus</button>
                             </form>
                         @else
@@ -334,7 +334,7 @@
                             <form action="/user/jadikanKhusus" method="post">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $user->id }}">
-                                <button type="submit" id="btnJadikanKhusus" class="btn btn-danger mt-3">Jadikan
+                                <button type="submit" id="btnJadikanKhusus" class="btn btn-secondary mt-3">Jadikan
                                     Khusus</button>
                             </form>
                         @endif
@@ -343,6 +343,28 @@
                 </div>
             </div>
         @endif
+
+        <div class="row justify-content-center">
+            <div class="card col-8 mb-5">
+                <div class="card-body">
+                    @if ($user->isAktif)
+                        <form action="/user/nonaktifkan" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $user->id }}">
+                            <button type="submit" id="nonaktifkanUser" class="btn btn-danger mt-3">Nonaktifkan
+                                User</button>
+                        </form>
+                    @else
+                        <form action="/user/aktifkan" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $user->id }}">
+                            <button type="submit" id="aktifkanUser" class="btn btn-success mt-3">Aktifkan
+                                User</button>
+                        </form>
+                    @endif
+                </div>
+            </div>
+        </div>
 
     </div>
 

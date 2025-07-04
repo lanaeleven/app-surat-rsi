@@ -62,7 +62,7 @@ class PerjanjianKerjaSamaController extends Controller
     public function tambah()
     {
         $direksi = Direksi::all();
-        $users = User::where('id', '<>', 2)->get();
+        $users = User::where('id', '<>', 2)->where('isAktif', true)->get();
 
         return view('pks.tambah', [
             'title' => 'Tambah Perjanjian Kerja Sama',

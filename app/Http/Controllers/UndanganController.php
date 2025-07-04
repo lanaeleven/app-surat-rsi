@@ -98,7 +98,7 @@ class UndanganController extends Controller
 
     public function tambah()
     {
-        $users = User::where('id', '<>', 2)->get();
+        $users = User::where('id', '<>', 2)->where('isAktif', true)->get();
 
         return view('undangan.tambah', [
             'title' => 'Tambah Undangan',

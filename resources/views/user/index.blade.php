@@ -28,8 +28,6 @@
                 <th scope="col">Jabatan</th>
                 <th scope="col">Level</th>
                 <th scope="col">Atasan</th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
@@ -80,8 +78,6 @@
                       <i class="fa-solid fa-x" style="color: #d62929;"></i>
                       @endif
                     </td> --}}
-                    <td>{{ $u->username }}</td>
-                    <td>{{ $u->email }}</td>
                     <td><a href="/user/edit/{{ $u->id }}" class="mt-1 btn btn-sm btn-primary text-center"><i class="fa-solid fa-pencil" style="color: #ffffff;"></i></a></td>
                   </tr>
               @endforeach

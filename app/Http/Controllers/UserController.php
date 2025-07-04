@@ -232,6 +232,32 @@ class UserController extends Controller
         return redirect()->back()->with('success', "Berhasil Membatalkan Akun Khusus");
     }
 
+    public function nonaktifkan(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $user = User::find($request->input('id'));
+        $user->isAktif = false;
+        $user->save();
+
+        return redirect()->back()->with('success', "Berhasil Menonaktifkan User");
+    }
+
+    public function aktifkan(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        $user = User::find($request->input('id'));
+        $user->isAktif = true;
+        $user->save();
+
+        return redirect()->back()->with('success', "Berhasil Mengaktifkan User");
+    }
+
     public function kelolaKhusus(User $user)
     {
         $daftarPengirim = PenerimaKhusus::where('idUser', $user->id)->get();

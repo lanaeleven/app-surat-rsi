@@ -88,7 +88,7 @@ class InformasiController extends Controller
     public function tambah()
     {
         $jenisInformasi = JenisInformasi::all();
-        $users = User::where('id', '<>', 2)->get();
+        $users = User::where('id', '<>', 2)->where('isAktif', true)->get();
 
         return view('informasi.tambah', [
             'title' => 'Tambah Informasi',

@@ -160,6 +160,8 @@ Route::post('/user/batalkanKhusus', [UserController::class, 'batalkanKhusus']);
 Route::post('/user/update-lingkup-unit', [UserController::class, 'updateLingkupUnit']);
 Route::post('/akun-khusus/tambah-pengirim', [UserController::class, 'tambahPengirim']);
 Route::post('/akun-khusus/tambah-penerima', [UserController::class, 'tambahPenerima']);
+Route::post('/user/nonaktifkan', [UserController::class, 'nonaktifkan']);
+Route::post('/user/aktifkan', [UserController::class, 'aktifkan']);
 
 Route::get('/struktur-organisasi/tambah/{user}', [StrukturOrganisasiController::class, 'tambah'])->middleware('sekre');
 Route::post('/struktur-organisasi/store', [StrukturOrganisasiController::class, 'store']);
