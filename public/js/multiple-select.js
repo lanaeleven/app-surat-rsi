@@ -1,6 +1,11 @@
 $(document).ready(function() {
     $('.select2').select2();
 
+    $('.select2-single').select2({
+        placeholder: "Pilih salah satu",
+        allowClear: true
+    });
+
     $('#units').on('change', function() {
         let selectedValues = $(this).val() || [];
         const isAllSelected = selectedValues.includes('all');
