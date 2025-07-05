@@ -98,6 +98,7 @@
                                     <option value="{{ $p->id }}" @if (old('idPengirim') == $p->id) selected @endif>
                                         {{ $p->namaJabatan }}</option>
                                 @endforeach
+                                <option value="lainnya">Lainnya</option>
                             </select>
                         </div>
                     </div>
