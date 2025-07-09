@@ -5,6 +5,9 @@
         <x-default-notif />
 
         <x-title-with-add-button title="{{ $judul }}" addUrl="/surat-masuk/tambah" />
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#unduhRekapModal">
+            Rekap
+        </button>
 
         <div>
             <form class="row g-3" action="/surat-masuk/index">
@@ -26,7 +29,7 @@
         @else
             {{-- start set data table --}}
             @php
-                $tableHeader = ['Indeks', 'Dari', 'Tgl Surat', 'No Surat', 'Perihal', 'Status', 'Aksi'];
+                $tableHeader = ['Indeks', 'Dari', 'Tgls Surat', 'No Surat', 'Perihal', 'Status', 'Aksi'];
             @endphp
             @foreach ($suratMasuk as $sm)
                 @php
