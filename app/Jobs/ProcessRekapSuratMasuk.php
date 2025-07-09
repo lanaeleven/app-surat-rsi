@@ -114,7 +114,7 @@ class ProcessRekapSuratMasuk implements ShouldQueue
                 $pdfMerger->addPDF($dompdfFilePath, 'all');
                 $pdfMerger->addPDF($finalSuratMasukPath, 'all');
 
-                $gabunganPath = storage_path('app/public/uploads/disposisi/suratmasuk_gabungan' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
+                $gabunganPath = storage_path('app/public/uploads/suratmasuk_gabungan_' . $sm->tahun . '_' . $sm->index . '_disposisi_' . $timestamp . '.' . '.pdf');
                 $pdfMerger->merge();
                 $pdfMerger->save($gabunganPath);
 
