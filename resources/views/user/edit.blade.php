@@ -334,7 +334,7 @@
                             <form action="/user/jadikanKhusus" method="post">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $user->id }}">
-                                <button type="submit" id="btnJadikanKhusus" class="btn btn-secondary mt-3">Jadikan
+                                <button type="submit" id="btnJadikanKhusus" class="btn btn-sm btn-secondary mt-3">Jadikan
                                     Khusus</button>
                             </form>
                         @endif
@@ -348,13 +348,19 @@
             <div class="card col-8 mb-5">
                 <div class="card-body">
                     @if ($user->isAktif)
+                    <div>
+                        <span class="text-success"><b>Status User Aktif</b></span>
+                    </div>
                         <form action="/user/nonaktifkan" method="post">
                             @csrf
                             <input type="hidden" name="id" value="{{ $user->id }}">
-                            <button type="submit" id="nonaktifkanUser" class="btn btn-danger mt-3">Nonaktifkan
+                            <button type="submit" id="nonaktifkanUser" class="btn btn-sm btn-danger mt-3">Nonaktifkan
                                 User</button>
                         </form>
                     @else
+                    <div>
+                        <span class="text-danger"><b>Status User Non-aktif</b></span>
+                    </div>
                         <form action="/user/aktifkan" method="post">
                             @csrf
                             <input type="hidden" name="id" value="{{ $user->id }}">
