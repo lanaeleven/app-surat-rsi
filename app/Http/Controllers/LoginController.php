@@ -33,13 +33,13 @@ class LoginController extends Controller
             return back()->with('blocked', 'Terlalu banyak percobaan login. Silakan coba lagi nanti.')->withInput();
         }
 
-        $user = User::where('username', $credentials['username'])->first();
+        // $user = User::where('username', $credentials['username'])->first();
 
-        if (!$user || !$user->isAktif) {
-            RateLimiter::hit($key, 60);
-            $message = !$user ? 'Username atau Password tidak sesuai' : 'User ini sudah tidak aktif lagi. Silakan menghubungi sekretariat.';
-            return back()->with('failed', $message);
-        }
+        // if (!$user || !$user->isAktif) {
+        //     RateLimiter::hit($key, 60);
+        //     $message = !$user ? 'Username atau Password tidak sesuai' : 'User ini sudah tidak aktif lagi. Silakan menghubungi sekretariat.';
+        //     return back()->with('failed', $message);
+        // }
 
         if (Auth::attempt($credentials)) {
             // Jika autentikasi berhasil, reset hit
