@@ -51,7 +51,6 @@
                             $r->jenisRegulasi->keterangan,
                             '<a href="' .
                             asset('storage/' . $r->filePath) .
-                            $r->id .
                             '"class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>',
                         ];
                     @endphp

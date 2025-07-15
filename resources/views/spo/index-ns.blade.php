@@ -41,7 +41,6 @@
                             $s->keterangan,
                             '<a href="' .
                             asset('storage/' . $s->filePath) .
-                            $s->id .
                             '"class="mt-1 btn btn-sm btn-secondary" target="_blank"><i class="fa-solid fa-eye" style="color: #ffffff;"></i></a>',
                         ];
                     @endphp
