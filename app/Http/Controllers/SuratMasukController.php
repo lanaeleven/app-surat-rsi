@@ -197,6 +197,10 @@ class SuratMasukController extends Controller
         return view('surat-masuk.edit', ['title' => 'Edit Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'direksi' => $direksi, 'pengirim' => $pengirim]);
     }
 
+    public function editTerusanSurat(int $idSuratMasuk, DistribusiSurat $terusanSurat) {
+        return view('surat-masuk.edit-terusan-surat', ['title' => 'Edit Terusan Surat', 'active' => 'surat masuk', 'terusanSurat' => $terusanSurat, 'idSuratMasuk' => $idSuratMasuk]);
+    }
+
     public function save(Request $request): RedirectResponse
     {
         // Validate the incoming file. Refuses anything bigger than 5120 kilobyes (=5MB)
@@ -276,6 +280,24 @@ class SuratMasukController extends Controller
         // Redirect back to the index page with a success message
         return redirect('/surat-masuk/index?tahun=' . config('app.tahun'))
             ->with('success', "Berhasil Mengedit Surat Masuk");
+    }
+
+    public function updateTerusanSurat(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'idTerusanSurat' => 'required',
+            'idSuratMasuk' => 'required',
+            'waktuDiteruskan' => 'required',
+        ]);
+
+        $waktuDiteruskanFormatted = Carbon::parse($request->input('waktuDiteruskan'))->format('Y-m-d H:i:s');
+
+        $terusanSurat = DistribusiSurat::find($request->input('idTerusanSurat'));
+        $terusanSurat->tanggalDiteruskan = $waktuDiteruskanFormatted;
+        $terusanSurat->save();
+
+        return redirect('/surat-masuk/lacak-distribusi/' . $request->input('idSuratMasuk'))
+            ->with('success', "Berhasil Mengedit Terusan Surat");
     }
 
 
