@@ -397,6 +397,7 @@ class SuratMasukController extends Controller
                             OR idAtasan = :idAtasan)
                             -- OR id IN (1,3)
                             OR id = (3)
+                            OR id = (47)
                             )
                         AND isKhusus = false AND id != :idUser AND isAktif = true ;',
                         ['idAtasan' => $idUser,
