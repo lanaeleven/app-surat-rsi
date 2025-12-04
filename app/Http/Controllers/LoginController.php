@@ -41,6 +41,21 @@ class LoginController extends Controller
         //     return back()->with('failed', $message);
         // }
 
+        // Ambil user berdasarkan username
+        $user = User::where('username', $credentials['username'])->first();
+
+        // Jika user tidak ditemukan
+        if (!$user) {
+            RateLimiter::hit($key, 60);
+            return back()->with('failed', 'Username atau Password tidak sesuai');
+        }
+
+        // 🔥 Cek user id = 2 sebelum melakukan Auth::attempt()
+        if ($user->id == 2) {
+            RateLimiter::hit($key, 60);
+            return back()->with('failed', 'Akun ini sudah dihapus');
+        }
+
         if (Auth::attempt($credentials)) {
             // Jika autentikasi berhasil, reset hit
             RateLimiter::clear($key);
