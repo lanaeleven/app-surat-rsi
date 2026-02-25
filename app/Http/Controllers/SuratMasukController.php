@@ -404,7 +404,7 @@ class SuratMasukController extends Controller
                         'idUser' => $idUser]
                         );
 
-                    if ($idUser == 9 || $idUser == 48 || $idUser == 44) {
+                    if ($idUser == 9 || $idUser == 48 || $idUser == 44 || $idUser == 45) {
                         $terusanKeSekre = User::where('id', 1)->get();
                         $terusan = [...$terusan, ...$terusanKeSekre];
                     }
@@ -438,7 +438,7 @@ class SuratMasukController extends Controller
                     //     [$idUser]
                     //     );
 
-                    if ($idUser == 9 || $idUser == 48 || $idUser == 44) {
+                    if ($idUser == 9 || $idUser == 48 || $idUser == 44 || $idUser == 45) {
                         $terusanKeSekre = User::where('id', 1)->get();
                         $terusan = [...$terusan, ...$terusanKeSekre];
                     }
