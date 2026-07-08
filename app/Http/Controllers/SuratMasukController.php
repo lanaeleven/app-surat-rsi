@@ -493,6 +493,17 @@ class SuratMasukController extends Controller
 
     public function teruskan(Request $request): RedirectResponse
     {
+        $suratMasuk = SuratMasuk::findOrFail($request->input('idSuratMasuk'));
+        $latestDisposisi = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)
+        ->orderBy('id', 'desc')
+        ->first();
+        
+        if ($latestDisposisi) {
+                $authorizedUserId = $latestDisposisi->idTujuanDisposisi;
+                if ($authorizedUserId != auth()->user()->id && auth()->user()->id != 1) {
+                    abort(403);
+                }
+            }
         // $perihal = session('search_query_perihal', '');
         
         // pembedaan redirect user sekre dan non-sekre
