@@ -209,7 +209,7 @@ class PerjanjianKerjaSamaController extends Controller
     public function listPerjanjianKerjaSamaNs()
     {
         $userId = auth()->user()->id;
-        if ($userId == 3) {
+        if ($userId == 3 || $userId == 50) {
             $pks = PerjanjianKerjaSama::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         } else {
             $pks = PerjanjianKerjaSama::whereHas('users', function ($query) use ($userId) {

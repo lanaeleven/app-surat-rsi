@@ -69,7 +69,7 @@ class RegulasiController extends Controller
         $userUnitIds = auth()->user()->units->pluck('id');
 
         $userId = auth()->user()->id;
-        if ($userId == 3) {
+        if ($userId == 3 || $userId == 50) {
             $regulasi = Regulasi::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         } else {
             $regulasi = Regulasi::whereHas('units', function ($query) use ($userUnitIds) {

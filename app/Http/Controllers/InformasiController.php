@@ -56,7 +56,7 @@ class InformasiController extends Controller
         $userId = auth()->user()->id;
 
         $userId = auth()->user()->id;
-        if ($userId == 3) {
+        if ($userId == 3 || $userId == 50) {
             $informasi = Informasi::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         } else {
             $informasi = Informasi::whereHas('users', function ($query) use ($userId) {

@@ -68,7 +68,7 @@ class SpoController extends Controller
         $userUnitIds = auth()->user()->units->pluck('id');
 
         $userId = auth()->user()->id;
-        if ($userId == 3) {
+        if ($userId == 3 || $userId == 50) {
             $spo = Spo::orderBy('tahun', 'desc')->orderBy('index', 'desc');
         } else {
             $spo = Spo::whereHas('units', function ($query) use ($userUnitIds) {
