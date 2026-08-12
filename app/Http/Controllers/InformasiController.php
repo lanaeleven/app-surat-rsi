@@ -55,9 +55,17 @@ class InformasiController extends Controller
     {
         $userId = auth()->user()->id;
 
-        $informasi = Informasi::whereHas('users', function ($query) use ($userId) {
+        $userId = auth()->user()->id;
+        if ($userId == 3) {
+            $informasi = Informasi::orderBy('tahun', 'desc')->orderBy('index', 'desc');
+        } else {
+            $informasi = Informasi::whereHas('users', function ($query) use ($userId) {
             $query->where('users.id', $userId);
         });
+        }
+        // $informasi = Informasi::whereHas('users', function ($query) use ($userId) {
+        //     $query->where('users.id', $userId);
+        // });
         $jenisInformasi = JenisInformasi::all();
 
         $judul = "Informasi";
