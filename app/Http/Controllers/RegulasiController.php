@@ -68,9 +68,18 @@ class RegulasiController extends Controller
     {
         $userUnitIds = auth()->user()->units->pluck('id');
 
-        $regulasi = Regulasi::whereHas('units', function ($query) use ($userUnitIds) {
+        $userId = auth()->user()->id;
+        if ($userId == 3) {
+            $regulasi = Regulasi::orderBy('tahun', 'desc')->orderBy('index', 'desc');
+        } else {
+            $regulasi = Regulasi::whereHas('units', function ($query) use ($userUnitIds) {
             $query->whereIn('unit.id', $userUnitIds);
         });
+        }
+
+        // $regulasi = Regulasi::whereHas('units', function ($query) use ($userUnitIds) {
+        //     $query->whereIn('unit.id', $userUnitIds);
+        // });
 
         $direksi = Direksi::all();
         $judul = "Regulasi";

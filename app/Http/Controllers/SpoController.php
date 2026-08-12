@@ -67,9 +67,16 @@ class SpoController extends Controller
     {
         $userUnitIds = auth()->user()->units->pluck('id');
 
-        $spo = Spo::whereHas('units', function ($query) use ($userUnitIds) {
-            $query->whereIn('unit.id', $userUnitIds);
-        });
+        $userId = auth()->user()->id;
+        if ($userId == 3) {
+            $spo = Spo::orderBy('tahun', 'desc')->orderBy('index', 'desc');
+        } else {
+            $spo = Spo::whereHas('units', function ($query) use ($userUnitIds) {
+                $query->whereIn('unit.id', $userUnitIds);
+            });
+        }
+        
+
 
         $direksi = Direksi::all();
         $judul = "Standar Prosedur Operasional";

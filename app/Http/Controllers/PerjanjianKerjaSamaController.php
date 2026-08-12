@@ -209,10 +209,16 @@ class PerjanjianKerjaSamaController extends Controller
     public function listPerjanjianKerjaSamaNs()
     {
         $userId = auth()->user()->id;
-
-        $pks = PerjanjianKerjaSama::whereHas('users', function ($query) use ($userId) {
+        if ($userId == 3) {
+            $pks = PerjanjianKerjaSama::orderBy('tahun', 'desc')->orderBy('index', 'desc');
+        } else {
+            $pks = PerjanjianKerjaSama::whereHas('users', function ($query) use ($userId) {
             $query->where('users.id', $userId);
         });
+        }
+        // $pks = PerjanjianKerjaSama::whereHas('users', function ($query) use ($userId) {
+        //     $query->where('users.id', $userId);
+        // });
 
 
         $direksi = Direksi::all();
