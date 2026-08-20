@@ -155,7 +155,72 @@
         @if ($distribusiSurat->isNotEmpty())
             <div class="row d-flex justify-content-center">
                 <h5 class="text-center fw-bold">Terusan Sebelumnya</h5>
-                @foreach ($distribusiSurat as $ds)
+                @foreach ($distribusiSurat as $idGroup => $items)
+                @if ($items->count() > 1)
+                    {{-- BLOK FAN-OUT --}}
+                    <div class="col-9 my-3 d-none d-md-block">
+                        <div class="card border-warning">
+                            <div class="card-header fw-bold bg-warning-subtle">
+                                {{ $items->first()->pengirimDisposisi->namaJabatan }} meneruskan secara paralel ke
+                                {{ $items->count() }} user — {{ $items->first()->tanggalDiteruskan }}
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-sm mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Kepada</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($items as $ds)
+                                            <tr>
+                                                <td>{{ $ds->tujuanDisposisi->namaJabatan }}</td>
+                                                <td>
+                                                    @if ($ds->sudahDijawab)
+                                                        <span class="badge bg-success">
+                                                            Sudah Menjawab ({{ $ds->tanggalDijawab }})
+                                                        </span>
+                                                    @else
+                                                        <span class="badge bg-secondary">Menunggu Jawaban</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="p-3">
+                                    <strong>Instruksi:</strong> {{ $items->first()->instruksi }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- versi mobile --}}
+                    <div class="d-md-none d-lg-none d-xl-none d-xxl-none container my-2">
+                        <div class="card">
+                            <div class="card-header fw-bold">
+                                {{ $items->first()->pengirimDisposisi->namaJabatan }} → Paralel {{ $items->count() }} user
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                @foreach ($items as $ds)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ $ds->tujuanDisposisi->namaJabatan }}
+                                        @if ($ds->sudahDijawab)
+                                            <span class="badge bg-success">Sudah</span>
+                                        @else
+                                            <span class="badge bg-secondary">Belum</span>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <div class="card-footer">Instruksi: {{ $items->first()->instruksi }}</div>
+                        </div>
+                    </div>
+                    <hr>
+                @else
+                    {{-- SATU FORWARD BIASA — sama persis dengan kode lama, cuma $ds diambil dari $items->first() --}}
+                    @php $ds = $items->first(); @endphp
                     <div class="col-9 my-3 d-none d-md-block">
                         <form>
                             <div class="row mb-3">
@@ -187,12 +252,10 @@
                                     <textarea class="form-control" name="instruksi" id="instruksi" rows="3" disabled readonly>{{ $ds->instruksi }}</textarea>
                                 </div>
                             </div>
-
                         </form>
                         <hr>
                     </div>
 
-                    {{-- Terusan surat untuk mobile device --}}
                     <div class="d-md-none d-lg-none d-xl-none d-xxl-none container my-2">
                         <div class="card">
                             <div class="card-header fw-bold">
@@ -210,34 +273,94 @@
                         </div>
                         <hr>
                     </div>
-                @endforeach
+                @endif
+            @endforeach
             </div>
         @endif
 
         <div class="row d-flex justify-content-center">
             @if ($suratMasuk->statusArsip == 0)
                 <h5 class="text-center fw-bold mb-3">Teruskan Surat</h5>
+
+                @if ($milikSayaDiGrup)
+        {{-- Mode: user sedang menjawab instruksi dari fan-out --}}
+        <div class="col-12 col-md-9">
+            <div class="alert alert-info">
+                Anda sedang menjawab instruksi dari <strong>{{ $milikSayaDiGrup->pengirimDisposisi->namaJabatan }}</strong>.
+                Balasan Anda akan dikirim kembali ke pengirim tersebut.
+            </div>
+            <form action="/surat-masuk/teruskan" id="formTeruskan" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
+                <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                {{-- tujuan dikunci ke pengirim baris instruksi, tidak bisa dipilih bebas --}}
+                <input type="hidden" name="idTujuanDisposisi" value="{{ $milikSayaDiGrup->idPengirimDisposisi }}">
+
+                <div class="row mb-3">
+                    <label for="instruksi" class="col-sm-3 col-form-label">Balasan</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" name="instruksi" id="instruksi" rows="3" required></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="fileLampiran" class="col-sm-3 col-form-label">Tambah Lampiran (Opsional)</label>
+                    <div class="col-sm-9">
+                        <input name="fileLampiran" class="form-control @error('fileLampiran') is-invalid @enderror" type="file" id="fileLampiran">
+                        @error('fileLampiran')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-success">Kirim Balasan</button>
+                </div>
+            </form>
+        </div>
+        @else
+                @if (auth()->user()->strukturOrganisasi->levelJabatan == 2)
+                <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label">Mode Penerusan</label>
+                    <div class="col-sm-9">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="modeTerus" id="modeSatu" value="satu" checked>
+                            <label class="form-check-label" for="modeSatu">Satu Tujuan</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="modeTerus" id="modeBanyak" value="banyak">
+                            <label class="form-check-label" for="modeBanyak">Paralel (Beberapa Tujuan)</label>
+                        </div>
+                    </div>
+                </div>
+                @endif
                 <div class="col-12 col-md-9">
                     <form action="/surat-masuk/teruskan" id="formTeruskan" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
 
-                        <div class="row mb-3">
+                        <div class="row mb-3" id="wrapperTujuanSatu">
                             <label for="idTujuanDisposisi" class="col-sm-3 col-form-label">Teruskan Kepada</label>
                             <div class="col-sm-9">
-                                {{-- <select name="idTujuanDisposisi" class="form-select" id="idTujuanDisposisi" required>
-                                    <option value="">Pilih Tujuan Disposisi</option>
-                                    @foreach ($terusan as $t)
-                                        <option value="{{ $t->id }}">{{ $t->namaJabatan }}</option>
-                                    @endforeach
-                                </select> --}}
 
-                                <select name="idTujuanDisposisi" id="idTujuanDisposisi" class="form-select select2-single"
+                                <select name="idTujuanDisposisi" id="idTujuanDisposisiSatu" class="form-select select2-single"
                                     required>
                                     <option value="">Pilih Tujuan Disposisi</option>
                                     @foreach ($terusan as $t)
                                         <option value="{{ $t->id }}">{{ $t->namaJabatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 d-none" id="wrapperTujuanBanyak" >
+                            <label for="users" class="col-sm-3 col-form-label">Pilih User (bisa lebih dari satu)</label>
+                            <div class="col-sm-9">
+                                <select name="idTujuanDisposisi[]" id="idTujuanDisposisiBanyak" multiple class="form-select select2" required>
+                                    <option value="all">Seluruh User</option>
+                                    @foreach ($terusan as $user)
+                                        <option value="{{ $user->id }}">{{ $user->namaJabatan }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -294,103 +417,108 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </form>
-            @endif
-            @if ($suratMasuk->statusArsip == 0)
-                <form action="/surat-masuk/arsipkan" id="formArsipkan" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
-                    <input type="hidden" name="idTujuanDisposisi" value="1">
-                    <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
-                    <div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#modalArsipkan">Arsipkan</button>
-                    </div>
+                </div>
+                {{-- [FIX] penutup <div class="col-12 col-md-9"> di atas sebelumnya tidak ada --}}
+        @endif
+        {{-- [FIX] @endif di atas menutup @if ($milikSayaDiGrup) --}}
 
-                    <!-- Modal Tombol Arsipkan -->
-                    <div class="modal fade" data-bs-backdrop="static" id="modalArsipkan" tabindex="-1"
-                        aria-labelledby="modalArsipkanLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="modalArsipkanLabel">Arsipkan Surat</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Surat yang sudah diarsipkan tidak akan bisa diteruskan lagi. Apakah Anda Yakin?
-                                    <div class="row my-3">
-                                        <label for="instruksi" class="col-sm-3 col-form-label">Keterangan</label>
-                                        <div class="col-sm-9">
-                                            <textarea class="form-control" name="instruksi" id="instruksi" rows="3" required></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row my-3">
-                                        <label for="fileLampiranArsip" class="col-sm-3 col-form-label">Lampiran
-                                            (Opsional)</label>
-                                        <div class="col-sm-9">
-                                            <input name="fileLampiranArsip"
-                                                class="form-control @error('fileLampiranArsip') is-invalid @enderror"
-                                                type="file" id="fileLampiranArsip">
-                                            @error('fileLampiranArsip')
-                                                <div id="fileLampiranArsip" class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-primary">Arsipkan
-                                        <span class="spinner-border spinner-border-sm d-none" role="status"
-                                            aria-hidden="true" id="spinnerArsipkan"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            @endif
-
-            @if ($suratMasuk->statusArsip == 1 && auth()->user()->id == 1)
-                <form action="/surat-masuk/buka-arsip" method="post">
-                    @csrf
-                    <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
-                    <div class="d-flex justify-content-center mt-3">
+                @if ($suratMasuk->statusArsip == 0)
+                    <form action="/surat-masuk/arsipkan" id="formArsipkan" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                        <input type="hidden" name="idTujuanDisposisi" value="1">
+                        <input type="hidden" name="idPengirimDisposisi" value="{{ auth()->user()->id }}">
                         <div>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#modalBukaArsip">Buka Arsip</button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modalArsipkan">Arsipkan</button>
                         </div>
-                    </div>
 
-                    <!-- Modal Tombol Buka Arsip -->
-                    <div class="modal fade" data-bs-backdrop="static" id="modalBukaArsip" tabindex="-1"
-                        aria-labelledby="modalBukaArsipLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="modalBukaArsipLabel">Buka Arsip</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Anda Yakin Ingin Membuka Status Arsip?
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-danger">Buka Arsip</button>
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
+                        <!-- Modal Tombol Arsipkan -->
+                        <div class="modal fade" data-bs-backdrop="static" id="modalArsipkan" tabindex="-1"
+                            aria-labelledby="modalArsipkanLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="modalArsipkanLabel">Arsipkan Surat</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Surat yang sudah diarsipkan tidak akan bisa diteruskan lagi. Apakah Anda Yakin?
+                                        <div class="row my-3">
+                                            <label for="instruksi" class="col-sm-3 col-form-label">Keterangan</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" name="instruksi" id="instruksi" rows="3" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row my-3">
+                                            <label for="fileLampiranArsip" class="col-sm-3 col-form-label">Lampiran
+                                                (Opsional)</label>
+                                            <div class="col-sm-9">
+                                                <input name="fileLampiranArsip"
+                                                    class="form-control @error('fileLampiranArsip') is-invalid @enderror"
+                                                    type="file" id="fileLampiranArsip">
+                                                @error('fileLampiranArsip')
+                                                    <div id="fileLampiranArsip" class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary">Arsipkan
+                                            <span class="spinner-border spinner-border-sm d-none" role="status"
+                                                aria-hidden="true" id="spinnerArsipkan"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form> 
+                @endif
+
+                @if ($suratMasuk->statusArsip == 1 && auth()->user()->id == 1)
+                    <form action="/surat-masuk/buka-arsip" method="post">
+                        @csrf
+                        <input type="hidden" name="idSuratMasuk" value="{{ $suratMasuk->id }}">
+                        <div class="d-flex justify-content-center mt-3">
+                            <div>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#modalBukaArsip">Buka Arsip</button>
+                            </div>
+                        </div>
+
+                        <!-- Modal Tombol Buka Arsip -->
+                        <div class="modal fade" data-bs-backdrop="static" id="modalBukaArsip" tabindex="-1"
+                            aria-labelledby="modalBukaArsipLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="modalBukaArsipLabel">Buka Arsip</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Anda Yakin Ingin Membuka Status Arsip?
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-danger">Buka Arsip</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                @endif
             @endif
+            {{-- [FIX] @endif di atas ini yang tadinya HILANG — menutup @if ($suratMasuk->statusArsip == 0) paling awal ("Teruskan Surat") --}}
         </div>
-    </div>
-    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -400,28 +528,79 @@
     <script src="/js/multiple-select.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const radioSatu = document.getElementById('modeSatu');
+        const radioBanyak = document.getElementById('modeBanyak');
+        const wrapperSatu = document.getElementById('wrapperTujuanSatu');
+        const wrapperBanyak = document.getElementById('wrapperTujuanBanyak');
+        const selectSatu = document.getElementById('idTujuanDisposisiSatu');
+        const selectBanyak = document.getElementById('idTujuanDisposisiBanyak');
+
+        function setMode(mode) {
+            if (mode === 'satu') {
+                wrapperSatu.classList.remove('d-none');
+                wrapperBanyak.classList.add('d-none');
+
+                selectSatu.disabled = false;
+                selectSatu.required = true;
+
+                selectBanyak.disabled = true;
+                selectBanyak.required = false;
+                $(selectBanyak).val(null).trigger('change');
+            } else {
+                wrapperBanyak.classList.remove('d-none');
+                wrapperSatu.classList.add('d-none');
+
+                selectBanyak.disabled = false;
+                selectBanyak.required = true;
+
+                selectSatu.disabled = true;
+                selectSatu.required = false;
+                $(selectSatu).val(null).trigger('change');
+            }
+        }
+
+        // kalau radio tidak ada (user bukan direktur), field "banyak" tetap
+        // harus di-disable & di-unrequire secara default, karena wrapper-nya
+        // memang sudah d-none dari Blade — cuma belum di-nonaktifkan secara JS
+        if (!radioSatu || !radioBanyak) {
+            selectBanyak.disabled = true;
+            selectBanyak.required = false;
+            return;
+        }
+
+        radioSatu.addEventListener('change', () => setMode('satu'));
+        radioBanyak.addEventListener('change', () => setMode('banyak'));
+
+        setMode(radioSatu.checked ? 'satu' : 'banyak');
+    });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // spinner tombol teruskan
             var formTeruskan = document.getElementById('formTeruskan');
-            formTeruskan.addEventListener('submit', function(event) {
-                var submitButtonTeruskan = formTeruskan.querySelector('button[type="submit"]');
-                if (submitButtonTeruskan) {
-                    submitButtonTeruskan.disabled = true;
-                    document.getElementById('spinnerTeruskan').classList.remove('d-none');
-                }
-            });
+            if (formTeruskan) {
+                formTeruskan.addEventListener('submit', function(event) {
+                    var submitButtonTeruskan = formTeruskan.querySelector('button[type="submit"]');
+                    if (submitButtonTeruskan) {
+                        submitButtonTeruskan.disabled = true;
+                        document.getElementById('spinnerTeruskan').classList.remove('d-none');
+                    }
+                });
+            }
 
             // spinner tombol artsipkan
             var formArsipkan = document.getElementById('formArsipkan');
-            formArsipkan.addEventListener('submit', function(event) {
-                var submitButtonArsipkan = formArsipkan.querySelector('button[type="submit"]');
-                if (submitButtonArsipkan) {
-                    submitButtonArsipkan.disabled = true;
-                    document.getElementById('spinnerArsipkan').classList.remove('d-none');
-                }
-            });
-
-
+            if (formArsipkan) {
+                formArsipkan.addEventListener('submit', function(event) {
+                    var submitButtonArsipkan = formArsipkan.querySelector('button[type="submit"]');
+                    if (submitButtonArsipkan) {
+                        submitButtonArsipkan.disabled = true;
+                        document.getElementById('spinnerArsipkan').classList.remove('d-none');
+                    }
+                });
+            }
         });
     </script>
 @endsection

@@ -29,6 +29,7 @@ use App\Jobs\ProcessNotifSuratMasukBaru;
 use Illuminate\Pagination\LengthAwarePaginator;
 use setasign\Fpdi\PdfParser\PdfParserException;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
+use Illuminate\Support\Str;
 
 class SuratMasukController extends Controller
 {
@@ -466,12 +467,38 @@ class SuratMasukController extends Controller
 
         
         
-            // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
-            // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
-            if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
-                $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
-                if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && $idUser != 1) {
-                    abort(403);
+            // // PENGECEKAN UNTUK USER NON-SEKRE PADA SURAT YANG SUDAH DITERUSKAN
+            // // PENGECEKAN APAKAH SURAT MASUK SUDAH PERNAH DITERUSKAN ATAU BELUM, JIKA BELUM MAKA TIDAK MELEWATI GATE DISPOSISI-SURAT
+            // if (DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->exists()) {
+            //     $cekDS = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->orderBy('id', 'desc')->get()[0];
+            //     if ((! Gate::allows('disposisi-surat', $cekDS) || $cekDS->status == "Diarsipkan") && $idUser != 1) {
+            //         abort(403);
+            //     }
+            // }
+
+            $milikSayaDiGrup = null;
+
+            if (DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)->exists()) {
+                if ($suratMasuk->idGroup) {
+                    // Mode fan-out aktif: akses valid kalau user ini anggota grup dan belum menjawab
+                    $milikSayaDiGrup = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)
+                        ->where('idGroup', $suratMasuk->idGroup)
+                        ->where('idTujuanDisposisi', $idUser)
+                        ->where('sudahDijawab', false)
+                        ->first();
+                    
+                    $cekDS = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)->orderBy('id', 'desc')->first();
+                    // dd($cekDS);
+
+                    if (! $milikSayaDiGrup && $idUser != 1 && $cekDS->idTujuanDisposisi != $idUser) {
+                        abort(403);
+                    }
+                } else {
+                    // Alur normal: cek baris terakhir seperti sebelumnya, tanpa Gate
+                    $cekDS = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)->orderBy('id', 'desc')->first();
+                    if (($cekDS->idTujuanDisposisi != $idUser || $cekDS->status == "Diarsipkan") && $idUser != 1) {
+                        abort(403);
+                    }
                 }
             }
 
@@ -483,62 +510,202 @@ class SuratMasukController extends Controller
         
         
 
-        // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
-        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
+        // // JIKA SUDAH MELEWATI SEMUA GATE, KEMUDIAN AMBIL DATA DISTRIBUSI SURAT
+        // $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)->with(['pengirimDisposisi', 'tujuanDisposisi'])->get();
 
-        return view('surat-masuk.disposisi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
+        $distribusiSurat = DistribusiSurat::where('idSuratMasuk', '=', $suratMasuk->id)
+            ->with(['pengirimDisposisi', 'tujuanDisposisi'])
+            ->orderBy('id')
+            ->get()
+            ->groupBy(function ($ds) {
+                return $ds->idGroup ?? 'single-' . $ds->id; // null idGroup = grup sendiri-sendiri
+            });
+
+            dd($distribusiSurat);
+
+        // return view('surat-masuk.disposisi', ['title' => 'Disposisi Surat Masuk', 'active' => 'surat masuk', 'suratMasuk' => $suratMasuk, 'terusan' => $terusan, 'distribusiSurat' => $distribusiSurat]);
+        return view('surat-masuk.disposisi', [
+            'title' => 'Disposisi Surat Masuk',
+            'active' => 'surat masuk',
+            'suratMasuk' => $suratMasuk,
+            'terusan' => $terusan,
+            'distribusiSurat' => $distribusiSurat,
+            'milikSayaDiGrup' => $milikSayaDiGrup, // baru — buat kunci tujuan balasan di Blade
+        ]);
     }
 
     public function teruskan(Request $request): RedirectResponse
     {
         $suratMasuk = SuratMasuk::findOrFail($request->input('idSuratMasuk'));
-        $latestDisposisi = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)
-        ->orderBy('id', 'desc')
-        ->first();
-        
-        if ($latestDisposisi) {
+        $idUser = auth()->user()->id;
+        $isParalel = is_array($request->input('idTujuanDisposisi'));
+
+        // Cek dulu: apakah user ini adalah anggota grup fan-out yang sedang aktif
+        // dan belum menjawab? Kalau ya, aksi ini adalah "balasan grup".
+        $bariskAsal = null;
+        if ($suratMasuk->idGroup) {
+            $bariskAsal = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)
+                ->where('idGroup', $suratMasuk->idGroup)
+                ->where('idTujuanDisposisi', $idUser)
+                ->where('sudahDijawab', false)
+                ->first();
+        }
+
+        // ============================================
+        // GUARD UTAMA: surat sedang dalam mode fan-out aktif
+        // ============================================
+        if ($suratMasuk->idGroup) {
+            if (! $bariskAsal) {
+                // User ini BUKAN anggota grup yang belum jawab — termasuk direktur
+                // pengirim grup itu sendiri. Dia tidak boleh forward apa pun
+                // (baik satu tujuan maupun paralel baru) selama grup belum tuntas.
+                abort(403, 'Surat ini masih menunggu jawaban dari anggota grup sebelumnya.');
+            }
+
+            if ($isParalel) {
+                // Tidak boleh membuka fan-out baru selagi menjawab fan-out yang aktif.
+                abort(403, 'Tidak dapat membuat fan-out baru saat sedang menjawab instruksi grup.');
+            }
+
+            // Ini balasan grup — tujuan WAJIB balik ke pengirim baris instruksi asal,
+            // tidak boleh diarahkan ke user lain meski request dimanipulasi.
+            if ((int) $request->input('idTujuanDisposisi') !== $bariskAsal->idPengirimDisposisi) {
+                abort(403, 'Balasan hanya dapat dikirim kembali ke pengirim disposisi.');
+            }
+        } else {
+            // Alur normal (bukan mode grup): pertahankan validasi lama —
+            // hanya pemegang surat saat ini yang boleh forward.
+            $latestDisposisi = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            if ($latestDisposisi) {
                 $authorizedUserId = $latestDisposisi->idTujuanDisposisi;
-                if ($authorizedUserId != auth()->user()->id && auth()->user()->id != 1) {
+                if ($authorizedUserId != $idUser && $idUser != 1) {
                     abort(403);
                 }
             }
-        // $perihal = session('search_query_perihal', '');
-        
-        // pembedaan redirect user sekre dan non-sekre
-        if (auth()->user()->id == 1) {
-            $redirect = '/surat-masuk/index'
-                    . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
-                    . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
-                    . '&index=' . urlencode(session('search_index', ''))
-                    . '&direksi=' . urlencode(session('search_direksi', ''))
-                    . '&pengirim=' . urlencode(session('search_pengirim', ''))
-                    . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
-                    . '&perihal=' . urlencode(session('search_perihal', ''))
-                    . '&status=' . urlencode(session('search_status', ''))
-            ;
-        } else {
-            $redirect = '/';
-        } 
+        }
 
-        session()->forget('search_tanggalAwal');
-        session()->forget('search_tanggalAkhir');
-        session()->forget('search_index');
-        session()->forget('search_direksi');
-        session()->forget('search_pengirim');
-        session()->forget('search_nomorSurat');
-        session()->forget('search_perihal');
-        session()->forget('search_status');
-        
         // validasi input dari user
         $request->validate([
-            'idTujuanDisposisi' => 'required',
             'idSuratMasuk' => 'required',
             'instruksi' => 'required',
             'idPengirimDisposisi' => 'required',
             'fileLampiran' => 'mimes:pdf,jpg,png|max:5120'
         ]);
-        
+
+        if ($isParalel) {
+            // ============================================
+            // CASE: direktur membuka fan-out baru ke >1 user
+            // ============================================
+            $status = "Diteruskan paralel ke " . strval(count($request->idTujuanDisposisi)) . " user";
+            $newIdGroup = (string) Str::orderedUuid();
+
+            $suratMasuk->status = $status;
+            $suratMasuk->idGroup = $newIdGroup;
+            $suratMasuk->idPosisiDisposisi = null; // tidak ada satu pemegang tunggal selama grup aktif
+            $suratMasuk->save();
+
+            $sifatSurat = $suratMasuk->sifatSurat;
+            $nomorSurat = $suratMasuk->nomorSurat;
+
+            foreach ($request->idTujuanDisposisi as $idTujuan) {
+                $distribusiSurat = new DistribusiSurat();
+                $distribusiSurat->idTujuanDisposisi = $idTujuan;
+                $distribusiSurat->idPengirimDisposisi = $request->input('idPengirimDisposisi');
+                $distribusiSurat->idSuratMasuk = $request->input('idSuratMasuk');
+                $distribusiSurat->instruksi = $request->input('instruksi');
+                $distribusiSurat->tanggalDiteruskan = now();
+                $distribusiSurat->status = $status;
+                $distribusiSurat->idGroup = $newIdGroup;
+                $distribusiSurat->sudahDijawab = false;
+                $distribusiSurat->save();
+
+                $penerima = User::find($idTujuan);
+
+                $job = new ProcessNotifDisposisi(
+                    $sifatSurat,
+                    $nomorSurat,
+                    auth()->user()->namaJabatan,
+                    $penerima->namaJabatan,
+                    $penerima->nama,
+                    \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
+                    $distribusiSurat->instruksi,
+                    $penerima->email
+                );
+                dispatch($job);
+            }
+        } else {
+            // ============================================
+            // CASE: forward biasa (1 tujuan) — bisa jadi forward normal,
+            // ATAU balasan atas instruksi grup fan-out ($bariskAsal terisi)
+            // ============================================
+            $tujuanDisposisi = User::find($request->input('idTujuanDisposisi'));
+            $status = "Diteruskan ke " . $tujuanDisposisi->namaJabatan;
+
+            $distribusiSurat = new DistribusiSurat();
+            $distribusiSurat->idTujuanDisposisi = $request->input('idTujuanDisposisi');
+            $distribusiSurat->idPengirimDisposisi = $request->input('idPengirimDisposisi');
+            $distribusiSurat->idSuratMasuk = $request->input('idSuratMasuk');
+            $distribusiSurat->instruksi = $request->input('instruksi');
+            $distribusiSurat->tanggalDiteruskan = now();
+            $distribusiSurat->status = $status;
+
+            if ($bariskAsal) {
+                // Ini balasan grup — catat baris instruksi mana yang dijawab
+                $distribusiSurat->idBalasanUntuk = $bariskAsal->id;
+            }
+
+            $distribusiSurat->save();
+
+            if ($bariskAsal) {
+                // Tandai baris instruksi asal sebagai sudah dijawab
+                $bariskAsal->sudahDijawab = true;
+                $bariskAsal->tanggalDijawab = now();
+                $bariskAsal->save();
+
+                // Cek apakah SEMUA anggota grup ini sudah menjawab
+                $belumSemua = DistribusiSurat::where('idSuratMasuk', $suratMasuk->id)
+                    ->where('idGroup', $suratMasuk->idGroup)
+                    ->where('sudahDijawab', false)
+                    ->exists();
+
+                if (! $belumSemua) {
+                    // Semua sudah jawab — surat kembali ke direktur, grup ditutup
+                    $suratMasuk->idGroup = null;
+                    $suratMasuk->idPosisiDisposisi = $bariskAsal->idPengirimDisposisi;
+                    $suratMasuk->status = "Semua anggota grup telah menjawab";
+                    $suratMasuk->save();
+                }
+                // kalau masih ada yang belum jawab, idGroup TETAP aktif —
+                // tidak perlu save apa pun di sini, biar direktur tidak bisa forward dulu
+            } else {
+                // Forward biasa (bukan balasan grup) — perilaku lama, tidak berubah
+                $suratMasuk->idPosisiDisposisi = $request->input('idTujuanDisposisi');
+                $suratMasuk->status = $status;
+                $suratMasuk->save();
+            }
+
+            $sifatSurat = $suratMasuk->sifatSurat;
+            $nomorSurat = $suratMasuk->nomorSurat;
+            $penerima = User::find($distribusiSurat->idTujuanDisposisi);
+
+            $job = new ProcessNotifDisposisi(
+                $sifatSurat,
+                $nomorSurat,
+                auth()->user()->namaJabatan,
+                $penerima->namaJabatan,
+                $penerima->nama,
+                \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'),
+                $distribusiSurat->instruksi,
+                $penerima->email
+            );
+            dispatch($job);
+        }
+
         // START PROCESS file lampiran
+        // (blok ini TIDAK BERUBAH sama sekali dari kode asli lo)
         if ($request->file('fileLampiran')) {
             $filesToDelete = [];
             $mimeType = $request->file('fileLampiran')->getMimeType();
@@ -575,7 +742,7 @@ class SuratMasukController extends Controller
                 $filesToDelete[] = $fileLampiranPath;
             }
 
-            // akses row surat masuk untuk menyimpan file surat masuk yang sdh digabung dengan lampiran  
+            // akses row surat masuk untuk menyimpan file surat masuk yang sdh digabung dengan lampiran
             $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
             $suratMasukPath = storage_path('app/public/' . $suratMasuk->filePath); //path surat masuk sebelum digabung
 
@@ -604,7 +771,7 @@ class SuratMasukController extends Controller
             $bulan = Carbon::createFromFormat('Y-m-d', $suratMasuk->tanggalSurat)->format('m');
             $newSuratMasukPath = 'uploads/surat-masuk/' . $tahun . '/' . $bulan . '/' . uniqid() . '.pdf'; // path surat berlampiran yg akan disimpan di database
             $pathPenggabungan = storage_path('app/public/' . $newSuratMasukPath); // path surat untuk keperluan penggabungan
-            
+
             // proses penggabungan surat masuk dengan lampiran
             $pdfMerger = PDFMerger::init();
             $pdfMerger->addPDF($suratMasukPath, 'all');
@@ -622,47 +789,35 @@ class SuratMasukController extends Controller
                 if (file_exists($file)) {
                     unlink($file);
                 }
-            }  
+            }
         }
-        // END PROCESS file lampiran 
+        // END PROCESS file lampiran
 
+        // pembedaan redirect user sekre dan non-sekre
+        // TECH DEBT = buat jadi modular
+        if (auth()->user()->id == 1) {
+            $redirect = '/surat-masuk/index'
+                    . '?tanggalAwal=' . urlencode(session('search_tanggalAwal', ''))
+                    . '&tanggalAkhir=' . urlencode(session('search_tanggalAkhir', ''))
+                    . '&index=' . urlencode(session('search_index', ''))
+                    . '&direksi=' . urlencode(session('search_direksi', ''))
+                    . '&pengirim=' . urlencode(session('search_pengirim', ''))
+                    . '&nomorSurat=' . urlencode(session('search_nomorSurat', ''))
+                    . '&perihal=' . urlencode(session('search_perihal', ''))
+                    . '&status=' . urlencode(session('search_status', ''))
+            ;
+        } else {
+            $redirect = '/';
+        }
 
-        $tujuanDisposisi = User::find($request->input('idTujuanDisposisi'));
-        $status = "Diteruskan ke " . $tujuanDisposisi->namaJabatan;
-
-        $distribusiSurat = new DistribusiSurat();
-        $distribusiSurat->idTujuanDisposisi = $request->input('idTujuanDisposisi');
-        $distribusiSurat->idPengirimDisposisi = $request->input('idPengirimDisposisi');
-        $distribusiSurat->idSuratMasuk = $request->input('idSuratMasuk');
-        $distribusiSurat->instruksi = $request->input('instruksi');
-        $distribusiSurat->tanggalDiteruskan = now();
-        $distribusiSurat->status = $status;
-        $distribusiSurat->save();
-
-        $suratMasuk = SuratMasuk::find($request->input('idSuratMasuk'));
-        $suratMasuk->idPosisiDisposisi = $request->input('idTujuanDisposisi');
-        $suratMasuk->status = $status;
-        $sifatSurat = $suratMasuk->sifatSurat;
-        $nomorSurat = $suratMasuk->nomorSurat;
-        $suratMasuk->save();
-
-        $penerima = $suratMasuk = User::find($distribusiSurat->idTujuanDisposisi);
-
-        $job = new ProcessNotifDisposisi(
-            $sifatSurat, 
-            $nomorSurat, 
-            auth()->user()->namaJabatan, 
-            $penerima->namaJabatan, 
-            $penerima->nama, 
-            \Carbon\Carbon::parse($distribusiSurat->tanggalDiteruskan)->format('d/m/Y'), 
-            $distribusiSurat->instruksi,
-            $penerima->email)
-        ;
-        dispatch($job);
-
-        
-
-        
+        session()->forget('search_tanggalAwal');
+        session()->forget('search_tanggalAkhir');
+        session()->forget('search_index');
+        session()->forget('search_direksi');
+        session()->forget('search_pengirim');
+        session()->forget('search_nomorSurat');
+        session()->forget('search_perihal');
+        session()->forget('search_status');
 
         return redirect($redirect)
             ->with('success', "Berhasil Meneruskan Pesan");
@@ -981,7 +1136,19 @@ class SuratMasukController extends Controller
     // }
 
     public function nonSekreBelumDiteruskan() {
-        $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->with(['direksi', 'userPengirim'])->orderBy('id', 'desc');
+        // $suratMasuk = SuratMasuk::where('idPosisiDisposisi', auth()->user()->id)->with(['direksi', 'userPengirim'])->orderBy('id', 'desc');
+        $idUser = auth()->user()->id;
+
+    $suratMasuk = SuratMasuk::where(function ($q) use ($idUser) {
+            $q->where('idPosisiDisposisi', $idUser)
+              ->orWhereHas('distribusiSurat', function ($sub) use ($idUser) {
+                  $sub->where('idTujuanDisposisi', $idUser)
+                      ->where('sudahDijawab', false)
+                      ->whereNotNull('idGroup');
+              });
+        })
+        ->with(['direksi', 'userPengirim'])
+        ->orderBy('id', 'desc');
 
         if (request('index')) {
             $suratMasuk = $suratMasuk->where('index', '=', request('index'));
