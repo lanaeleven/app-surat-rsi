@@ -6,6 +6,10 @@ $(document).ready(function() {
         allowClear: true
     });
 
+    $('.select2-single, .select2-multiple, .select2').select2({
+        width: '100%'
+    });
+
     $('#units').on('change', function() {
         let selectedValues = $(this).val() || [];
         const isAllSelected = selectedValues.includes('all');
