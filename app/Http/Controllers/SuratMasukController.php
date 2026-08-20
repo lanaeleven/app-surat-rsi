@@ -393,13 +393,11 @@ class SuratMasukController extends Controller
                         WHERE (
                             id IN (SELECT idUser
                             FROM struktur_organisasi
-                            WHERE levelJabatan = 3 OR levelJabatan = 5
+                            WHERE levelJabatan = 3 OR levelJabatan = 5 OR levelJabatan = 2 
                             OR idAtasan = :idAtasan)
                             -- OR id IN (1,3)
-                            OR id = (3)
-                            OR id = (47)
                             )
-                        AND isKhusus = false AND id != :idUser AND isAktif = true ;',
+                        AND isKhusus = false AND id != :idUser AND isAktif = true AND id != 2 ',
                         ['idAtasan' => $idUser,
                         'idUser' => $idUser]
                         );
