@@ -106,4 +106,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(PerjanjianKerjaSama::class);
     }
+
+    public function penggunaPenerusSuratSekretariat()
+    {
+        return $this->hasOne(PenggunaPenerusSuratSekretariat::class, 'idUser');
+    }
 }
