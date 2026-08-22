@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserKepala;
 use Illuminate\Http\Request;
 use App\Models\PenerimaKhusus;
+use App\Models\PenggunaPenerusSuratSekretariat;
 use App\Models\PengirimKhusus;
 use App\Models\StrukturOrganisasi;
 use App\Models\Unit;
@@ -24,7 +25,7 @@ class UserController extends Controller
             array_push($arrIdKepala, $ik->idUser);
         }
 
-        $user = User::where('id', '<>', 2)->with(['strukturOrganisasi'])->get();
+        $user = User::where('id', '<>', 2)->orderBy('id', 'desc')->with(['strukturOrganisasi'])->get();
 
         // dd($user);
         return view('user.index', ['title' => 'User', 'active' => 'data master', 'user' => $user, 'idKepala' => $arrIdKepala]);
@@ -275,6 +276,41 @@ class UserController extends Controller
             'daftarPenerima' => $daftarPenerima,
             'daftarBukanPenerima' => $daftarBukanPenerima
         ]);
+    }
+
+    public function kelolaPenggunaPenerusSuratSekretariat()
+    {
+        $listUserPenerus = User::whereHas('penggunaPenerusSuratSekretariat')->get();
+
+        $listUserBukanPenerus = User::whereDoesntHave('penggunaPenerusSuratSekretariat')->get();
+
+        return view('user.kelola-pengguna-penerus-surat-sekretariat', [
+            'title' => 'Kelola Akun Khusus',
+            'active' => 'data master',
+            'listUserPenerus' => $listUserPenerus,
+            'listUserBukanPenerus' => $listUserBukanPenerus
+        ]);
+    }
+
+    public function tambahPenggunaPenerusSuratSekretariat(Request $request)
+    {
+        $request->validate([
+            'idUser' => 'required',
+        ]);
+
+        $penggunaPenerusSuratSekretariat = new PenggunaPenerusSuratSekretariat();
+        $penggunaPenerusSuratSekretariat->idUser = $request->input('idUser');
+        $penggunaPenerusSuratSekretariat->save();
+
+        return redirect('/user/kelola-pengguna-penerus-surat-sekretariat')->with('success', 'Berhasil Menambah Pengguna Penerus Surat Sekretariat');
+    }
+
+    public function hapusPenggunaPenerusSuratSekretariat($id)
+    {
+        $penggunaPenerusSuratSekretariat = PenggunaPenerusSuratSekretariat::where('idUser', $id)->firstOrFail();
+        $penggunaPenerusSuratSekretariat->delete();
+
+        return redirect('/user/kelola-pengguna-penerus-surat-sekretariat')->with('success', 'Berhasil Menghapus Pengguna Penerus Surat Sekretariat');
     }
 
     public function tambahPengirim(Request $request)
