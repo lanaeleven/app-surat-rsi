@@ -260,6 +260,9 @@
                             <li class="sidebar-item">
                                 <a href="/unit/index" class="sidebar-link text-wrap">Unit</a>
                             </li>
+                            <li class="sidebar-item">
+                                <a href="/user/kelola-pengguna-penerus-surat-sekretariat" class="sidebar-link text-wrap">Kelola Penerus Sekre</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
