@@ -43,7 +43,8 @@
                       @if (is_null($u->strukturOrganisasi))
                         Belum Diisi
                       @else
-                      @switch($u->strukturOrganisasi->levelJabatan)
+                      {{ $u->strukturOrganisasi->levelJabatan->label() }}
+                      {{-- @switch($u->strukturOrganisasi->levelJabatan)
                         @case(1)
                             Sekretariat
                             @break
@@ -61,7 +62,7 @@
                             @break
                         @default
                             
-                    @endswitch
+                    @endswitch --}}
                       @endif
                     </td>
                     <td @if (is_null($u->strukturOrganisasi)) class="bg-danger text-white bg-gradient" @endif>
