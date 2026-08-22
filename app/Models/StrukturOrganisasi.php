@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LevelJabatan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,10 @@ class StrukturOrganisasi extends Model
 
     protected $guarded = [
         'id'
+    ];
+
+    protected $casts = [
+        'levelJabatan' => LevelJabatan::class,
     ];
 
     protected $table = 'struktur_organisasi';
