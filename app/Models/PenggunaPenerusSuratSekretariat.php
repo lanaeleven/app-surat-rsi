@@ -16,7 +16,7 @@ class PenggunaPenerusSuratSekretariat extends Model
 
     protected $table = 'pengguna_penerus_surat_sekretariat';
 
-    public function userPengirim(): BelongsTo {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class, 'userId');
     }
 }
