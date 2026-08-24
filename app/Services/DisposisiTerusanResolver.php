@@ -5,17 +5,13 @@ namespace App\Services;
 use App\Enums\LevelJabatan;
 use App\Models\PengirimKhusus;
 use App\Models\PenerimaKhusus;
+use App\Models\PenggunaPenerusSuratSekretariat;
 use App\Models\StrukturOrganisasi;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
 class DisposisiTerusanResolver
 {
-    /**
-     * ID user yang otomatis mendapat terusan tambahan (ke Sekretariat)
-     * untuk level jabatan 3 dan 4.
-     */
-    private const ID_USER_KE_SEKRE = [9, 48, 44, 45];
 
     public function resolve(User $user): Collection|string
     {
@@ -60,7 +56,9 @@ class DisposisiTerusanResolver
             return $terusan; // pesan error, langsung return
         }
 
-        if (in_array($idUser, self::ID_USER_KE_SEKRE)) {
+        $terusanSekre = PenggunaPenerusSuratSekretariat::pluck('idUser');
+
+        if ($terusanSekre->contains($idUser)) {
             $terusan = $terusan->merge($this->getUserSekretariat());
         }
 
