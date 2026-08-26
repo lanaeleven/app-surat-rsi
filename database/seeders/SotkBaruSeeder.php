@@ -14,8 +14,8 @@ class SotkBaruSeeder extends Seeder
     {
         $jabatans = [
             'dirut'         => 'Direktur Utama',
-            'spi'           => 'SPI',
-            'komitetim'     => 'Komite / Tim',
+            'spi'           => 'bagian SPI',
+            'komitetim'     => 'bagian Komite / Tim',
             'dirpelayanan'  => 'Direktur Pelayanan dan Diversifikasi Usaha',
             'dirkeuangan'   => 'Direktur Keuangan, SDI & Umum',
             'manpelayanan'  => 'Manager Pelayanan & Penunjang Medik',
@@ -46,10 +46,10 @@ class SotkBaruSeeder extends Seeder
             User::firstOrCreate(
                 ['username' => $username],
                 [
-                    'nama'        => 'Mr. X',
-                    'email'       => 'akunlana11@gmail.com',
+                    'nama'        => 'Belum diberi nama',
+                    'email'       => 'edisposisisuratmasuk@gmail.com',
                     'namaJabatan' => $namaJabatan,
-                    'password'    => Hash::make('1'),
+                    'password'    => Hash::make('rs1s4'),
                 ]
             );
         }
