@@ -116,6 +116,7 @@ class DisposisiTerusanResolver
                 $q->select('idUser')
                     ->from('struktur_organisasi')
                     ->whereIn('levelJabatan', [
+                        LevelJabatan::DIREKTUR_OLD->value,
                         LevelJabatan::KABAG_KABID_OLD->value,
                         LevelJabatan::KOMITE_TIM_OLD->value
                     ]);
