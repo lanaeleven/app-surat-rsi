@@ -147,7 +147,7 @@
                                     SOTK</a>
                             </div>
                         @else
-                            @if ($user->id == 1 || $user->id == 3)
+                            {{-- @if ($user->id == 1 || $user->id == 3)
                                 <form>
                                     <div class="row mb-3">
                                         <label class="col-sm-3 col-form-label">Jabatan Atasan</label>
@@ -174,7 +174,7 @@
                                     </div>
 
                                 </form>
-                            @else
+                            @else --}}
                                 <form method="post" action="/struktur-organisasi/save">
                                     @csrf
                                     <input type="hidden" name="idUser" value="{{ $user->id }}">
@@ -196,13 +196,20 @@
                                         <label for="levelJabatan" class="col-sm-3 col-form-label">Level Jabatan</label>
                                         <div class="col-sm-9">
                                             <select name="levelJabatan" class="form-select" id="levelJabatan" required>
-                                                <option value="">Pilih Level Jabatan</option>
-                                                <option value='3' @if ($user->strukturOrganisasi->levelJabatan == 3) selected @endif>
+                                                <option value="">Pilih Level Jabatan </option>
+                                                {{-- <option value='3' @if ($user->strukturOrganisasi->levelJabatan == 3) selected @endif>
                                                     Kabag/Kabid</option>
                                                 <option value='4' @if ($user->strukturOrganisasi->levelJabatan == 4) selected @endif>
                                                     Kains/Kasubbag/Kasi/Penjab</option>
                                                 <option value='5' @if ($user->strukturOrganisasi->levelJabatan == 5) selected @endif>
-                                                    Komite/Tim</option>
+                                                    Komite/Tim</option> --}}
+                                                @foreach (\App\Enums\LevelJabatan::cases() as $level)
+                                                    @continue($level === \App\Enums\LevelJabatan::DEVELOPER)
+                                                    <option value="{{ $level->value }}"
+                                                        @selected($user->strukturOrganisasi->levelJabatan->value == $level->value)>
+                                                        {{ $level->label() }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -217,7 +224,7 @@
                                     </div>
 
                                 </form>
-                            @endif
+                            {{-- @endif --}}
 
 
 
