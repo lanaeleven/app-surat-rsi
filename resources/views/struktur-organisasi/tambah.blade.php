@@ -48,9 +48,15 @@
               <div class="col-sm-9">
                 <select name="levelJabatan" class="form-select" id="levelJabatan" required>
                     <option value="">Pilih Level Jabatan</option>
-                    <option value='3'>Kabag/Kabid</option>
+                    {{-- <option value='3'>Kabag/Kabid</option>
                     <option value='4'>Kains/Kasubbag/Kasi/Penjab</option>
-                    <option value='5'>Komite/Tim</option>
+                    <option value='5'>Komite/Tim</option> --}}
+                    @foreach (\App\Enums\LevelJabatan::cases() as $level)
+                        @continue($level === \App\Enums\LevelJabatan::DEVELOPER)
+                        <option value="{{ $level->value }}">
+                            {{ $level->label() }}
+                        </option>
+                    @endforeach
                   </select>
               </div>
           </div>
